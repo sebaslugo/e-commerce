@@ -1,11 +1,10 @@
 .product{
     padding: 60px;
-  text-align: center;
-  background: #1abc9c;
-  color: white;
-  font-size: 30px;
-  display: flex;
-flex-direction: column;
+    text-align: center;
+    color: black;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .head{
@@ -15,9 +14,11 @@ flex-direction: column;
 
 .imagen{
     width: 400px;
+    height: 400px;
 }
 
 input{
-    width:100px;
+    width:60px;
+    height: 25px;
 }
 

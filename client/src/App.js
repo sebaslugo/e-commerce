@@ -9,6 +9,10 @@ import Producto from '../src/components/producto';
 function App() {
   return (
     <div className="App">
+      <div>
+        <h1>HENRY MERCH</h1>
+      </div>
+        <hr></hr>
       <Route exact path = '/' component={Home}/>
       <Route exact path = '/Producto' render={() => <Producto price={2000} title={'camisa'} description={'hofsdfsd'}/>}/>
     </div>
