@@ -1,0 +1,23 @@
+.product{
+    padding: 60px;
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+  font-size: 30px;
+  display: flex;
+flex-direction: column;
+}
+
+.head{
+    display: flex;
+    justify-content: center;
+}
+
+.imagen{
+    width: 400px;
+}
+
+input{
+    width:100px;
+}
+
