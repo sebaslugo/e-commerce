@@ -9,4 +9,12 @@ server.get('/', (req, res, next) => {
 		.catch(next);
 });
 
+server.get('/categoria/:nombreCat', (req, res, next) => {
+	res.send("nada")
+});
+
 module.exports = server;
+
+// GET /products/categoria/:nombreCat
+
+// Retorna todos los productos de {nombreCat} Categoría.
