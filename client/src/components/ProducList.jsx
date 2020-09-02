@@ -14,7 +14,7 @@ function ProductList ()  {
     const {productEdit,edit} = useSelector(state => state)
     
     const [producto,setProducto] = useState ({})
-   /*  const [productos,setProductos] = useState ([]); */ 
+
    
    
    
@@ -22,13 +22,9 @@ function ProductList ()  {
         event.preventDefault()
         /* arreglo.push(producto)
         setProductos(arreglo) */         
-        if(edit){
-            dispatch(editProducto(producto))
+        
+        dispatch(agregarProducto(producto)) 
 
-        }
-        else{
-            dispatch(agregarProducto(producto)) 
-        }
            
     }
     const handleInputChange = (event) => { 

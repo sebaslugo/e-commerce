@@ -19,12 +19,7 @@ const productos = (state = initialState,action) => {
         case 'ELIMINAR_PRODUCTO':
             return{
                 ...state,
-                productos:state.productos.filter(producto =>{
-                    if(producto.id === action.payload.id){
-                        return producto                       
-                    }
-                })
-
+                productos:state.productos.filter(producto  => producto.id != action.payload)
             }
         case 'SELECT_PRODUCTO':
             return{
@@ -32,20 +27,7 @@ const productos = (state = initialState,action) => {
                 productEdit:action.payload,
                 edit:true
             }
-        case 'EDIT_PRODUCTO':
-                state.productos.map(producto => {
-                    if(producto.id = action.payload.id){
-                        var indice =state.indexof(producto)
-                        state.producto = action.payload
-                        /* producto = action.payload  */                            
-                    }
-                })
-            return{
-                ...state,
-                edit:false,
-                productos:state.productos                
-                
-            }
+     
         default:
             return state;
     }
