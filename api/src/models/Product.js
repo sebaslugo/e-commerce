@@ -21,7 +21,7 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
     },
     image: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING, // la imagen recibiria una url con la ubicación del archivo
       allowNull: false
     }
   });
