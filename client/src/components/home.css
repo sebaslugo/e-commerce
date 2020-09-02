@@ -1,0 +1,31 @@
+.Home{
+    display:flex;
+    flex-direction: column;
+    
+}
+
+.productos{
+    display: flex;
+    width: 70%;
+    flex-flow: row wrap;
+}
+
+.tarjeta{
+    margin: 17px;
+}
+
+.paginacion{
+    align-self: center;
+
+}
+
+.content{
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.categoria{
+    background-color: #EDF022;
+    width: 30%;
+}
