@@ -88,7 +88,10 @@ server.get('/category', (req, res, next) => {
 
 // Crear categoría
 server.post('/category', (req, res, next) => {
+
+
 	Category.findOrCreate({ // lo que hace es buscar o crear la categoría
+
 		where: {
 			name: req.body.name,
 			description: req.body.description
@@ -97,6 +100,24 @@ server.post('/category', (req, res, next) => {
 		res.status(201).json({ categoria })
 	})
 });
+
+
+server.put("/category/:id", (req, res, next) => {
+	Category.findOne({
+		where: {
+			id: req.params.id
+		}
+	}).then(function (categoria) {
+		if (!categoria) {
+			return res.status(404).json({ message: "error" })
+		}
+		res.status(200).json({ categoria })
+	})
+
+	// .catch(error => {
+	//     res.status(404).json({message: error})
+	// })
+})
 
 // S19: Crear Ruta para eliminar Categoria
 // DELETE /products/category/:id
@@ -124,6 +145,7 @@ server.delete('/category/:id', (req, res, next) => {
 		return res.status(404).json({err});
 	})
 });
+
 
 module.exports = server;
 
