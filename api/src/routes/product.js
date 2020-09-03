@@ -6,7 +6,7 @@ server.get('/', (req, res, next) => {
 		.then(products => {
 			res.send(products);
 		})
-		.catch(next);
+
 });
 
 
@@ -44,12 +44,12 @@ server.post('/:idProducto/category/:idCategoria', (req, res, next) => {
 server.delete('/:idProducto/category/:idCategoria', (req, res, next) => {
 	const { idProducto, idCategoria } = req.params;
 
-	const idProd = Product.findAll({
+	const idProd = Product.findOne({
 		where: {
 			id: idProducto
 		}
 	});
-	const idCat = Category.findAll({
+	const idCat = Category.findOne({
 		where: {
 			id: idCategoria
 		}
@@ -98,6 +98,20 @@ server.post('/category', (req, res, next) => {
 		res.status(201).json({ categoria })
 	})
 });
+
+server.put("/category/:id", (req, res, next) => {
+	Category.findOne({
+		where: {
+			id: req.params.id
+		}
+	}).then(function (categoria) {
+		if (!categoria) {
+			return res.status(404).json({ message: "error" })
+		}
+		res.status(200).json({ categoria })
+	})
+})
+
 
 module.exports = server;
 
