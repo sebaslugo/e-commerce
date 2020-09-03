@@ -2,8 +2,10 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {Route} from 'react-router-dom';
-import Home from '../src/components/home';
-import Producto from '../src/components/producto';
+import Home from './components/home';
+import Producto from './components/producto';
+import ProducList from './components/ProducList'
+import home from './components/home'
 
 
 function App() {
@@ -13,8 +15,9 @@ function App() {
         <h1>HENRY MERCH</h1>
       </div>
         <hr></hr>
-      <Route exact path = '/' component={Home}/>
-      <Route exact path = '/Producto' render={() => <Producto price={2000} title={'camisa'} description={'hofsdfsd'}/>}/>
+      <Route exact path = '/' component ={home}/>
+      <Route exact path = '/Producto' render={() => <Producto price={2000} name={'camisa'} description={'hofsdfsd'}/>}/>
+      <Route exact path = '/ProducList' component={ProducList}/>
     </div>
   );
 }
