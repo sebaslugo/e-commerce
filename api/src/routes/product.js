@@ -124,28 +124,76 @@ server.put("/category/:id", (req, res, next) => {
 server.delete('/category/:id', (req, res, next) => {
 	const { id } = req.params;
 	const idCat = Category.findOne({
-        where: {
-            id: id
-        }
+		where: {
+			id: id
+		}
 	})
-	.then(value => {
-		// console.log(idCat);
-		Category.destroy({
+		.then(value => {
+			// console.log(idCat);
+			Category.destroy({
+				where: {
+					id: id
+				}
+			})
+			console.log(value);
+			if (!value) {
+				return res.status(404).json({ message: 'Id inváldio' });
+			}
+			res.status(200).json({ message: 'Categoría eliminada exitosamente' });
+		})
+		.catch(err => {
+			return res.status(404).json({ err });
+		})
+});
+
+server.get('/category/:nameCat', async (req, res, next) => {
+	const { nameCat } = req.params;
+	try {
+		const idCategoria = await Category.findAll({
+			attributes: ['id']
+			,
 			where: {
-				id: id
+				name: nameCat
 			}
 		})
-		console.log(value);
-		if (!value) {
-			return res.status(404).json({message: 'Id inváldio'});
+
+		const listaProductos = await prodcat.findAll({
+			where: {
+				categoryId: idCategoria[0]['dataValues']['id']
+			}
+		})
+		if (!listaProductos) {
+			return res.status(404).json({ message: "No existen productos con esa categoria" })
 		}
-		res.status(200).json({message: 'Categoría eliminada exitosamente'});
-	})
-	.catch(err => {
-		return res.status(404).json({err});
-	})
+		console.log(listaProductos)
+		const idProductos = listaProductos.map((producto) => {
+			return producto['productId']
+		})
+		const resultado = await Product.findAll({
+			where: {
+				id: idProductos
+			}
+		})
+		console.log(idProductos)
+		return res.status(200).json(resultado)
+
+
+
+	} catch (error) {
+		res.status(404).send(error.message)
+	}
+
+
+
+
+
+
+
 });
 
 
 module.exports = server;
 
+// GET /products/categoria/:nombreCat
+
+// Retorna todos los productos de {nombreCat} Categoría.
