@@ -6,8 +6,9 @@
 
 .productos{
     display: flex;
-    width: 70%;
+    width: 100%;
     flex-flow: row wrap;
+    justify-content: center;
 }
 
 .tarjeta{
@@ -21,11 +22,36 @@
 
 .content{
     display: flex;
-    justify-content: space-between;
-
+    flex-direction: column;
 }
 
-.categoria{
-    background-color: #EDF022;
-    width: 30%;
+.ui.card .content img, .ui.cards>.card .content img {
+    align-self: center;
+}
+
+
+
+.btn-primary {
+    color: black;
+    border-color: black;
+    background-color: transparent;
+}
+.ui.inverted.yellow.button, .ui.inverted.yellow.buttons .button {
+    background-color: transparent;
+    color: white;
+    width: 120px;
+}
+
+.ui.inverted.yellow.button, .ui.inverted.yellow.buttons .button {
+    background-color: transparent;
+    box-shadow: 0 0 0 2px #ffe21f inset!important;
+    color: black;
+}
+
+.ui.vertical.tabular.menu .active.item {
+    background: yellow;
+    color: black;
+    border-color: black;
+    margin: 0 -1px 0 0;
+    border-radius: .28571429rem 0 0 .28571429rem!important;
 }

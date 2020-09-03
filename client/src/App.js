@@ -1,5 +1,6 @@
+
 import React from "react";
-import logo from "./logo.svg";
+
 import "./App.css";
 import { Route } from "react-router-dom";
 import Home from "./components/home";
@@ -7,6 +8,11 @@ import Producto from "./components/producto";
 import ProducList from "./components/ProducList";
 import home from "./components/home";
 import Header from "./components/Header";
+import 'semantic-ui-css/semantic.min.css';
+
+
+
+
 
 function App() {
   return (

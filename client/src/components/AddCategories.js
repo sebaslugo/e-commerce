@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 
-function Categories(props) {
+function AddCategories(props) {
     const [categorie, setCategorie] = useState("");
 
     const handleCategorie = (e) => {
@@ -25,5 +25,5 @@ function Categories(props) {
 
 }
 
-export default Categories;
+export default AddCategories;
 
