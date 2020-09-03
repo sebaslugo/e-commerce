@@ -2,11 +2,10 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {Route} from 'react-router-dom';
-import Home from './components/home';
 import Producto from './components/producto';
 import ProducList from './components/ProducList'
-import home from './components/home'
-
+import home from './components/Home'
+import 'semantic-ui-css/semantic.min.css';
 
 function App() {
   return (
