@@ -11,6 +11,7 @@ function Lista ()  {
     }
     const handleEdit = (producto) => {
         dispatch(selectProducto(producto))
+        dispatch(eliminarProducto(producto.id))
     }
 
     return (

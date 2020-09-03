@@ -27,6 +27,8 @@ const productos = (state = initialState,action) => {
                 productEdit:action.payload,
                 edit:true
             }
+
+
      
         default:
             return state;
