@@ -89,7 +89,7 @@ server.get('/category', (req, res, next) => {
 
 server.post('/category', (req, res, next) => {
 
-	Category.findOrCreate({ // lo que hace es buscar o crear el usuariio
+	Category.findOrCreate({ // lo que hace es buscar o crear la categoria
 		where: {
 			name: req.body.name,
 			description: req.body.description
@@ -99,5 +99,21 @@ server.post('/category', (req, res, next) => {
 	})
 });
 
+server.put("/category/:id", (req, res, next) => {
+	Category.findOne({
+		where: {
+			id: req.params.id
+		}
+	}).then(function (categoria) {
+		if (!categoria) {
+			return res.status(404).json({ message: "error" })
+		}
+		res.status(200).json({ categoria })
+	})
+
+	// .catch(error => {
+	//     res.status(404).json({message: error})
+	// })
+})
 module.exports = server;
 
