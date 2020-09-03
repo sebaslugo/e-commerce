@@ -77,8 +77,7 @@ server.delete('/:idProducto/category/:idCategoria', (req, res, next) => {
 		});
 });
 
-
-
+// Muestra las categorias
 server.get('/category', (req, res, next) => {
 	Category.findAll()
 		.then(categoria => {
@@ -87,9 +86,12 @@ server.get('/category', (req, res, next) => {
 		.catch(next);
 });
 
+// Crear categoría
 server.post('/category', (req, res, next) => {
 
-	Category.findOrCreate({ // lo que hace es buscar o crear la categoria
+
+	Category.findOrCreate({ // lo que hace es buscar o crear la categoría
+
 		where: {
 			name: req.body.name,
 			description: req.body.description
@@ -98,6 +100,7 @@ server.post('/category', (req, res, next) => {
 		res.status(201).json({ categoria })
 	})
 });
+
 
 server.put("/category/:id", (req, res, next) => {
 	Category.findOne({
@@ -115,5 +118,34 @@ server.put("/category/:id", (req, res, next) => {
 	//     res.status(404).json({message: error})
 	// })
 })
+
+// S19: Crear Ruta para eliminar Categoria
+// DELETE /products/category/:id
+server.delete('/category/:id', (req, res, next) => {
+	const { id } = req.params;
+	const idCat = Category.findOne({
+        where: {
+            id: id
+        }
+	})
+	.then(value => {
+		// console.log(idCat);
+		Category.destroy({
+			where: {
+				id: id
+			}
+		})
+		console.log(value);
+		if (!value) {
+			return res.status(404).json({message: 'Id inváldio'});
+		}
+		res.status(200).json({message: 'Categoría eliminada exitosamente'});
+	})
+	.catch(err => {
+		return res.status(404).json({err});
+	})
+});
+
+
 module.exports = server;
 
