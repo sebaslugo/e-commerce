@@ -3,9 +3,10 @@ import "./Header.css";
 import { Link } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
+
 function Header() {
   return (
-    <nav className="header">
+    <nav className="header-header">
       {/* Logo izquierda to Home */}
       <Link to="/">
         <img
