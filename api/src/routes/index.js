@@ -1,7 +1,7 @@
 const { Router } = require('express');
 // import all routers;
 const productRouter = require('./product.js');
-const search = require('./search.js')
+const searchRouter = require('./search.js')
 
 
 const router = Router();
@@ -10,6 +10,6 @@ const router = Router();
 // i.e: router.use('/auth', authRouter);
 // router.use('/auth', authRouter--);
 router.use('/products', productRouter);
-router.use('/search', search)
+router.use('/search', searchRouter)
 
 module.exports = router;
