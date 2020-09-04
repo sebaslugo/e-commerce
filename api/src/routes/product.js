@@ -1,5 +1,7 @@
 const server = require('express').Router();
 const { Product, Category, prodcat } = require('../db.js');
+const path = require('path');
+const multer = require('multer');
 
 server.get('/', (req, res, next) => {
 	Product.findAll()
@@ -232,10 +234,39 @@ server.get('/:id', async (req, res) => {
 
 });
 
-server.post('/', (req, res) => {
-	const { name, description, price, stock, image } = req.body
-	if (name && description && price && stock && image) {
-		Product.create(req.body)
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, process.cwd() + "/images")//esto te trae la direccion del servidor
+    },
+    filename: (req, file, cb) => {
+        cb(null, 'img' + '-' + Date.now() + file.originalname);
+    }
+})
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+}
+
+const upload = multer({ storage, fileFilter })
+
+server.post('/', upload.array('file', 5), (req, res) => {
+	const { name, description, price, stock } = req.body	
+	if (name && description && price && stock && req.files) {
+		const images = req.files.map(image => {
+			return image.filename;
+		}).join();
+		
+		Product.create({
+			name: name,
+			description: description,
+			price: price,
+			stock: stock,
+			image: images
+		})
 			.then(product => {
 				return res.status(201).json(product)
 			});
