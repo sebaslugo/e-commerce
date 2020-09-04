@@ -3,6 +3,7 @@ import  './Home.css'
 
 import {Pagination} from 'react-bootstrap'
 import { Grid,Menu,Segment,Card,Image,Button } from 'semantic-ui-react'
+import { Link } from 'react-router-dom';
 /* const _ = require('lodash');
 const ObjCategories= []; */
 
@@ -10,21 +11,21 @@ const imagenes = ['https://i.pinimg.com/236x/b7/e3/8b/b7e38b7111481c2c72c98990ec
 
 
 // estos arrays son los que se traen cuando hacemos pedidos al servidor, hay que borrarlos cuando se haga la conexion
-const productos = [{'name':'camiseta','price':'1200','description':'azul','imagen':imagenes[0],'category':'ropa'},
-                    {'name':'carro','price':'2200','description':'rojo','imagen':imagenes[1],'category':'ropa'},
-                    {'name':'moto','price':'2200','description':'amarrilo','imagen':imagenes[1],'category':'ropa'},
-                    {'name':'arroz','price':'2200','description':'verde','imagen':imagenes[1],'category':'ropa'},
-                    {'name':'casa','price':'2200','description':'cafe','imagen':imagenes[1],'category':'ropa'},
-                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
-                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
-                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
-                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
-                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
-                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
-                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
-                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
-                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
-                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'}];
+const productos = [{'id':'10','name':'camiseta','price':'1200','description':'azul','imagen':imagenes[0],'category':'ropa'},
+                    {'id':'11','name':'carro','price':'2200','description':'rojo','imagen':imagenes[1],'category':'ropa'},
+                    {'id':'12','name':'moto','price':'2200','description':'amarrilo','imagen':imagenes[1],'category':'ropa'},
+                    {'id':'13','name':'arroz','price':'2200','description':'verde','imagen':imagenes[1],'category':'ropa'},
+                    {'id':'14','name':'casa','price':'2200','description':'cafe','imagen':imagenes[1],'category':'ropa'},
+                    {'id':'15','name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'id':'16','name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'id':'17','name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'id':'18','name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'id':'19','name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'id':'20','name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'id':'21','name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'id':'22','name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'id':'23','name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'id':'24','name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'}];
 
 const categorias = [{'name':'platos'},{'name':'ropa'}]
 
@@ -105,9 +106,11 @@ function Home (props)  {
                                 </Card.Description>
                                 </Card.Content>
                                 <Card.Content extra>
+                                    <Link to={'/producto/'+ producto.id}>
                                 <Button inverted color='yellow'>
                                     Detalles de Compra
-                                </Button>                               
+                                </Button>
+                                </Link>                               
                                 </Card.Content>
                             </Card>
                                                        
