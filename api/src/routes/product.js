@@ -200,7 +200,7 @@ server.put('/:id', (req, res, next) => {
 			res.status(200).json(productUpdate)
 		})
 		.catch(next);
-
+});
 server.get('/:id', async (req, res) => {
 	const producto = await Product.findOne({
 		where: {
@@ -234,24 +234,43 @@ server.get('/:id', async (req, res) => {
 
 server.post('/', (req, res) => {
 	const { name, description, price, stock, image } = req.body
-	if (name && description && price && stock && image){
+	if (name && description && price && stock && image) {
 		Product.create(req.body)
-        .then(product => {
-			return res.status(201).json(product)
-		});
+			.then(product => {
+				return res.status(201).json(product)
+			});
 	} else {
 		return res.status(400).send("Product can´t be created if you don´t add all properties");
-	}	
+	}
 });
 
 // Ejemplo para probar con postman
-		// {
-		// 	"name": "producto nuevo henry",
-		// 	"description": "producto nuevo creado",
-		// 	"price": 15,
-		// 	"stock": 5,
-		// 	"image": "url"
-		// }
+// {
+// 	"name": "producto nuevo henry",
+// 	"description": "producto nuevo creado",
+// 	"price": 15,
+// 	"stock": 5,
+// 	"image": "url"
+// }
+
+// DELETE /products/:id
+// Retorna 200 si se elimino con exito.
+server.delete('/:id', (req, res, next) => {
+	const { id } = req.params;
+	Product.destroy({
+		where: {
+			id: id
+		}
+	})
+		.then(producto => {
+			if (producto > 0) {
+				return res.status(200).json({ message: 'Producto eliminado correctamente' })
+			} else {
+				return res.json({ message: 'Id inválido' });
+			}
+		})
+		.catch(err => res.send(400).json(err.message));
+});
 
 
 module.exports = server;
