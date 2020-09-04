@@ -183,11 +183,35 @@ server.get('/category/:nameCat', async (req, res, next) => {
 		res.status(404).send(error.message)
 	}
 
+});
 
+server.get('/:id', async (req, res) => {
+	const producto = await Product.findOne({
+		where: {
+			id: req.params.id
+		}
 
+	})
 
+	const categoriaDelProducto = await prodcat.findAll({
+		where: {
+			productId: req.params.id
+		}
+	})
 
+	const listaDeCategorias = categoriaDelProducto.map((producto) => {
+		return producto.categoryId
+	})
 
+	const categorias = await Category.findAll({
+		where: {
+			id: listaDeCategorias
+		}
+	})
+	if (!producto) {
+		return res.status(404).json({ err: "todo mal" })
+	}
+	return res.json({ producto, categorias });
 
 });
 
