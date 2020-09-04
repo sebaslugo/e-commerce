@@ -215,9 +215,26 @@ server.get('/:id', async (req, res) => {
 
 });
 
+server.post('/', (req, res) => {
+	const { name, description, price, stock, image } = req.body
+	if (name && description && price && stock && image){
+		Product.create(req.body)
+        .then(product => {
+			return res.status(201).json(product)
+		});
+	} else {
+		return res.status(400).send("Product can´t be created if you don´t add all properties");
+	}	
+});
+
+// Ejemplo para probar con postman
+		// {
+		// 	"name": "producto nuevo henry",
+		// 	"description": "producto nuevo creado",
+		// 	"price": 15,
+		// 	"stock": 5,
+		// 	"image": "url"
+		// }
+
 
 module.exports = server;
-
-// GET /products/categoria/:nombreCat
-
-// Retorna todos los productos de {nombreCat} Categoría.
