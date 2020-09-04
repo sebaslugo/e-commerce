@@ -1,7 +1,16 @@
-.Home{
+.home-Home{
     display:flex;
     flex-direction: column;
     
+}
+
+.w-100 {
+    width: 100%!important;
+    height: 300px;
+}
+
+.ui.column.grid>[class*="four wide"].column, .ui.grid>.column.row>[class*="four wide"].column, .ui.grid>.row>[class*="four wide"].column, .ui.grid>[class*="four wide"].column {
+    margin-top: 25px;
 }
 
 .productos{
@@ -9,18 +18,30 @@
     width: 100%;
     flex-flow: row wrap;
     justify-content: center;
+    
 }
 
-.tarjeta{
+.ui.card>.content>.header:not(.ui), .ui.cards>.card>.content>.header:not(.ui) {
+    margin-top: 24px;
+    padding-bottom: 32px;
+    height: 20px;
+    background-color: transparent;
+}
+.home-paginacion{
+    align-self: center;
+    margin-top: 30px;
+    margin-bottom: 10px;
     margin: 17px;
 }
 
-.paginacion{
-    align-self: center;
-
+.ui.cards {
+    display: flex;
+    margin: -.875em -.5em;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.content{
+.home-content{
     display: flex;
     flex-direction: column;
 }
@@ -31,27 +52,31 @@
 
 
 
-.btn-primary {
-    color: black;
-    border-color: black;
-    background-color: transparent;
+
+.home-header{
+    padding:20px;
 }
-.ui.inverted.yellow.button, .ui.inverted.yellow.buttons .button {
-    background-color: transparent;
-    color: white;
-    width: 120px;
+.home-priceCard{
+    padding-left: 64px;
+    font-size: 15px;
+    color: black;
+    justify-content: center;
+}
+.home-price{
+    display: flex;
+    align-items: baseline;
 }
 
-.ui.inverted.yellow.button, .ui.inverted.yellow.buttons .button {
-    background-color: transparent;
-    box-shadow: 0 0 0 2px #ffe21f inset!important;
+.ui.button {
+    background: white;
     color: black;
+    border-color: #E0FA02;
+    border-style: solid;
+    
 }
 
-.ui.vertical.tabular.menu .active.item {
-    background: yellow;
-    color: black;
-    border-color: black;
-    margin: 0 -1px 0 0;
-    border-radius: .28571429rem 0 0 .28571429rem!important;
+.home-button{
+    
 }
+
+
