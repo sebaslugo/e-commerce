@@ -124,28 +124,153 @@ server.put("/category/:id", (req, res, next) => {
 server.delete('/category/:id', (req, res, next) => {
 	const { id } = req.params;
 	const idCat = Category.findOne({
-        where: {
-            id: id
-        }
+		where: {
+			id: id
+		}
 	})
-	.then(value => {
-		// console.log(idCat);
-		Category.destroy({
+		.then(value => {
+			// console.log(idCat);
+			Category.destroy({
+				where: {
+					id: id
+				}
+			})
+			console.log(value);
+			if (!value) {
+				return res.status(404).json({ message: 'Id inváldio' });
+			}
+			res.status(200).json({ message: 'Categoría eliminada exitosamente' });
+		})
+		.catch(err => {
+			return res.status(404).json({ err });
+		})
+});
+
+server.get('/category/:nameCat', async (req, res, next) => {
+	const { nameCat } = req.params;
+	try {
+		const idCategoria = await Category.findAll({
+			attributes: ['id']
+			,
 			where: {
-				id: id
+				name: nameCat
 			}
 		})
-		console.log(value);
-		if (!value) {
-			return res.status(404).json({message: 'Id inváldio'});
+
+		const listaProductos = await prodcat.findAll({
+			where: {
+				categoryId: idCategoria[0]['dataValues']['id']
+			}
+		})
+		if (!listaProductos) {
+			return res.status(404).json({ message: "No existen productos con esa categoria" })
 		}
-		res.status(200).json({message: 'Categoría eliminada exitosamente'});
+		console.log(listaProductos)
+		const idProductos = listaProductos.map((producto) => {
+			return producto['productId']
+		})
+		const resultado = await Product.findAll({
+			where: {
+				id: idProductos
+			}
+		})
+		console.log(idProductos)
+		return res.status(200).json(resultado)
+
+
+
+	} catch (error) {
+		res.status(404).send(error.message)
+	}
+
+});
+
+
+// PUT /products/:id
+// Modifica el producto con id: id. Retorna 400 si los campos enviados no son correctos.
+// Retorna 200 si se modificó con exito, y retorna los datos del producto modificado.
+server.put('/:id', (req, res, next) => {
+	const { id } = req.params;
+	const { name, description, price, stock, image } = req.body;
+	Product.update(
+		{ name, description, price, stock, image },
+		{ returning: true, where: { id: id } }
+	)
+		.then(function ([rowsUpdate, [productUpdate]]) {
+			res.status(200).json(productUpdate)
+		})
+		.catch(next);
+});
+server.get('/:id', async (req, res) => {
+	const producto = await Product.findOne({
+		where: {
+			id: req.params.id
+		}
+
 	})
-	.catch(err => {
-		return res.status(404).json({err});
+
+	const categoriaDelProducto = await prodcat.findAll({
+		where: {
+			productId: req.params.id
+		}
 	})
+
+	const listaDeCategorias = categoriaDelProducto.map((producto) => {
+		return producto.categoryId
+	})
+
+	const categorias = await Category.findAll({
+		where: {
+			id: listaDeCategorias
+		}
+	})
+	if (!producto) {
+		return res.status(404).json({ err: "todo mal" })
+	}
+	return res.json({ producto, categorias });
+
+
+});
+
+server.post('/', (req, res) => {
+	const { name, description, price, stock, image } = req.body
+	if (name && description && price && stock && image) {
+		Product.create(req.body)
+			.then(product => {
+				return res.status(201).json(product)
+			});
+	} else {
+		return res.status(400).send("Product can´t be created if you don´t add all properties");
+	}
+});
+
+// Ejemplo para probar con postman
+// {
+// 	"name": "producto nuevo henry",
+// 	"description": "producto nuevo creado",
+// 	"price": 15,
+// 	"stock": 5,
+// 	"image": "url"
+// }
+
+// DELETE /products/:id
+// Retorna 200 si se elimino con exito.
+server.delete('/:id', (req, res, next) => {
+	const { id } = req.params;
+	Product.destroy({
+		where: {
+			id: id
+		}
+	})
+		.then(producto => {
+			if (producto > 0) {
+				return res.status(200).json({ message: 'Producto eliminado correctamente' })
+			} else {
+				return res.json({ message: 'Id inválido' });
+			}
+		})
+		.catch(err => res.send(400).json(err.message));
 });
 
 
 module.exports = server;
-

@@ -1,94 +1,92 @@
-import React,{useState} from 'react';
-import {Form,Row,Col,Button} from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Lista from './Lista'
-import { useDispatch,useSelector } from 'react-redux'
-import {agregarProducto,editProducto} from '../redux/actions'
-/* let arreglo = [] */
+import React from 'react';
+import MaterialTable from 'material-table';
+import  "@material-ui/icons";
+import'@material-ui/core/styles';
+var _ = require('lodash');
 
-
-
-
-function ProductList ()  {
-    const dispatch = useDispatch()
-    const {productEdit,edit} = useSelector(state => state)
-    
-    const [producto,setProducto] = useState ({})
-
-   
-   
-   
-    const handleSubmit = (event) => {
-        event.preventDefault()
-        /* arreglo.push(producto)
-        setProductos(arreglo) */         
-        
-        dispatch(agregarProducto(producto)) 
-
-           
-    }
-    const handleInputChange = (event) => { 
-           
-        setProducto({
-            ...producto,
-            [event.target.name]: event.target.value,            
-            
-        });       
-
-    }
-    return (
-        <div>
-            <div>
-                <Form onSubmit={handleSubmit}>
-                {/* Este form es para hacer pruebas con el id, hay que borrarlo cuando se haga la conexion con la api */}
-                <Form.Group as={Row} controlId="id">
-                    <Form.Label column sm={2}>
-                    id
-                    </Form.Label>
-                    <Col sm={10}>
-                    <Form.Control onChange = {handleInputChange} type="text" name = 'id' placeholder="id" />
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} controlId="title">
-                    <Form.Label column sm={2}>
-                    Nombre del producto
-                    </Form.Label>
-                    <Col sm={10}>
-                    <Form.Control onChange = {handleInputChange} type="text" value={productEdit.productName} name = 'productName' placeholder="Nombre del producto" />
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} controlId="precio">
-                    <Form.Label column sm={2}>
-                    Precio
-                    </Form.Label>
-                    <Col sm={10}>
-                    <Form.Control onChange = {handleInputChange} type="number" value={productEdit.price} name='price' placeholder="Precio $" />
-                    </Col>
-                </Form.Group>
-                <Form.Group as={Row} controlId="formHorizontalPassword">
-                    <Form.Label column sm={2}>
-                    Descripcion
-                    </Form.Label>
-                    <Col sm={10}>
-                    <Form.Control onChange = {handleInputChange} type="text" value={productEdit.description} name = 'description' placeholder="Descripcion" />
-                    </Col>
-                </Form.Group>            
-                <Form.Group>
-                    <Form.File onChange = {handleInputChange} name = 'imagen' value={productEdit.uploads} multiple name="uploads" id="exampleFormControlFile1" accept="image/png, image/jpeg" label="Cargar Imagen" />
-                </Form.Group>
-                <Form.Group as={Row}>
-                    <Col sm={{ span: 10, offset: 2 }}>
-                    <Button type="submit">{edit === false ? "Cargar Producto" : "Editar Producto"}</Button>
-                    </Col>
-                </Form.Group>                
-                </Form>
-            </div>
-            
-            <Lista />
-                
-            
-        </div>
-    )
+// estos arrays son los que se traen cuando hacemos pedidos al servidor, hay que borrarlos cuando se haga la conexion
+const categorias = [{'name':'platos'},{'name':'ropa'}]
+const obj = {}
+for (let index = 0; index < categorias.length; index++) {
+    obj[categorias[index].name] = categorias[index].name;    
 }
+console.log(obj)
 
-export default ProductList;
+
+const imagenes = ['https://i.pinimg.com/236x/b7/e3/8b/b7e38b7111481c2c72c98990ec3d3889.jpg','https://i.pinimg.com/236x/b7/e3/8b/b7e38b7111481c2c72c98990ec3d3889.jpg']
+
+const productos = [{'name':'camiseta','price':'1200','description':'azul','imagen':imagenes[0],'category':'platos'},
+                    {'name':'carro','price':'2200','description':'rojo','imagen':imagenes[1],'category':'ropa'},
+                    {'name':'moto','price':'2200','description':'amarrilo','imagen':imagenes[1],'category':'ropa'},
+                    {'name':'arroz','price':'2200','description':'verde','imagen':imagenes[1],'category':'ropa'},
+                    {'name':'casa','price':'2200','description':'cafe','imagen':imagenes[1],'category':'ropa'},
+                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'},
+                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'}];
+
+
+export default function MaterialTableDemo() {
+  const [state, setState] = React.useState({
+    columns: [
+      { title: 'Name', field: 'name' },
+      { title: 'Price', field: 'price',type:'numeric' },
+      {title:'Description',field:'description'},
+      {title:'Imagenes',field:'imagen'},
+      {title:'Categories',field:'category', lookup:obj,}
+      
+    ],
+    data: productos,
+  });
+
+  return (
+    <MaterialTable
+      title="Product List"
+      columns={state.columns}
+      data={state.data}
+      editable={{
+        onRowAdd: (newData) =>
+          new Promise((resolve) => {
+            setTimeout(() => {
+              resolve();
+              setState((prevState) => {
+                const data = [...prevState.data];
+                data.push(newData);
+                return { ...prevState, data };
+              });
+            }, 600);
+          }),
+        onRowUpdate: (newData, oldData) =>
+          new Promise((resolve) => {
+            setTimeout(() => {
+              resolve();
+              if (oldData) {
+                setState((prevState) => {
+                  const data = [...prevState.data];
+                  data[data.indexOf(oldData)] = newData;
+                  return { ...prevState, data };
+                });
+              }
+            }, 600);
+          }),
+        onRowDelete: (oldData) =>
+          new Promise((resolve) => {
+            setTimeout(() => {
+              resolve();
+              setState((prevState) => {
+                const data = [...prevState.data];
+                data.splice(data.indexOf(oldData), 1);
+                return { ...prevState, data };
+              });
+            }, 600);
+          }),
+      }}
+    />
+  );
+}

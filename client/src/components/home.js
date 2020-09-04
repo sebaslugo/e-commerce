@@ -1,5 +1,8 @@
 import React, { useState,useEffect } from 'react';
-import  './Home.css'
+import './Home.css'
+import {Link} from 'react-router-dom';
+import { Grid,Menu,Segment,Card,Image,Pagination,Button} from 'semantic-ui-react'
+import portada from '../imagenes/portada.jpg'
 
 import {Pagination} from 'react-bootstrap'
 import { Grid,Menu,Segment,Card,Image,Button } from 'semantic-ui-react'
@@ -42,54 +45,45 @@ function Home (props)  {
     
     const [active,setActive] = useState (1)
     const paginas = Math.ceil(productos.length/6);
-    /* const [categorias,setCategorias] = useState([]) */
-    const [activeItem,setActiveItem] = useState('todos') 
+    const [activeItem,setActiveItem] = useState('productos') 
 
     const handleItemClick = (e, { name }) => {
         setActiveItem(name)
     }
 
-    useEffect(() => {
-        
-        // Se recomienda hacer los pedidos de productos aca
-    }, []) 
 
-    const handleClick = (number) => {
-        setActive(number)
+    const handleClick = (e, { activePage }) => {
+        setActive(activePage)
     }
     
-    let items = [];
-    for (let number = 1; number <= paginas; number++) {
-    items.push(
-        <Pagination.Item key={number} active={number === active} onClick = {() => handleClick(number)} >
-        {number}
-        </Pagination.Item>,
-    );}
-
     return (
-        <div className = 'Home' >                                                    
+        <div className = 'home-Home' > 
+            <Image src={portada} fluid />
             <Grid>
                 <Grid.Column width={4}>
                 <Menu fluid vertical tabular>
-                    <Menu.Item
-                    name='todos'
-                    active={activeItem === 'todos'}
-                    onClick={handleItemClick}
-                    />
-                    {categorias.map((categoria) => 
+                    <Link to = '/products'>
                         <Menu.Item
-                        name={categoria.name}
-                        active={activeItem === categoria.name}
+                        name='productos'
+                        active={activeItem === 'productos'}
                         onClick={handleItemClick}
                         />
+                    </Link>                    
+                    {categorias.map((categoria) => 
+                        <Link to = {`/${categoria.name}`}>
+                            <Menu.Item
+                            name={categoria.name}
+                            active={activeItem === categoria.name}
+                            onClick={handleItemClick}
+                            />
+                        </Link>                        
                     )}
                 </Menu>
-                </Grid.Column>
-
+                </Grid.Column>             
                 <Grid.Column stretched width={12}>
                 <Segment>
-                <div className = 'content'>
-                    <div className = 'productos'>
+                <div className = 'home-content'>
+                    <div className = 'home-productos'>
                     <Card.Group>
                         {productPage[active-1].map((producto) => 
                             
@@ -99,7 +93,7 @@ function Home (props)  {
                                     size='small'
                                     src={producto.imagen}
                                 />
-                                <Card.Header>{producto.name}</Card.Header>
+                                <Card.Header className='home-header'>{producto.name}</Card.Header>
                                 <Card.Meta>{producto.category}</Card.Meta>
                                 <Card.Description>
                                     {producto.description}
@@ -111,14 +105,29 @@ function Home (props)  {
                                     Detalles de Compra
                                 </Button>
                                 </Link>                               
+                                <div className ='home-price'>
+                                <Button basic color='black' content='Detalles' />                        
+                                <Card.Header className='home-priceCard'>
+                                    {`$ ${producto.price}`}
+                                </Card.Header>                                                              
+                                
+                                </div>                               
                                 </Card.Content>
                             </Card>
                                                        
                         )} 
                     </Card.Group> 
                     </div>                     
-                    <div className = 'paginacion'>
-                    <Pagination size="sm">{items}</Pagination>  
+                    <div className = 'home-paginacion'>
+                    <Pagination
+                        defaultActivePage={active}
+                        onPageChange ={handleClick}
+                        firstItem={null}
+                        lastItem={null}
+                        pointing
+                        secondary
+                        totalPages={paginas}
+                    /> 
                     </div>                                                                   
                     </div>
                     
