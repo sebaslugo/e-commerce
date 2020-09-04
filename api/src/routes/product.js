@@ -216,12 +216,16 @@ server.get('/:id', async (req, res) => {
 });
 
 server.post('/', (req, res) => {
-	var newP = req.body
-	if (newP.hasOwnProperty('name') && newP.hasOwnProperty('description') && newP.hasOwnProperty('price') && newP.hasOwnProperty('stock') && newP.hasOwnProperty('image')){
-		return res.status(201).json(req.body)
-	}
-	res.status(400).send("product can´t be created if you don´t add all properties")
-})
+	const { name, description, price, stock, image } = req.body
+	if (name && description && price && stock && image){
+		Product.create(req.body)
+        .then(product => {
+			return res.status(201).json(product)
+		});
+	} else {
+		return res.status(400).send("Product can´t be created if you don´t add all properties");
+	}	
+});
 
 // Ejemplo para probar con postman
 		// {
