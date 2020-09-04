@@ -185,6 +185,22 @@ server.get('/category/:nameCat', async (req, res, next) => {
 
 });
 
+
+// PUT /products/:id
+// Modifica el producto con id: id. Retorna 400 si los campos enviados no son correctos.
+// Retorna 200 si se modificó con exito, y retorna los datos del producto modificado.
+server.put('/:id', (req, res, next) => {
+	const { id } = req.params;
+	const { name, description, price, stock, image } = req.body;
+	Product.update(
+		{ name, description, price, stock, image },
+		{ returning: true, where: { id: id } }
+	)
+		.then(function ([rowsUpdate, [productUpdate]]) {
+			res.status(200).json(productUpdate)
+		})
+		.catch(next);
+
 server.get('/:id', async (req, res) => {
 	const producto = await Product.findOne({
 		where: {
@@ -212,6 +228,7 @@ server.get('/:id', async (req, res) => {
 		return res.status(404).json({ err: "todo mal" })
 	}
 	return res.json({ producto, categorias });
+
 
 });
 
