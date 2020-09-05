@@ -42,6 +42,7 @@ for (let i = 0; i < productos.length; i += 6) {
 
 function Home (props)  {
     
+    
     const [active,setActive] = useState (1)
     const paginas = Math.ceil(productos.length/6);
     const [activeItem,setActiveItem] = useState('productos') 
