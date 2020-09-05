@@ -1,0 +1,8 @@
+.form-imagen{
+    height: 45px;
+}
+
+.ui.checkbox input.hidden+label {
+    margin-right: 10px;
+
+}

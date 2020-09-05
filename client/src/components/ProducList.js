@@ -1,7 +1,8 @@
-import React from 'react';
+import React,{useState} from 'react';
 import MaterialTable from 'material-table';
-import  "@material-ui/icons";
-import'@material-ui/core/styles';
+import { Button, Grid, Header, Segment, Portal } from 'semantic-ui-react'
+import Form from './Form'
+import './ProductList.css'
 var _ = require('lodash');
 
 // estos arrays son los que se traen cuando hacemos pedidos al servidor, hay que borrarlos cuando se haga la conexion
@@ -32,54 +33,51 @@ const productos = [{'name':'camiseta','price':'1200','description':'azul','image
                     {'name':'platos','price':'2200','description':'rojo','imagen':imagenes[1],'category':'platos'}];
 
 
-export default function MaterialTableDemo() {
-  const [state, setState] = React.useState({
+export default function ProudctList() {
+  const [table, setTable] = useState({
     columns: [
       { title: 'Name', field: 'name' },
       { title: 'Price', field: 'price',type:'numeric' },
       {title:'Description',field:'description'},
-      {title:'Imagenes',field:'imagen'},
-      {title:'Categories',field:'category', lookup:obj,}
-      
+      {title:'Imagenes',field:'imagen',editable:'never'},
+      {title:'Categories',field:'category', lookup:obj,},      
     ],
     data: productos,
   });
+  const [producto,setProducto] = useState({})
+  const [open,setOpen] = useState(false);
 
+  const handleClose = () => setOpen(false )
+  const handleOpen = (event,rowData) => {       
+    setOpen( true )
+    if(!rowData.content){
+      setProducto(rowData);
+    }
+    else{
+      setProducto({})
+    }
+
+  }
   return (
-    <MaterialTable
+    <div className='productlist-table'>
+      
+      <MaterialTable
       title="Product List"
-      columns={state.columns}
-      data={state.data}
+      columns={table.columns}
+      data={table.data}
+      actions={[
+        {
+          icon: 'edit',
+          tooltip: 'Add Product',
+          onClick: (event, rowData) => handleOpen(event,rowData)
+        }
+      ]}
       editable={{
-        onRowAdd: (newData) =>
-          new Promise((resolve) => {
-            setTimeout(() => {
-              resolve();
-              setState((prevState) => {
-                const data = [...prevState.data];
-                data.push(newData);
-                return { ...prevState, data };
-              });
-            }, 600);
-          }),
-        onRowUpdate: (newData, oldData) =>
-          new Promise((resolve) => {
-            setTimeout(() => {
-              resolve();
-              if (oldData) {
-                setState((prevState) => {
-                  const data = [...prevState.data];
-                  data[data.indexOf(oldData)] = newData;
-                  return { ...prevState, data };
-                });
-              }
-            }, 600);
-          }),
         onRowDelete: (oldData) =>
           new Promise((resolve) => {
             setTimeout(() => {
               resolve();
-              setState((prevState) => {
+              setTable((prevState) => {
                 const data = [...prevState.data];
                 data.splice(data.indexOf(oldData), 1);
                 return { ...prevState, data };
@@ -87,6 +85,37 @@ export default function MaterialTableDemo() {
             }, 600);
           }),
       }}
+
     />
+      <Grid columns={2}>
+        <Grid.Column>
+          <Button
+            content='Agregar Producto'
+            disabled={open}
+            positive
+            onClick={handleOpen}
+          />
+
+          <Portal onClose={handleClose} open={open}>
+            <Segment
+              style={{
+                left: '40%',
+                position: 'fixed',
+                top: '20%',
+                zIndex: 1000,
+              }}
+            >
+              <Form producto={producto}/>
+              <Button
+                content='Close Portal'
+                negative
+                onClick={handleClose}
+              />
+            </Segment>
+          </Portal>
+        </Grid.Column>
+      </Grid>
+    </div>
+    
   );
 }

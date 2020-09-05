@@ -12,10 +12,6 @@ import 'semantic-ui-css/semantic.min.css';
 import  '@material-ui/core/styles';
 
 
-
-
-
-
 function App() {
   return (
     <div className="App">
