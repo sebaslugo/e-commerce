@@ -1,24 +1,28 @@
-.product{
-    padding: 60px;
-    text-align: center;
-    color: black;
-    font-size: 20px;
-    display: flex;
-    flex-direction: column;
+.product {
+  padding: 60px;
+  text-align: center;
+  color: black;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-.head{
-    display: flex;
-    justify-content: center;
+.head {
+  display: flex;
+  justify-content: center;
 }
 
-.imagen{
-    width: 400px;
-    height: 400px;
+.imagen {
+  width: 400px;
+  height: 400px;
 }
 
-input{
-    width:60px;
-    height: 25px;
+input {
+  width: 60px;
+  height: 25px;
 }
 
+.producto__producto {
+  padding-bottom: 20px;
+  width: 580px;
+}
