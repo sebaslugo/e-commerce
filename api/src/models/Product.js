@@ -1,3 +1,4 @@
+// S4: Crear Modelo de Productos
 const { DataTypes } = require('sequelize');
 // Exportamos una funcion que define el modelo
 // Luego le injectamos la conexion a sequelize.
@@ -13,7 +14,7 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     price: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL(10,2),
       allowNull: false,
       defaultValue: 0
     },

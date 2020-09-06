@@ -3,236 +3,9 @@ const { Product, Category, prodcat } = require('../db.js');
 const path = require('path');
 const multer = require('multer');
 
-server.get('/', (req, res, next) => {
-	Product.findAll()
-		.then(products => {
-			res.send(products);
-		})
-		.catch(next);
-});
-
-
-// 	POST /products/:idProducto/category/:idCategoria
-// Agrega la categoria al producto.
-server.post('/:idProducto/category/:idCategoria', (req, res, next) => {
-	const { idProducto, idCategoria } = req.params;
-
-	const idProd = Product.findAll({
-		where: {
-			id: idProducto
-		}
-	});
-	const idCat = Category.findAll({
-		where: {
-			id: idCategoria
-		}
-	});
-	Promise.all([idProd, idCat])
-		// .then((values) => console.log(values[0].dataValues))
-		.then((values) => {
-			prodcat.create({ productId: idProducto, categoryId: idCategoria })
-			res.status(200).json({ message: 'Categoría asignada a un producto' });
-		})
-		// .catch(err => console.error(err.message))
-		.catch(err => {
-			return res.status(404).send(err.message)
-			// (node:10476) UnhandledPromiseRejectionWarning: Unhandled promise rejection.
-			// (node:10476) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
-		});
-});
-
-// DELETE /products/:idProducto/category/:idCategoria
-// Elimina la categoria al producto.
-server.delete('/:idProducto/category/:idCategoria', (req, res, next) => {
-	const { idProducto, idCategoria } = req.params;
-
-	const idProd = Product.findAll({
-		where: {
-			id: idProducto
-		}
-	});
-	const idCat = Category.findAll({
-		where: {
-			id: idCategoria
-		}
-	});
-	// idProd.then(idCat.then()).catch(err => console.error(err.message));
-	Promise.all([idProd, idCat])
-		// .then((values) => console.log(values[0].dataValues))
-		.then((values) => {
-			prodcat.destroy({
-				where: {
-					productId: idProducto, categoryId: idCategoria
-				}
-			})
-			// console.log(values);
-			if (values[0].length < 1 || values[1].length < 1) {
-				return res.status(404).json({ message: 'El id enviado es inválido' });
-			}
-			res.status(200).json({ message: 'Se borro la categoría del producto' });
-		})
-		// .catch(err => console.error(err.message))
-		.catch(err => {
-			return res.status(404).send(err.message)
-			// (node:10476) UnhandledPromiseRejectionWarning: Unhandled promise rejection.
-			// (node:10476) [DEP0018] DeprecationWarning: Unhandled promise rejections are deprecated. In the future, promise rejections that are not handled will terminate the Node.js process with a non-zero exit code.
-		});
-});
-
-// Muestra las categorias
-server.get('/category', (req, res, next) => {
-	Category.findAll()
-		.then(categoria => {
-			res.send(categoria);
-		})
-		.catch(next);
-});
-
-// Crear categoría
-server.post('/category', (req, res, next) => {
-
-
-	Category.findOrCreate({ // lo que hace es buscar o crear la categoría
-
-		where: {
-			name: req.body.name,
-			description: req.body.description
-		}
-	}).then(function (categoria) {
-		res.status(201).json({ categoria })
-	})
-});
-
-
-server.put("/category/:id", (req, res, next) => {
-	Category.findOne({
-		where: {
-			id: req.params.id
-		}
-	}).then(function (categoria) {
-		if (!categoria) {
-			return res.status(404).json({ message: "error" })
-		}
-		res.status(200).json({ categoria })
-	})
-
-	// .catch(error => {
-	//     res.status(404).json({message: error})
-	// })
-})
-
-// S19: Crear Ruta para eliminar Categoria
-// DELETE /products/category/:id
-server.delete('/category/:id', (req, res, next) => {
-	const { id } = req.params;
-	const idCat = Category.findOne({
-		where: {
-			id: id
-		}
-	})
-		.then(value => {
-			// console.log(idCat);
-			Category.destroy({
-				where: {
-					id: id
-				}
-			})
-			console.log(value);
-			if (!value) {
-				return res.status(404).json({ message: 'Id inváldio' });
-			}
-			res.status(200).json({ message: 'Categoría eliminada exitosamente' });
-		})
-		.catch(err => {
-			return res.status(404).json({ err });
-		})
-});
-
-server.get('/category/:nameCat', async (req, res, next) => {
-	const { nameCat } = req.params;
-	try {
-		const idCategoria = await Category.findAll({
-			attributes: ['id']
-			,
-			where: {
-				name: nameCat
-			}
-		})
-
-		const listaProductos = await prodcat.findAll({
-			where: {
-				categoryId: idCategoria[0]['dataValues']['id']
-			}
-		})
-		if (!listaProductos) {
-			return res.status(404).json({ message: "No existen productos con esa categoria" })
-		}
-		console.log(listaProductos)
-		const idProductos = listaProductos.map((producto) => {
-			return producto['productId']
-		})
-		const resultado = await Product.findAll({
-			where: {
-				id: idProductos
-			}
-		})
-		console.log(idProductos)
-		return res.status(200).json(resultado)
-
-
-
-	} catch (error) {
-		res.status(404).send(error.message)
-	}
-
-});
-
-
-// PUT /products/:id
-// Modifica el producto con id: id. Retorna 400 si los campos enviados no son correctos.
-// Retorna 200 si se modificó con exito, y retorna los datos del producto modificado.
-server.put('/:id', (req, res, next) => {
-	const { id } = req.params;
-	const { name, description, price, stock, image } = req.body;
-	Product.update(
-		{ name, description, price, stock, image },
-		{ returning: true, where: { id: id } }
-	)
-		.then(function ([rowsUpdate, [productUpdate]]) {
-			res.status(200).json(productUpdate)
-		})
-		.catch(next);
-});
-server.get('/:id', async (req, res) => {
-	const producto = await Product.findOne({
-		where: {
-			id: req.params.id
-		}
-
-	})
-
-	const categoriaDelProducto = await prodcat.findAll({
-		where: {
-			productId: req.params.id
-		}
-	})
-
-	const listaDeCategorias = categoriaDelProducto.map((producto) => {
-		return producto.categoryId
-	})
-
-	const categorias = await Category.findAll({
-		where: {
-			id: listaDeCategorias
-		}
-	})
-	if (!producto) {
-		return res.status(404).json({ err: "todo mal" })
-	}
-	return res.json({ producto, categorias });
-
-
-});
+/* ------------------------------------------------------------------------------- */
+/* Carga de imágenes */
+/* ------------------------------------------------------------------------------- */
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -241,8 +14,7 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         cb(null, 'img' + '-' + Date.now() + file.originalname);
     }
-})
-
+});
 const fileFilter = (req, file, cb) => {
     if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
         cb(null, true);
@@ -250,16 +22,181 @@ const fileFilter = (req, file, cb) => {
         cb(null, false);
     }
 }
+const upload = multer({ storage, fileFilter });
 
-const upload = multer({ storage, fileFilter })
+/* ------------------------------------------------------------------------------- */
+/* NO ESPECIFICADO: Crear ruta para mostrar todas las categorias. */
+/* ------------------------------------------------------------------------------- */
+server.get('/category', (req, res, next) => {
+	Category.findAll()
+		.then(categoria => {
+			res.send(categoria);
+		})
+		.catch(next);
+});
 
+/* ------------------------------------------------------------------------------- */
+/* S17: Crear ruta para agregar categorias de un producto. */
+/* ------------------------------------------------------------------------------- */
+server.post('/:idProducto/category/:idCategoria', (req, res, next) => {
+	const { idProducto, idCategoria } = req.params;
+	prodcat.create({
+		productId: idProducto, categoryId: idCategoria
+	})
+	.then(() => res.status(200).json({message: 'Categoría ID: '+ idCategoria +', asignada al producto ID: ' + idProducto + ' exitosamente.'}))
+	.catch(err => res.status(404).json(err.message));
+});
+
+/* ------------------------------------------------------------------------------- */
+/* S17 BIS: Crear ruta para sacar categorias de un producto. */
+/* ------------------------------------------------------------------------------- */
+server.delete('/:idProducto/category/:idCategoria', (req, res, next) => {
+	const { idProducto, idCategoria } = req.params;
+	prodcat.destroy({
+		where: {
+			productId: idProducto, categoryId: idCategoria
+		}
+	})
+	.then(() => res.status(200).json({message: 'Categoría ID: '+ idCategoria +', eliminada del producto ID: ' + idProducto + ' exitosamente.'}))
+	.catch(err => res.status(404).json(err.message));
+});
+
+/* ------------------------------------------------------------------------------- */
+/* S18: Crear ruta para crear/agregar Categoria */
+/* ------------------------------------------------------------------------------- */
+server.post('/category', (req, res, next) => {
+	const { name, description } = req.body;
+	Category.findOrCreate({ // lo que hace es buscar o crear la categoría
+		where: {
+			name: name,
+			description: description || 'Sin descripción'
+		}
+	})
+	.then(() => res.status(200).json({message: 'La categoría: ' + name + ', ha sido creada exitosamente.'}))
+	.catch(err => res.status(400).json(err.message));
+});
+
+/* ------------------------------------------------------------------------------- */
+/* S19: Crear Ruta para eliminar Categoria */
+/* ------------------------------------------------------------------------------- */
+server.delete('/category/:id', (req, res, next) => {
+	const { id } = req.params;
+	Category.destroy({
+		where: {
+			id: id
+		}
+	})
+	.then(producto => {
+		if (producto > 0) {
+			return res.status(200).json({message: 'La categoría ID: ' + id + ', ha sido eliminada correctamente.'});
+		} else {
+			return res.json({message: 'El ID: ' + id + ', no corresponde a ninguna categoría en existencia.'});
+		}
+	})
+	.catch(err => res.send(400).json(err.message));	
+});
+
+/* ------------------------------------------------------------------------------- */
+/* S20: Crear ruta para Modificar Categoria */
+/* ------------------------------------------------------------------------------- */
+server.put("/category/:id", (req, res, next) => {
+	const { id } = req.params;
+	let { name, description } = req.body;
+	if (description == '') description = 'Sin descripción';
+	Category.update(
+		{ name, description },
+		{ where: { id: id } }
+	)
+	.then(() => res.status(201).json({message: 'La categoría: ' + name + ', ha sido actualizada exitosamente.'}))
+	.catch(err => res.status(400).json(err.message));
+});
+
+/* ------------------------------------------------------------------------------- */
+/* S21: Crear ruta que devuelva todos los productos */
+/* ------------------------------------------------------------------------------- */
+server.get('/', (req, res, next) => {
+	Product.findAll()
+		.then(products => {
+			res.send(products);
+		})
+		.catch(next);
+});
+
+/* ------------------------------------------------------------------------------- */
+/* S22: Crear Ruta que devuelva los productos de X categoria */
+/* ------------------------------------------------------------------------------- */
+server.get('/category/:nameCat', async (req, res, next) => {
+	const { nameCat } = req.params;
+	try {
+		const idCategoria = await Category.findAll({
+			attributes: ['id'],
+			where: {
+				name: nameCat
+			}
+		});
+		const listaProductos = await prodcat.findAll({
+			where: {
+				categoryId: idCategoria[0]['dataValues']['id']
+			}
+		});
+		if (!listaProductos) {
+			return res.status(404).json({message: 'No existen productos para la categoría: ' + nameCat});
+		}
+		const idProductos = listaProductos.map((producto) => {
+			return producto['productId']
+		});
+		const resultado = await Product.findAll({
+			where: {
+				id: idProductos
+			}
+		});
+		return res.status(200).json(resultado);
+	} catch (error) {
+		res.status(404).json(error.message);
+	}
+});
+
+/* ------------------------------------------------------------------------------- */
+/* S24: Crear ruta de producto individual, pasado un ID que retorne un producto con sus detalles */
+/* ------------------------------------------------------------------------------- */
+server.get('/:id', async (req, res, next) => {
+	const { id } = req.params;
+	const producto = await Product.findOne({
+		where: {
+			id: id
+		}
+	});
+	const categoriaProducto = await prodcat.findAll({
+		where: {
+			productId: id
+		}
+	});
+	const listaCategorias = categoriaProducto.map((producto) => {
+		return producto.categoryId
+	});
+	const categorias = await Category.findAll({
+		where: {
+			id: listaCategorias
+		}
+	});
+	if (!producto) {
+		return res.status(404).json({err: 'El ID: ' + id + ', no corresponde a un producto existente.'});
+	}
+	return res.json({ producto, categorias });
+});
+
+/* ------------------------------------------------------------------------------- */
+/* S25: Crear ruta para crear/agregar Producto */
+/* ------------------------------------------------------------------------------- */
 server.post('/', upload.array('file', 5), (req, res) => {
 	const { name, description, price, stock } = req.body	
-	if (name && description && price && stock && req.files) {
-		const images = req.files.map(image => {
-			return image.filename;
-		}).join();
-		
+	if (name && description && price && stock) {
+		let images = 'sin_imagen.jpg';
+		if (req.files.length > 0) {
+			images = req.files.map(image => {
+				return image.filename;
+			}).join(); 
+		}		
 		Product.create({
 			name: name,
 			description: description,
@@ -267,25 +204,38 @@ server.post('/', upload.array('file', 5), (req, res) => {
 			stock: stock,
 			image: images
 		})
-			.then(product => {
-				return res.status(201).json(product)
-			});
+		.then(product => {
+			return res.status(200).json(product);
+		})
+		.catch(err => res.status(400).json(err.message));
 	} else {
-		return res.status(400).send("Product can´t be created if you don´t add all properties");
+		return res.status(400).json({message:'El producto no se puede crear si no envía todas las propiedades'});
 	}
 });
 
-// Ejemplo para probar con postman
-// {
-// 	"name": "producto nuevo henry",
-// 	"description": "producto nuevo creado",
-// 	"price": 15,
-// 	"stock": 5,
-// 	"image": "url"
-// }
+/* ------------------------------------------------------------------------------- */
+/* S26: Crear ruta para Modificar Producto */
+/* ------------------------------------------------------------------------------- */
+server.put('/:id', upload.array('file', 5), (req, res, next) => {
+	const { id } = req.params;
+	const { name, description, price, stock } = req.body;
+	let images = 'sin_imagen.jpg';
+	if (req.files.length > 0) {
+		images = req.files.map(image => {
+			return image.filename;
+		}).join(); 
+	}
+	Product.update(
+		{ name, description, price, stock, image: images },
+		{ returning: true, where: { id: id } }
+	)
+	.then(([rowsUpdated, [productUpdate]]) => res.status(201).json(productUpdate))
+	.catch(err => res.status(400).json(err.message));
+});
 
-// DELETE /products/:id
-// Retorna 200 si se elimino con exito.
+/* ------------------------------------------------------------------------------- */
+/* S27: Crear Ruta para eliminar Producto */
+/* ------------------------------------------------------------------------------- */
 server.delete('/:id', (req, res, next) => {
 	const { id } = req.params;
 	Product.destroy({
@@ -293,15 +243,14 @@ server.delete('/:id', (req, res, next) => {
 			id: id
 		}
 	})
-		.then(producto => {
-			if (producto > 0) {
-				return res.status(200).json({ message: 'Producto eliminado correctamente' })
-			} else {
-				return res.json({ message: 'Id inválido' });
-			}
-		})
-		.catch(err => res.send(400).json(err.message));
+	.then(producto => {
+		if (producto > 0) {
+			return res.status(200).json({message: 'El producto ID: ' + id + ', ha sido eliminado correctamente.'});
+		} else {
+			return res.json({message: 'El ID: ' + id + ', no corresponde a ningún producto en existencia.'});
+		}
+	})
+	.catch(err => res.send(400).json(err.message));		
 });
-
 
 module.exports = server;
