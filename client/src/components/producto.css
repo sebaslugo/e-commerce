@@ -1,10 +1,10 @@
-.product {
+.producto_product {
   padding: 60px;
-  text-align: center;
   color: black;
-  font-size: 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .head {
@@ -22,7 +22,4 @@ input {
   height: 25px;
 }
 
-.producto__producto {
-  padding-bottom: 20px;
-  width: 580px;
-}
+

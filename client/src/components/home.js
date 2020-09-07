@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./home.css";
+import "./Home.css";
 import { Link } from "react-router-dom";
 import {
   Grid,
@@ -12,140 +12,23 @@ import {
 } from "semantic-ui-react";
 import portada from "../imagenes/portada.jpg";
 
-// import {Pagination} from 'react-bootstrap'
-// import { Grid,Menu,Segment,Card,Image,Button } from 'semantic-ui-react'
-// import { Link } from 'react-router-dom';
-/* const _ = require('lodash');
-const ObjCategories= []; */
+const imagenes = ['https://i.pinimg.com/236x/b7/e3/8b/b7e38b7111481c2c72c98990ec3d3889.jpg','https://i.pinimg.com/236x/b7/e3/8b/b7e38b7111481c2c72c98990ec3d3889.jpg']
 
-const imagenes = [
-  "https://i.pinimg.com/236x/b7/e3/8b/b7e38b7111481c2c72c98990ec3d3889.jpg",
-  "https://i.pinimg.com/236x/b7/e3/8b/b7e38b7111481c2c72c98990ec3d3889.jpg",
-];
-
-// estos arrays son los que se traen cuando hacemos pedidos al servidor, hay que borrarlos cuando se haga la conexion
-const productos = [
-  {
-    id: "10",
-    name: "camiseta",
-    price: "1200",
-    description: "azul",
-    imagen: imagenes[0],
-    category: "ropa",
-  },
-  {
-    id: "11",
-    name: "carro",
-    price: "2200",
-    description: "rojo",
-    imagen: imagenes[1],
-    category: "ropa",
-  },
-  {
-    id: "12",
-    name: "moto",
-    price: "2200",
-    description: "amarrilo",
-    imagen: imagenes[1],
-    category: "ropa",
-  },
-  {
-    id: "13",
-    name: "arroz",
-    price: "2200",
-    description: "verde",
-    imagen: imagenes[1],
-    category: "ropa",
-  },
-  {
-    id: "14",
-    name: "casa",
-    price: "2200",
-    description: "cafe",
-    imagen: imagenes[1],
-    category: "ropa",
-  },
-  {
-    id: "15",
-    name: "platos",
-    price: "2200",
-    description: "rojo",
-    imagen: imagenes[1],
-    category: "platos",
-  },
-  {
-    id: "16",
-    name: "platos",
-    price: "2200",
-    description: "rojo",
-    imagen: imagenes[1],
-    category: "platos",
-  },
-  {
-    id: "17",
-    name: "platos",
-    price: "2200",
-    description: "rojo",
-    imagen: imagenes[1],
-    category: "platos",
-  },
-  {
-    id: "18",
-    name: "platos",
-    price: "2200",
-    description: "rojo",
-    imagen: imagenes[1],
-    category: "platos",
-  },
-  {
-    id: "19",
-    name: "platos",
-    price: "2200",
-    description: "rojo",
-    imagen: imagenes[1],
-    category: "platos",
-  },
-  {
-    id: "20",
-    name: "platos",
-    price: "2200",
-    description: "rojo",
-    imagen: imagenes[1],
-    category: "platos",
-  },
-  {
-    id: "21",
-    name: "platos",
-    price: "2200",
-    description: "rojo",
-    imagen: imagenes[1],
-    category: "platos",
-  },
-  {
-    id: "22",
-    name: "platos",
-    price: "2200",
-    description: "rojo",
-    imagen: imagenes[1],
-    category: "platos",
-  },
-  {
-    id: "23",
-    name: "platos",
-    price: "2200",
-    description: "rojo",
-    imagen: imagenes[1],
-    category: "platos",
-  },
-  {
-    id: "24",
-    name: "platos",
-    price: "2200",
-    description: "rojo",
-    imagen: imagenes[1],
-    category: "platos",
-  },
-];
+const productos = [{'id':0,'name':'camiseta','price':'1200','description':'azul','imagen':imagenes[0],'category':'platos'},
+                    {'id':1,'name':'carro','price':'2200','description':'rojo','imagen':imagenes[0],'category':'ropa'},
+                    {'id':2,'name':'moto','price':'2200','description':'amarrilo','imagen':imagenes[0],'category':'ropa'},
+                    {'id':3,'name':'arroz','price':'2200','description':'verde','imagen':imagenes[0],'category':'ropa'},
+                    {'id':4,'name':'casa','price':'2200','description':'cafe','imagen':imagenes[0],'category':'ropa'},
+                    {'id':5,'name':'platos','price':'2200','description':'rojo','imagen':imagenes[0],'category':'platos'},
+                    {'id':6,'name':'platos','price':'2200','description':'rojo','imagen':imagenes[0],'category':'platos'},
+                    {'id':7,'name':'platos','price':'2200','description':'rojo','imagen':imagenes[0],'category':'platos'},
+                    {'id':8,'name':'platos','price':'2200','description':'rojo','imagen':imagenes[0],'category':'platos'},
+                    {'id':9,'name':'platos','price':'2200','description':'rojo','imagen':imagenes[0],'category':'platos'},
+                    {'id':10,'name':'platos','price':'2200','description':'rojo','imagen':imagenes[0],'category':'platos'},
+                    {'id':11,'name':'platos','price':'2200','description':'rojo','imagen':imagenes[0],'category':'platos'},
+                    {'id':12,'name':'platos','price':'2200','description':'rojo','imagen':imagenes[0],'category':'platos'},
+                    {'id':13,'name':'platos','price':'2200','description':'rojo','imagen':imagenes[0],'category':'platos'},
+                    {'id':14,'name':'platos','price':'2200','description':'rojo','imagen':imagenes[0],'category':'platos'}];
 
 const categorias = [{ name: "platos" }, { name: "ropa" }];
 
@@ -210,14 +93,13 @@ function Home(props) {
                           {producto.description}
                         </Card.Description>
                       </Card.Content>
-                      <Card.Content extra>
+                      <Card.Content extra>                        
+                        <div className="home-price">
                         <Link to={"/producto/" + producto.id}>
                           <Button inverted color="yellow">
                             Detalles de Compra
                           </Button>
                         </Link>
-                        <div className="home-price">
-                          <Button basic color="black" content="Detalles" />
                           <Card.Header className="home-priceCard">
                             {`$ ${producto.price}`}
                           </Card.Header>
