@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, {component, useState, useEffect } from 'react'
 import './Form.css'
 import {
   Button,
@@ -6,23 +6,38 @@ import {
   Form,
   Input,
   Radio,
-  Select,
   TextArea,
 } from 'semantic-ui-react'
-import { truncate, set, map } from 'lodash'
+
 
 
 const categorias = [{'name':'platos'},{'name':'ropa'}]
 
 function Formulario ({producto}) {
-
-  const [state,setState] = useState({'category':[]})
-  const[validate,setValidate] = useState (false)
+    const [images, setImages] = useState({
+        columns: [
+          { title: 'image', field: 'name' },  
+        ],
+        data: producto.imagen,
+      });
+  const [state,setState] = useState({'category':[],'imagen':[]})
+  useEffect(() => {
+    if(producto){
+        setState(producto)
+    }
+},[])
   const handleCheck = (categoria) => {
-      if(categoria.name === producto.category){
-          return true;
+      if(producto.category){
+        for (let i = 0; i < producto.category.length; i++) {
+            if(categoria.name === producto.category[i].name){
+                return true;
+            }      
+              
+          } 
+
       }
-      else{return false;}
+             
+      
   }
 
     const handleSubmit = () => console.log(state)
@@ -60,8 +75,26 @@ function Formulario ({producto}) {
             })
         }  
                
-    }     
-       
+    } 
+    
+    const handleFiles = (e) => {
+        console.log(e.target.files[0].name)
+        setState({
+            ...state,
+            imagen:e.target.files
+        })     
+        /* now you can work with the file list */
+      }
+
+    const handleDelete = (e) => {
+        console.log(e.target.value)
+        console.log(state.imagen)
+        setState ({
+            ...state,
+            imagen:state.imagen.filter(imag => imag !== e.target.value)
+        })
+    }
+    
     return (
         <div>
             <Form>
@@ -71,8 +104,9 @@ function Formulario ({producto}) {
                 label='Name'
                 placeholder='Name'
                 name = 'name'
-                value = {producto.name}
+                placeholder = {producto.name}
                 onChange={handleChange}
+                
             />
             <Form.Field
                 control={Input}
@@ -80,8 +114,9 @@ function Formulario ({producto}) {
                 label='price'
                 placeholder='price'
                 name = 'price'
-                value = {producto.price}
+                placeholder= {producto.price}
                 onChange={handleChange}
+                
             />
             </Form.Group>
             <Form.Group inline>
@@ -94,16 +129,31 @@ function Formulario ({producto}) {
             control={TextArea}
             label='Description'
             placeholder='Tell us more about your product...'
-            value ={producto.description}
+            placeholder= {producto.description}
             name = 'description'
             onChange={handleChange}
 
             />
+            {producto.imagen && <Form.Field>
+                    <label>imagenes</label>
+                    <ul>
+                    {state.imagen.map((image) => 
+                        <li>
+                            {image}
+                            <button value = {image} onClick = {handleDelete}>x</button>
+                        </li>
+                        
+                    )}
+
+                    </ul>
+                    
+                
+                </Form.Field>}
             <Form.Field>
                 <label>Agregar imagenes</label>
-                <input  className = 'form-imagen' type='file' multiple={true} name='imagen'></input>
+                <input  className = 'form-imagen' type='file' multiple={true} name='imagen' accept="image/*" onChange = {handleFiles}></input>
             </Form.Field>
-            <Form.Field control={Button} onClick = {handleSubmit}>Submit</Form.Field>
+            <Form.Field control={Button} onClick = {handleSubmit}>{'AGREGAR'}</Form.Field>
             
             </Form>
             
