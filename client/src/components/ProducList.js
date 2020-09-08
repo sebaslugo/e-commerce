@@ -1,9 +1,10 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import MaterialTable from 'material-table';
 import { Button, Grid, Header, Segment, Portal } from 'semantic-ui-react'
 import Form from './Form'
 import './ProductList.css'
-var _ = require('lodash');
+import axios from 'axios';
+const _ = require('lodash');
 
 const categorias = [{'name':'platos'},{'name':'ropa'}]
 const obj = {}
@@ -15,7 +16,7 @@ console.log(obj)
 
 const imagenes = ['https://i.pinimg.com/236x/b7/e3/8b/b7e38b7111481c2c72c98990ec3d3889.jpg','https://image.dhgate.com/0x0s/f2-albu-g10-M00-37-09-rBVaVlyktamAaMItAACo9Qhz5no083.jpg/nuevos-hombres-camisa-para-hombre-de-manga.jpg']
 
-const productos = [{'name':'camiseta','price':'1200','description':'azul','imagen':imagenes,'category':[{'name':'platos'}]},
+/* const productos = [{'name':'camiseta','price':'1200','description':'azul','imagen':imagenes,'category':[{'name':'platos'}]},
                     {'name':'carro','price':'2200','description':'rojo','imagen':imagenes,'category':[{'name':'ropa'}]},
                     {'name':'moto','price':'2200','description':'amarrilo','imagen':imagenes,'category':[{'name':'ropa'}]},
                     {'name':'arroz','price':'2200','description':'verde','imagen':imagenes,'category':[{'name':'ropa'}]},
@@ -29,9 +30,11 @@ const productos = [{'name':'camiseta','price':'1200','description':'azul','image
                     {'name':'platos','price':'2200','description':'rojo','imagen':imagenes,'category':[{'name':'platos'}]},
                     {'name':'platos','price':'2200','description':'rojo','imagen':imagenes,'category':[{'name':'platos'}]},
                     {'name':'platos','price':'2200','description':'rojo','imagen':imagenes,'category':[{'name':'platos'}]},
-                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes,'category':[{'name':'platos'}]}];
+                    {'name':'platos','price':'2200','description':'rojo','imagen':imagenes,'category':[{'name':'platos'}]}]; */
 
 export default function ProudctList() {
+  const[productos,setProductos] = useState([])
+  console.log(productos)
   const [table, setTable] = useState({
     columns: [
       { title: 'Name', field: 'name' },
@@ -44,7 +47,8 @@ export default function ProudctList() {
   const [open,setOpen] = useState(false);
 
   const handleClose = () => setOpen(false )
-  const handleOpen = (event,rowData) => {       
+  const handleOpen = (event,rowData) => { 
+    console.log(rowData)      
     setOpen( true )
     if(!rowData.content){
       setProducto(rowData);
@@ -55,13 +59,23 @@ export default function ProudctList() {
 
   }
 
+  useEffect(() => {
+    axios 
+    .get('http://localhost:3001/products')
+    .then(res => {
+      
+      setProductos(res.data)
+    })
+    
+ },[])
+
   return (
     <div className='productlist-table'>
 
     <MaterialTable
     title="Product List"
     columns={table.columns}
-    data={table.data}
+    data={productos}
     actions={[
       {
         icon: 'edit',
