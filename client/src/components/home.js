@@ -19,7 +19,7 @@ import axios from 'axios';
 
 const categorias = [{ name: "platos" }, { name: "ropa" }];
 
- /// [[6],[6],[6]]
+
 
 
 
@@ -30,32 +30,30 @@ function Home() {
   const [activeItem, setActiveItem] = useState("productos");
   const [productos,setProductos] = useState ([]) 
   const paginas = Math.ceil(productos.length / 6); 
+  const [productPage,setProductPage] = useState ([])
 
   useEffect(() => {
      axios 
      .get('http://localhost:3001/products')
      .then(res => {
-       setProductos(res.data)
+      setProductos(res.data)
+      let page = [];    
+      for (let i = 0; i < res.data.length; i += 6) {
+      let seccion = res.data.slice(i, i + 6);
+      page.push(seccion)
+      }
+      setProductPage(page)
      })
      
   },[])
   
-  let productPage = [];
-
-    
-    for (let i = 0; i < productos.length; i += 6) {
-      let seccion = productos.slice(i, i + 6);
-      productPage.push(seccion)
-    }   
-
-    console.log(productos)
+   
+  
   const handleItemClick = (e, { name }) => {
-    e.preventDefault();
     setActiveItem(name);
   };
 
   const handleClick = (e, { activePage }) => {
-    e.preventDefault();
     setActive(activePage);
   };
   return (
@@ -87,8 +85,7 @@ function Home() {
             <div className="home-content">
               <div className="home-productos">
                 <Card.Group>
-                  {/* {productPage[active - 1].map((producto) => ( */}
-                 {productos.map((producto) => (                     
+                  {productPage.length > 0 && productPage[active - 1].map((producto) => (               
                     <Card>
                       <Card.Content>
                         <Image size="small" src={`http://localhost:3001/${producto.imagenes[0]}`} />

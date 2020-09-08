@@ -15,53 +15,52 @@ import axios from 'axios';
 const categorias = [{'name':'platos'},{'name':'ropa'}]
 
 function Formulario ({producto}) {
+    const [product,setProduct] = useState({'category':[],'imagenes':[]})
     const [images, setImages] = useState({
         columns: [
           { title: 'image', field: 'name' },  
         ],
-        data: producto.imagen,
+        data: producto.imagenes,
       });
-  const [state,setState] = useState({'category':[],'imagenes':[],'stock':12})
+    
 
   useEffect(() => {
     if(producto){
-        setState(producto)
+        setProduct(producto)
+    }  
+    
+    
+    },{})
+    const handleCheck = (categoria) => {
+        if(producto.category){
+            for (let i = 0; i < producto.category.length; i++) {
+                if(categoria.name === producto.category[i].name){
+                    return true;
+                }          
+            } 
+        }               
     }
-},[])
-  const handleCheck = (categoria) => {
-      if(producto.category){
-        for (let i = 0; i < producto.category.length; i++) {
-            if(categoria.name === producto.category[i].name){
-                return true;
-            }      
-              
-          } 
-
-      }
-             
-      
-  }
 
     const handleSubmit = () => {
-        console.log(state)
-        axios.post('http://localhost:3001/products',state)
+        console.log(product)
+        axios.post('http://localhost:3001/products',product)
         .then(res => console.log(res))
         .catch(err => console.log(err))
     }
     const handleChange = (e, { value }) => {
-        setState ({
-            ...state,
+        setProduct({
+            ...product,
             [e.target.name] : value,
-            'stock':'12'
         })
     }
+    console.log(product)
     const handleCategory = (e,{value}) => {
         e.preventDefault();
         let validate = true
         let obj = {
             'name':value
         }        
-        let array = state.category.filter((categoria) => {
+        let array = product.category.filter((categoria) => {
             if(categoria.name === value){
                 validate = false;
             }
@@ -70,36 +69,33 @@ function Formulario ({producto}) {
             }
         })
         if(validate){
-            setState({
-                ...state,
-                category:state.category.concat(obj)
+            setProduct({
+                ...product,
+                category:product.category.concat(obj)
             })             
         } 
         else{
             validate = true;
-            setState({
-                ...state,
+            setProduct({
+                ...product,
                 category:array
             })
         }  
                
     } 
     
-    const handleFiles = (e) => {
-        console.log(e.target.files[0].name)
-        setState({
-            ...state,
-            file:e.target.files
+     const handleFiles = (e) => {
+        setProduct({
+            ...product,
+            files:e.target.files
         })     
         /* now you can work with the file list */
-      }
+      } 
 
-    const handleDelete = (e) => {
-        console.log(e.target.value)
-        console.log(state.imagen)
-        setState ({
-            ...state,
-            imagenes:state.imagen.filter(imag => imag !== e.target.value)
+    const handleDelete = (e) => {        
+        setProduct({
+            ...product,
+            imagenes:product.imagenes.filter(imag => imag !== e.target.value)
         })
     }
     
@@ -145,7 +141,7 @@ function Formulario ({producto}) {
             {producto.imagenes && <Form.Field>
                     <label>imagenes</label>
                     <ul>
-                    {state.imagenes.map((image) => 
+                    {product.imagenes.map((image) => 
                         <li>
                             {image}
                             <button value = {image} onClick = {handleDelete}>x</button>

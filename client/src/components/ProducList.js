@@ -34,7 +34,6 @@ const imagenes = ['https://i.pinimg.com/236x/b7/e3/8b/b7e38b7111481c2c72c98990ec
 
 export default function ProudctList() {
   const[productos,setProductos] = useState([])
-  console.log(productos)
   const [table, setTable] = useState({
     columns: [
       { title: 'Name', field: 'name' },
@@ -47,8 +46,7 @@ export default function ProudctList() {
   const [open,setOpen] = useState(false);
 
   const handleClose = () => setOpen(false )
-  const handleOpen = (event,rowData) => { 
-    console.log(rowData)      
+  const handleOpen = (event,rowData) => {      
     setOpen( true )
     if(!rowData.content){
       setProducto(rowData);
@@ -62,8 +60,7 @@ export default function ProudctList() {
   useEffect(() => {
     axios 
     .get('http://localhost:3001/products')
-    .then(res => {
-      
+    .then(res => {      
       setProductos(res.data)
     })
     
