@@ -21,26 +21,22 @@ function Formulario ({producto}) {
         ],
         data: producto.imagen,
       });
-  const [state,setState] = useState({'category':[],'imagenes':[],'stock':12})
+  const [state,setState] = useState({'category':[],'imagenes':[],'stock':1})
 
   useEffect(() => {
     if(producto){
         setState(producto)
     }
 },[])
-  const handleCheck = (categoria) => {
-      if(producto.category){
-        for (let i = 0; i < producto.category.length; i++) {
-            if(categoria.name === producto.category[i].name){
-                return true;
-            }      
-              
-          } 
-
-      }
-             
-      
-  }
+    const handleCheck = (categoria) => {
+        if(producto.category){
+            for (let i = 0; i < producto.category.length; i++) {
+                if(categoria.name === producto.category[i].name){
+                    return true;
+                }
+            } 
+        }
+    }
 
     const handleSubmit = () => {
         console.log(state)
@@ -52,7 +48,7 @@ function Formulario ({producto}) {
         setState ({
             ...state,
             [e.target.name] : value,
-            'stock':'12'
+            'stock':'1'
         })
     }
     const handleCategory = (e,{value}) => {
@@ -82,25 +78,27 @@ function Formulario ({producto}) {
                 category:array
             })
         }  
-               
     } 
     
     const handleFiles = (e) => {
-        console.log(e.target.files[0].name)
+        // console.log("este es el nombre de la url de la foto" ,e.target.files[0].name)
         setState({
             ...state,
-            file:e.target.files
+            image:e.target.files
         })     
         /* now you can work with the file list */
+        console.log(state)
       }
 
     const handleDelete = (e) => {
-        console.log(e.target.value)
-        console.log(state.imagen)
+        // console.log(e.target.value)
+        // console.log(state.imagen)
         setState ({
             ...state,
-            imagenes:state.imagen.filter(imag => imag !== e.target.value)
+            // imagenes:state.imagen.filter(imag => imag !== e.target.value)
+            imagenes: e.target.value
         })
+        console.log(state)
     }
     
     return (
@@ -166,9 +164,9 @@ function Formulario ({producto}) {
             </Form>
             
         </div>
-      
+    
     )
-  
+
 }
 
 export default Formulario

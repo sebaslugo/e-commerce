@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
-import "./Home.css";
+import "./home.css";
 import { Link } from "react-router-dom";
-import {
-  Grid,
-  Menu,
-  Segment,
-  Card,
-  Image,
-  Pagination,
-  Button,
-} from "semantic-ui-react";
+import {Grid,Menu,Segment,Card,Image,Pagination,Button} from "semantic-ui-react";
 import portada from "../imagenes/portada.jpg";
 import axios from 'axios';
 
@@ -32,12 +24,11 @@ function Home() {
   const paginas = Math.ceil(productos.length / 6); 
 
   useEffect(() => {
-     axios 
-     .get('http://localhost:3001/products')
-     .then(res => {
-       setProductos(res.data)
-     })
-     
+    axios 
+    .get('http://localhost:3001/products')
+    .then(res => {
+      setProductos(res.data)
+    })
   },[])
   
   let productPage = [];
@@ -88,7 +79,7 @@ function Home() {
               <div className="home-productos">
                 <Card.Group>
                   {/* {productPage[active - 1].map((producto) => ( */}
-                 {productos.map((producto) => (                     
+                  {productos.map((producto) => (                     
                     <Card>
                       <Card.Content>
                         <Image size="small" src={`http://localhost:3001/${producto.imagenes[0]}`} />

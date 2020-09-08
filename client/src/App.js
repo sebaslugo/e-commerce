@@ -10,13 +10,8 @@ import Home from "./components/home";
 import Header from "./components/Header";
 import 'semantic-ui-css/semantic.min.css';
 import  '@material-ui/core/styles';
-import axios from 'axios';
 
 const imagenes = ['https://i.pinimg.com/236x/b7/e3/8b/b7e38b7111481c2c72c98990ec3d3889.jpg','https://i.pinimg.com/236x/b7/e3/8b/b7e38b7111481c2c72c98990ec3d3889.jpg']
-
-
-                    
-
 
 function App() {
   
