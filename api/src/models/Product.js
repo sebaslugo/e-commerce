@@ -20,10 +20,17 @@ module.exports = (sequelize) => {
     },
     stock: {
       type: DataTypes.INTEGER,
+      
     },
     image: {
       type: DataTypes.STRING, // la imagen recibiria una url con la ubicación del archivo
       allowNull: false
+    },
+    imagenes:{
+      type:DataTypes.VIRTUAL,
+      get(){
+        return this.image.split(',');
+      }
     }
   });
 };

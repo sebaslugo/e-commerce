@@ -8,6 +8,7 @@ import {
   Radio,
   TextArea,
 } from 'semantic-ui-react'
+import axios from 'axios';
 
 
 
@@ -20,7 +21,8 @@ function Formulario ({producto}) {
         ],
         data: producto.imagen,
       });
-  const [state,setState] = useState({'category':[],'imagen':[]})
+  const [state,setState] = useState({'category':[],'imagenes':[],'stock':12})
+
   useEffect(() => {
     if(producto){
         setState(producto)
@@ -40,11 +42,17 @@ function Formulario ({producto}) {
       
   }
 
-    const handleSubmit = () => console.log(state)
+    const handleSubmit = () => {
+        console.log(state)
+        axios.post('http://localhost:3001/products',state)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+    }
     const handleChange = (e, { value }) => {
         setState ({
             ...state,
-            [e.target.name] : value
+            [e.target.name] : value,
+            'stock':'12'
         })
     }
     const handleCategory = (e,{value}) => {
@@ -81,7 +89,7 @@ function Formulario ({producto}) {
         console.log(e.target.files[0].name)
         setState({
             ...state,
-            imagen:e.target.files
+            file:e.target.files
         })     
         /* now you can work with the file list */
       }
@@ -91,7 +99,7 @@ function Formulario ({producto}) {
         console.log(state.imagen)
         setState ({
             ...state,
-            imagen:state.imagen.filter(imag => imag !== e.target.value)
+            imagenes:state.imagen.filter(imag => imag !== e.target.value)
         })
     }
     
@@ -134,10 +142,10 @@ function Formulario ({producto}) {
             onChange={handleChange}
 
             />
-            {producto.imagen && <Form.Field>
+            {producto.imagenes && <Form.Field>
                     <label>imagenes</label>
                     <ul>
-                    {state.imagen.map((image) => 
+                    {state.imagenes.map((image) => 
                         <li>
                             {image}
                             <button value = {image} onClick = {handleDelete}>x</button>
@@ -151,7 +159,7 @@ function Formulario ({producto}) {
                 </Form.Field>}
             <Form.Field>
                 <label>Agregar imagenes</label>
-                <input  className = 'form-imagen' type='file' multiple={true} name='imagen' accept="image/*" onChange = {handleFiles}></input>
+                <input  className = 'form-imagen' type='file' multiple={true} name='imagen'  accept="image/*" onChange = {handleFiles}></input>
             </Form.Field>
             <Form.Field control={Button} onClick = {handleSubmit}>{'AGREGAR'}</Form.Field>
             
