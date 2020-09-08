@@ -188,21 +188,16 @@ server.get('/:id', async (req, res, next) => {
 /* ------------------------------------------------------------------------------- */
 /* S25: Crear ruta para crear/agregar Producto */
 /* ------------------------------------------------------------------------------- */
-server.post('/', upload.array('File', 5), (req, res) => {
+server.post('/', upload.array('image', 5), (req, res) => {
 	const { name, description, price, stock } = req.body	
 	if (name && description && price && stock) {
 		let images = 'sin_imagen.jpg';
-		// dentro del req.body.file esta la propiedad que nos llega desde el front por lo tanto accedo ahi para consultar el length de "file" que es donde vienen las imagenes
-		
-		console.log(req.body);
-
-		if (req.body.image.length > 0) {
-			images = req.body.image.map(image => {
+		// dentro del req.file esta la propiedad que nos llega desde el front por lo tanto accedo ahi para consultar el length de "file" que es donde vienen las imagenes
+		if (req.files.length > 0) {
+			images = req.files.map(image => {
 				return image.filename;
-			}).join(); 
+			}).join();
 		}
-
-
 		Product.create({
 			name: name,
 			description: description,
