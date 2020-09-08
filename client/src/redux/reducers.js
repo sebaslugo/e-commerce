@@ -19,7 +19,7 @@ const productos = (state = initialState,action) => {
         case 'ELIMINAR_PRODUCTO':
             return{
                 ...state,
-                productos:state.productos.filter(producto  => producto.id != action.payload)
+                productos:state.productos.filter(producto  => producto.id !== action.payload)
             }
         case 'SELECT_PRODUCTO':
             return{

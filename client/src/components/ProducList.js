@@ -48,7 +48,7 @@ export default function ProudctList() {
 
   const handleClose = () => setOpen(false )
   const handleOpen = (event,rowData) => { 
-    console.log(rowData)      
+    console.log(rowData)   
     setOpen( true )
     if(!rowData.content){
       setProducto(rowData);
@@ -63,7 +63,6 @@ export default function ProudctList() {
     axios 
     .get('http://localhost:3001/products')
     .then(res => {
-      
       setProductos(res.data)
     })
     
