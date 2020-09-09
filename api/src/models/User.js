@@ -1,3 +1,4 @@
+
 // S30: Crear modelo de usuario
 const { DataTypes } = require('sequelize');
 const Op = require('sequelize').Op
@@ -5,6 +6,7 @@ const Op = require('sequelize').Op
 //Le proveemos sequelize para su conexion con la misma.
 module.exports = sequelize => {
     var User = sequelize.define('user', {
+
         // Definimos los parametros con los que debe cumplir el "User" para poder ser creado
         name: {
             type: DataTypes.STRING,
@@ -23,29 +25,31 @@ module.exports = sequelize => {
                     args: true,
                     msg: 'Email must be joined!'
                 },
-                isUnique: function(value, next){
+                isUnique: function (value, next) {
                     User.findAll({
                         where: {
                             email: value,
-                            id: {[Op.ne]: this.id}
+                            id: { [Op.ne]: this.id }
                         }
                     })
-                    .then(function(user){
-                        if (user.length == 0){
-                            next();
-                        }else{
-                            next('Email is already used!');
-                        }
-                    })
-                    .catch(error => {
-                        next(error);
-                    })
+                        .then(function (user) {
+                            if (user.length == 0) {
+                                next();
+                            } else {
+                                next('Email is already used!');
+                            }
+                        })
+                        .catch(error => {
+                            next(error);
+                        })
                 }
             }
         },
         password: {
             type: DataTypes.STRING,
+
             validate:{
+
                 notEmpty: {
                     args: true,
                     msg: 'Password must be joined!'
