@@ -24,7 +24,7 @@ function App() {
       <Header />
       <Route exact path="/" component={Home}></Route>
       <Route exact path="/:category" component={Home}></Route>
-      <Route exact path="/Producto/:id" render={() => ( <Producto price={2000} name={"camisa"} description={"hofsdfsd"} />)}/>    
+      <Route exact path="/Producto/:id" component={Producto}/>  
       <Route exact path="/Admin/products" component={ProducList} />
       <Route exact path="/Admin/categories" component={FormCategories} />
 
