@@ -30,9 +30,7 @@ function Formulario ({producto,categorias}) {
     
     },[])
 
-    const handleCheck = (categoria) => {
-        
-                
+    const handleCheck = (categoria) => {         
             if(itemCategoria){
                 for (let i = 0; i < itemCategoria.length; i++) {
                     if(categoria.name === itemCategoria[i].name){
@@ -40,12 +38,9 @@ function Formulario ({producto,categorias}) {
                     }
                 } 
                 return 'add'   
-            }          
-            
-        
+            }                    
     }
-    
-    handleCheck({'name':'carros'})
+
     
     const handleSubmit = (e) => {
         var bodyFormData = new FormData();
@@ -57,9 +52,7 @@ function Formulario ({producto,categorias}) {
             state.image.map((imag)=> {
                 bodyFormData.append('image', imag);
             })
-        }            
-
-     
+        }                 
         axios({
             method: 'post',
             url: 'http://localhost:3001/products',
@@ -68,11 +61,21 @@ function Formulario ({producto,categorias}) {
             })
             .then(function (response) {
                 //handle success
-                console.log(response);
+                return(response)
+                
+
+            })
+            .then((response) => {
+                console.log(response)
+                return axios.get(`http://localhost:3001/products/${response.data.id}`)                   
+            })
+            .then(res => {
+                setState(res.data.producto)
+                alert('se creo el producto')
             })
             .catch(function (response) {
                 //handle error
-                console.log(response);
+                alert('upss,completa todos los campos obligatorios')
             });
         
     }
@@ -82,34 +85,34 @@ function Formulario ({producto,categorias}) {
             [e.target.name] : value,
         })
     }
-    const handleCategory = (e,{value}) => {
-        e.preventDefault();
-        console.log(value)
-/*         let validate = true
-        let obj = {
-            'name':value
-        }        
-        let array = categorias.filter((categoria) => {
-            if(categoria.name === value){
-                validate = false;
-            }
-            else{
-                return categoria
-            }
-        })
-        if(validate){
-            setState({
-                ...state,
-                category:state.category.concat(obj)
-            })             
-        } 
-        else{
-            validate = true;
-            setState({
-                ...state,
-                category:array
+    const handleCategory = (id,check) => {       
+        console.log(id)
+        console.log(check)
+        if(check === 'delete'){
+            axios
+            .delete(`http://localhost:3001/products/${state.id}/category/${id}`)
+            .then(function (response) {
+                //handle success
+                alert('se elimino el producto de la categoria')
             })
-        }  */ 
+            .catch(function (response) {
+                //handle error
+                alert('ups,intenta de nuevo')
+            });        
+        }
+        if(check === 'add'){
+            axios
+            .post(`http://localhost:3001/products/${state.id}/category/${id}`)
+            .then(function (response) {
+                //handle success
+                alert('se agrego el producto a la categoria')
+            })
+            .catch(function (response) {
+                //handle error
+                alert('Agrega el producto y luego agrega sus categorias')
+            }); 
+        }
+
     } 
     
     const handleFiles = (e) => {
@@ -119,23 +122,17 @@ function Formulario ({producto,categorias}) {
         for (let i = 0; i < e.target.files.length; i++) {
             array.push(e.target.files[i])   
         }
-        console.log(array)
         setState({
             ...state,
             image:array
         })  
           
-        /* axios.post('http://localhost:3001/products',e.target.files)
-        .then(res => alert('producto cargado'))
-        .catch(err => alert('completa todos los campos')) */
-        
-        /* now you can work with the file list */
         
         }
 
     const handleDelete = (e) => {
-        
-        
+            
+
         setState ({
             ...state,
             imagenes:state.imagenes.filter(imag => imag !== e.target.value)
@@ -183,7 +180,7 @@ function Formulario ({producto,categorias}) {
                     {categorias.map((categoria) => 
                         <li key = {categoria.id}>
                             {categoria.name}
-                            <button onClick = {handleCategory}>{handleCheck(categoria)}</button>
+                            <button  onClick = {() => handleCategory(categoria.id,handleCheck(categoria))}>{handleCheck(categoria)}</button>
                         </li>                        
                     )}
                 </ul>  
@@ -209,10 +206,7 @@ function Formulario ({producto,categorias}) {
                     )}
                     </ul>                    
                 
-                </Form.Field>}
-            
-
-
+                </Form.Field>}           
             <Form.Field>
                 <label>Agregar imagenes</label>
                 <input  className = 'form-imagen' type='file' multiple={true} name='imagen'  accept="image/*" onChange = {handleFiles}></input>
