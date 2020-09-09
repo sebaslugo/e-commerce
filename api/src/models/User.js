@@ -1,13 +1,13 @@
 // S30: Crear modelo de usuario
-const { datatypes } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const Op = require('sequelize').Op
 //Exportamos una funcion que define el modelo de User,
 //Le proveemos sequelize para su conexion con la misma.
 module.exports = sequelize => {
-    var User = sequelize.define('User', {
+    var User = sequelize.define('user', {
         // Definimos los parametros con los que debe cumplir el "User" para poder ser creado
         name: {
-            type: datatypes.STRING,
+            type: DataTypes.STRING,
             validate: {
                 notEmpty: {
                     args: true,
@@ -16,7 +16,7 @@ module.exports = sequelize => {
             }
         },
         email: {
-            type: datatypes.STRING,
+            type: DataTypes.STRING,
             allowNull: false,
             validate: {
                 isEmail: {
@@ -44,7 +44,7 @@ module.exports = sequelize => {
             }
         },
         password: {
-            type: datatypes.STRING,
+            type: DataTypes.STRING,
             validate:{
                 notEmpty: {
                     args: true,
@@ -57,7 +57,7 @@ module.exports = sequelize => {
             }
         },
         birthday: {
-            type: datatypes.STRING,
+            type: DataTypes.STRING,
             validate: {
                 isBefore: '2004-01-01'
             }
