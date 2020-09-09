@@ -6,13 +6,16 @@ const Sequelize = require('sequelize');
 /* S23: Crear ruta que retorne productos segun el keyword de búsqueda */
 /* ------------------------------------------------------------------------------- */
 server.get('/', (req, res, next) => {
-    const Op = Sequelize.Op;    
+    const Op = Sequelize.Op; 
+    console.log(req.query.s);   
     Product.findAll({
-        [Op.or]: [{
-            name: { [Op.like]: '%' + req.query.query + '%' }
-        }, {
-            description: { [Op.like]: '%' + req.query.query + '%' }
-        }]
+        where: {
+            [Op.or]: [{
+                name: { [Op.iLike]: '%' + req.query.s + '%' }
+            }, {
+                description: { [Op.iLike]: '%' + req.query.s + '%' }
+            }]
+        }
     })
     .then((producto) => {
         res.status(200).json(producto);
