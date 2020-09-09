@@ -1,8 +1,12 @@
-const { DataTypes, Op } = require('sequelize');
+
+// S30: Crear modelo de usuario
+const { DataTypes } = require('sequelize');
+const Op = require('sequelize').Op
 //Exportamos una funcion que define el modelo de User,
 //Le proveemos sequelize para su conexion con la misma.
 module.exports = sequelize => {
-    sequelize.define('User', {
+    var User = sequelize.define('user', {
+
         // Definimos los parametros con los que debe cumplir el "User" para poder ser creado
         name: {
             type: DataTypes.STRING,
@@ -43,7 +47,9 @@ module.exports = sequelize => {
         },
         password: {
             type: DataTypes.STRING,
-            validate: {
+
+            validate:{
+
                 notEmpty: {
                     args: true,
                     msg: 'Password must be joined!'
