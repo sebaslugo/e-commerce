@@ -219,17 +219,16 @@ server.post('/', upload.array('image', 5), (req, res) => {
 /* ------------------------------------------------------------------------------- */
 /* S26: Crear ruta para Modificar Producto */
 /* ------------------------------------------------------------------------------- */
-server.put('/:id', upload.array('image', 5), (req, res, next) => {
+server.put('/:id', (req, res, next) => {
 	const { id } = req.params;
-	const { name, description, price, stock } = req.body;
-	let images = 'sin_imagen.jpg';
+	const { name, description, price, stock} = req.body;
 	if (req.files.length > 0) {
 		images = req.files.map(image => {
 			return image.filename;
 		}).join(); 
 	}
 	Product.update(
-		{ name, description, price, stock, image: images },
+		{ name, description, price, stock, image },
 		{ returning: true, where: { id: id } }
 	)
 	.then(([rowsUpdated, [productUpdate]]) => res.status(201).json(productUpdate))
