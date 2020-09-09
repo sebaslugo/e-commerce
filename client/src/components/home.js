@@ -1,52 +1,65 @@
 import React, { useState, useEffect } from "react";
 import "./home.css";
 import { Link } from "react-router-dom";
-import {Grid,Menu,Segment,Card,Image,Pagination,Button} from "semantic-ui-react";
+import {
+  Grid,
+  Menu,
+  Segment,
+  Card,
+  Image,
+  Pagination,
+  Button,
+} from "semantic-ui-react";
 import portada from "../imagenes/portada.jpg";
 import axios from 'axios';
 
-
-
-
-
-const categorias = [{ name: "platos" }, { name: "ropa" }];
-
- /// [[6],[6],[6]]
-
-
-
 function Home() {
-  
   
   const [active, setActive] = useState(1);  
   const [activeItem, setActiveItem] = useState("productos");
-  const [productos,setProductos] = useState ([]) 
+  const [productos, setProductos] = useState ([]); 
   const paginas = Math.ceil(productos.length / 6); 
+  const [productPage, setProductPage] = useState ([]);
+  const [categorias, setCategorias] = useState([]);
 
   useEffect(() => {
-    axios 
-    .get('http://localhost:3001/products')
+    axios.get('http://localhost:3001/products')
     .then(res => {
       setProductos(res.data)
-    })
+      let page = [];    
+      for (let i = 0; i < res.data.length; i += 6) {
+        let seccion = res.data.slice(i, i + 6);
+        page.push(seccion)
+      }
+      setProductPage(page)
+    });
+    axios.get('http://localhost:3001/products/category')
+      .then(res => {          
+        setCategorias(res.data)
+    });
   },[])
   
-  let productPage = [];
-
-    
-    for (let i = 0; i < productos.length; i += 6) {
-      let seccion = productos.slice(i, i + 6);
-      productPage.push(seccion)
-    }   
-
-    console.log(productos)
   const handleItemClick = (e, { name }) => {
-    e.preventDefault();
     setActiveItem(name);
+    let url = '';
+    if (name === 'Todos Los Productos') {
+      url = 'http://localhost:3001/products';
+    } else {
+      url = `http://localhost:3001/products/category/${ name }`;
+    }
+    axios.get(`${url}`)
+      .then(res => {
+        setProductos(res.data)
+        let page = [];    
+        for (let i = 0; i < res.data.length; i += 6) {
+          let seccion = res.data.slice(i, i + 6);
+          page.push(seccion)
+        }
+        setProductPage(page)
+     });
   };
 
   const handleClick = (e, { activePage }) => {
-    e.preventDefault();
     setActive(activePage);
   };
   return (
@@ -57,8 +70,8 @@ function Home() {
           <Menu fluid vertical tabular>
             <Link to="/products">
               <Menu.Item
-                name="productos"
-                active={activeItem === "productos"}
+                name="Todos Los Productos"
+                active={activeItem === "Todos Los Productos"}
                 onClick={handleItemClick}
               />
             </Link>
@@ -78,8 +91,7 @@ function Home() {
             <div className="home-content">
               <div className="home-productos">
                 <Card.Group>
-                  {/* {productPage[active - 1].map((producto) => ( */}
-                  {productos.map((producto) => (                     
+                  {productPage.length > 0 && productPage[active - 1].map((producto) => (               
                     <Card>
                       <Card.Content>
                         <Image size="small" src={`http://localhost:3001/${producto.imagenes[0]}`} />
@@ -95,7 +107,7 @@ function Home() {
                         <div className="home-price">
                         <Link to={"/producto/" + producto.id}>
                           <Button inverted color="yellow">
-                            Detalles de Compra
+                            Ver Producto
                           </Button>
                         </Link>
                           <Card.Header className="home-priceCard">

@@ -189,8 +189,10 @@ server.get('/:id', async (req, res, next) => {
 /* S25: Crear ruta para crear/agregar Producto */
 /* ------------------------------------------------------------------------------- */
 server.post('/', upload.array('image', 5), (req, res) => {
-	const { name, description, price, stock } = req.body	
+	const { name, description, price, stock } = req.body
+	console.log(req.body);	
 	if (name && description && price && stock) {
+		
 		let images = 'sin_imagen.jpg';
 		// dentro del req.file esta la propiedad que nos llega desde el front por lo tanto accedo ahi para consultar el length de "file" que es donde vienen las imagenes
 		if (req.files.length > 0) {
@@ -217,7 +219,7 @@ server.post('/', upload.array('image', 5), (req, res) => {
 /* ------------------------------------------------------------------------------- */
 /* S26: Crear ruta para Modificar Producto */
 /* ------------------------------------------------------------------------------- */
-server.put('/:id', upload.array('file', 5), (req, res, next) => {
+server.put('/:id', upload.array('image', 5), (req, res, next) => {
 	const { id } = req.params;
 	const { name, description, price, stock } = req.body;
 	let images = 'sin_imagen.jpg';
