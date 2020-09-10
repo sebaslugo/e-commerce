@@ -93,7 +93,7 @@ server.delete('/category/:id', (req, res, next) => {
 			return res.json({message: 'El ID: ' + id + ', no corresponde a ninguna categoría en existencia.'});
 		}
 	})
-	.catch(err => res.send(400).json(err.message));	
+	.catch(err => res.status(400).json(err.message));	
 });
 
 /* ------------------------------------------------------------------------------- */
