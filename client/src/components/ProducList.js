@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { axiosProducts, axiosCategories, axiosDeleteProducts, axiosEditProducts } from '../redux/actions/productList'
+import store from '../redux/store/index';
 
 export default function ProudctList() {
 
@@ -46,17 +47,22 @@ export default function ProudctList() {
 
   useEffect(() => {
     dispatch(axiosProducts());
-    // dispatch(axiosCategories());
+    store.subscribe(() => setProductos(store.getState().productList.data))
+    axios
+      .get('http://localhost:3001/products/category')
+      .then(res => {
+        setCategorias(res.data)
+      })
   }, [])
 
   return (
     <div className='productlist-table'>
-      {console.log("Estoy en el content", table)}
+      {console.log("Estoy en el content", content)}
 
       <MaterialTable
         title="Product List"
         columns={table.columns}
-        data={content.productList.data}
+        data={productos}
         // actions={[
         //   {
         //     icon: 'edit',
@@ -68,7 +74,7 @@ export default function ProudctList() {
           onRowUpdate: (newData, oldData) =>
             setTimeout(() => {
               dispatch(axiosEditProducts(newData))
-              // refreshPage()
+              refreshPage()
             })
           ,
           onRowDelete: (oldData) =>

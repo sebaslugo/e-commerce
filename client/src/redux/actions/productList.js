@@ -75,7 +75,7 @@ export function axiosDeleteProducts(oldData) {
     };
 }
 /*--------------------------------------------------------------------------------------- */
-/*DELETE PRODUCTS */
+/*EDIT PRODUCTS */
 /*--------------------------------------------------------------------------------------- */
 export function editProducts(request) {
     return {
