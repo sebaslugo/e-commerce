@@ -12,7 +12,6 @@ export function getCategories(request) {
     }
 }
 
-
 export function fetchCategories() {
     return dispatch => {
         dispatch(getCategories())
@@ -50,6 +49,7 @@ export function postCategories(request) {
     try {
         return {
             type: CREATE_CATEGORY,
+
             categories: request
         }
     } catch (err) {

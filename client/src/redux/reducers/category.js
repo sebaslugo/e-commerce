@@ -4,9 +4,7 @@ import { CREATE_CATEGORY, EDIT_CATEGORY, DELETE_CATEGORY, GET_CATEGORY } from '.
 /* INITIAL STATE */
 /* ------------------------------------------------------------------------------- */
 
-const initialState = {
-
-}
+const initialState = {};
 
 export default function categorias(state = initialState, action) {
     switch (action.type) {
@@ -16,6 +14,7 @@ export default function categorias(state = initialState, action) {
                 data: action.payload
             }
             break;
+
         case DELETE_CATEGORY:
             return {
                 ...state,

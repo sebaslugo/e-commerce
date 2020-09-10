@@ -2,6 +2,7 @@ import React from "react";
 import MaterialTable from "material-table";
 import "@material-ui/icons";
 import "@material-ui/core/styles";
+
 import "./FormCategories.css";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -10,6 +11,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories, deleteCategory, axiosPostCategories, axiosPutCategories } from '../redux/actions/category.js';
 
 
+
+import "./FormCategories.css";
+import fetchCategories from '../redux/actions/category.js';
 
 export default function MaterialTableDemo() {
   const dispatch = useDispatch();
@@ -20,21 +24,15 @@ export default function MaterialTableDemo() {
     ],
   });
 
-  // console.log(content);
 
   useEffect(() => {
     dispatch(fetchCategories())
   }, [])
 
-  // useEffect(() => {
-  //   dispatch(deleteCategory())
-  // }, []);
 
   const refreshPage = () => {
     window.location.reload(false)
   }
-
-
 
 
   return (
@@ -48,6 +46,7 @@ export default function MaterialTableDemo() {
             setTimeout(() => {
               dispatch(axiosPostCategories(newData))
               refreshPage();
+
             }),
           onRowUpdate: (newData, oldData) =>
             setTimeout(() => {
@@ -62,7 +61,8 @@ export default function MaterialTableDemo() {
                 dispatch(deleteCategory(oldData))
 
               }, 600)
-            })
+            }),
+
         }}
 
       />
