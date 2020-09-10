@@ -84,11 +84,15 @@ server
 
 
 
+
+
+
+server
+    .route("/:userId/cart")
+
 //S38:Crear Ruta para agregar Item al Carrito
 
-
-server.post("/:userId/cart", (req, res) => {
-   
+    .post( (req, res) => {   
     const { productId,price,quantity } = req.body.product;
     const {userId} = req.params
     let id
@@ -118,13 +122,12 @@ server.post("/:userId/cart", (req, res) => {
     .catch((err)=>{
         res.status(400).json(err)
     })
-  });
+    })
 
+//S40:Crear Ruta para vaciar el carrito
 
-  //S40:Crear Ruta para vaciar el carrito
-
-server.delete("/:idUser/cart", (req, res) => {
-    const id = req.params.idUser;
+    .delete((req, res) => {
+    const id = req.params.userId;
   
     Order.destroy({
       where: { userId: id,status:'carrito' },
@@ -133,6 +136,20 @@ server.delete("/:idUser/cart", (req, res) => {
         res.status(200).send("Carrito eliminado");
     })
     .catch(err => res.send(err));
-  });
+    })
+
+// S39 : Crear Ruta que retorne todos los items del Carrito
+
+    .get((req,res) => {
+        const id = req.params.userId;
+        Order.findOne({where:{userId:id,status:'carrito'}})
+        .then((carrito) =>{
+            return OrderList.findAll({where:{orderId:carrito.id}})
+        })
+        .then((item) => {
+            res.status(200).json(item)
+        }).catch(err => res.status(400).json(err))
+
+    })
   
 module.exports = server;
