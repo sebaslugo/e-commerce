@@ -1,5 +1,5 @@
 const server = require('express').Router();
-const { User } = require('../db.js');
+const { User,Product, Order, OrderList } = require('../db.js');
 
 
 server.post('/', (req, res) => {
@@ -22,5 +22,17 @@ server.post('/', (req, res) => {
         })
     }
 })
+
+server
+    .route('/:id/orders')
+    .get((req,res)=>{
+        const {id} = req.params
+        OrderList.findAll({where:{userId:id},
+        }).then((orders)=>{
+            res.json(orders)
+        }).catch((err) => {
+            res.json({ err: "Usuario no existente" });
+        })
+    })
 
 module.exports = server;
