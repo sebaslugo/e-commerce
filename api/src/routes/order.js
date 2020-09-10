@@ -2,10 +2,14 @@ const express = require("express");
 const router = express.Router();
 const { Product, Order, OrderList } = require('../db.js');
 
+
 router
+
+// S44 : Crear ruta que retorne todas las ordenes
+
     .route('/')
     .get((req,res)=>{
-        OrderList.findAll()
+        Order.findAll()
         .then((orders) => {
             res.json(orders)
         })
@@ -15,27 +19,35 @@ router
         
     })
 router
+
+// S46 : Crear Ruta que retorne una orden en particular.
+
     .route('/:id')
-    .get((req,res) => {
+    .get((req,res) => {       
         const {id} = req.params;
-        OrderList.findOne({
-            where:{orderId:id},
+        Order.findOne({
+            where:{id:id},
             })
-        .then((orders) => {
-            res.json(orders)
+        .then((order) => {
+            res.json(order)
         })
         .catch((err) => {
             res.json({ err: "Orden no existente" });
         });
     })
+
+// S47 : Crear Ruta para modificar una Orden
+
     .put((req,res)=> {
-        OrderList.findOne({where:{orderId:id}})
-        .then((orders) => {
-            orden = req.body;
-            return orden.save();
+        const {id} = req.params;
+        Order.findOne({where:{id:id}})
+        .then((order) => {
+            order.status = req.body.status;
+            order.total=2000;
+            return order.save();
         })
-        .then((orders)=>{
-            res.json(orden)
+        .then((order)=>{
+            res.json(order)
         })  
         .catch((err)=>{
             res.json({err: "Orden no existente" })
