@@ -14,7 +14,24 @@ export default function categorias(state = initialState, action) {
                 data: action.payload
             }
             break;
+
+        case DELETE_CATEGORY:
+            return {
+                ...state,
+                data: action.payload
+            }
+            break;
+        case CREATE_CATEGORY:
+            return {
+                ...state
+            }
+            break;
+        case EDIT_CATEGORY:
+            return {
+                ...state
+            }
         default:
             return { ...state };
     }
+
 }
