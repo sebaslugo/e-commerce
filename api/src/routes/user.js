@@ -77,4 +77,36 @@ server
         })
     })
 
+
+
+    //S38:Crear Ruta para agregar Item al Carrito
+server.post("/:userId/cart", (req, res) => {
+   
+    const { userId, status, total } = req.body;
+  
+    Order.create({
+      status: status,
+      userId: userId,
+      total: total,
+    })
+      .then((created) => {
+        res.status(200).send(created);
+      })
+      .catch((err) => res.status(400).json(err.message));
+  });
+
+
+  //S40:Crear Ruta para vaciar el carrito
+
+server.delete("/:idUser/cart", (req, res) => {
+    const id = req.params.id;
+    Order.destroy({
+      where: { id: id },
+    })
+      .then(() => {
+        res.send("Orden eliminada");
+      })
+      .catch(res.send);
+  });
+  
 module.exports = server;
