@@ -5,20 +5,15 @@ import "@material-ui/core/styles";
 
 import "./FormCategories.css";
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchCategories, deleteCategory, axiosPostCategories, axiosPutCategories } from '../redux/actions/category.js';
-
-
-
 import "./FormCategories.css";
-import fetchCategories from '../redux/actions/category.js';
 
 export default function MaterialTableDemo() {
   const dispatch = useDispatch();
   const content = useSelector(state => state)
-  const [column, setColumn] = React.useState({
+  const [column, setColumn] = useState({
     columns: [
       { title: "Name", field: "name" },
     ],
