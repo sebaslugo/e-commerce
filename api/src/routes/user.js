@@ -1,5 +1,7 @@
 const server = require('express').Router();
 const { User,Product, Order, OrderList } = require('../db.js');
+const { json } = require('body-parser');
+const Op = require('sequelize').Op
 
 
 server.post('/', (req, res) => {
@@ -66,10 +68,13 @@ server.delete('/:id', (req, res) => {
 
 
 server
+
+// S45 : Crear Ruta que retorne todas las Ordenes de los usuarios
+
     .route('/:id/orders')
     .get((req,res)=>{
         const {id} = req.params
-        OrderList.findAll({where:{userId:id},
+        Order.findAll({where:{userId:id},
         }).then((orders)=>{
             res.json(orders)
         }).catch((err) => {
@@ -79,34 +84,72 @@ server
 
 
 
-    //S38:Crear Ruta para agregar Item al Carrito
-server.post("/:userId/cart", (req, res) => {
-   
-    const { userId, status, total } = req.body;
+
+
+
+server
+    .route("/:userId/cart")
+
+//S38:Crear Ruta para agregar Item al Carrito
+
+    .post( (req, res) => {   
+    const { productId,price,quantity } = req.body.product;
+    const {userId} = req.params
+    let id
+    Order.findOne({where:{userId:userId,status:'carrito'}})
+    .then(order => {
+        if(!order){
+            return Order.create({
+                status:'carrito'
+            })
+        }
+        return order        
+    })
+    .then(order => {        
+        return order.setUser(userId)                    
+    })
+    .then((order)=>{
+        return OrderList.create({
+            price,
+            quantity,
+            orderId:order.id,
+            productId:productId           
+        })  
+    })
+    .then((order) => {
+        res.status(200).json(order)
+    })
+    .catch((err)=>{
+        res.status(400).json(err)
+    })
+    })
+
+//S40:Crear Ruta para vaciar el carrito
+
+    .delete((req, res) => {
+    const id = req.params.userId;
   
-    Order.create({
-      status: status,
-      userId: userId,
-      total: total,
-    })
-      .then((created) => {
-        res.status(200).send(created);
-      })
-      .catch((err) => res.status(400).json(err.message));
-  });
-
-
-  //S40:Crear Ruta para vaciar el carrito
-
-server.delete("/:idUser/cart", (req, res) => {
-    const id = req.params.id;
     Order.destroy({
-      where: { id: id },
+      where: { userId: id,status:'carrito' },
     })
-      .then(() => {
-        res.send("Orden eliminada");
-      })
-      .catch(res.send);
-  });
+    .then(() => {
+        res.status(200).send("Carrito eliminado");
+    })
+    .catch(err => res.send(err));
+    })
+
+// S39 : Crear Ruta que retorne todos los items del Carrito
+
+    .get((req,res) => {
+        const id = req.params.userId;
+        Order.findOne({where:{userId:id,status:'carrito'}})
+        .then((carrito) =>{
+            return OrderList.findAll({where:{orderId:carrito.id}})
+        })
+        .then((item) => {
+            res.status(200).json(item)
+        }).catch(err => res.status(400).json(err))
+
+    })
   
 module.exports = server;

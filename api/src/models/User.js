@@ -67,5 +67,7 @@ module.exports = sequelize => {
             }
             // verificar si funciona correctamente
         }
+
+        
     })
 }
