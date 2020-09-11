@@ -23,13 +23,18 @@ router
 // S46 : Crear Ruta que retorne una orden en particular.
 
     .route('/:id')
-    .get((req,res) => {       
+    .get((req,res) => {     
         const {id} = req.params;
+        let orden
         Order.findOne({
             where:{id:id},
             })
         .then((order) => {
-            res.json(order)
+            orden = order
+            return OrderList.findAll({where:{orderId:order.id}})
+        })
+        .then((items)=>{
+            res.json({orden,items})
         })
         .catch((err) => {
             res.json({ err: "Orden no existente" });
