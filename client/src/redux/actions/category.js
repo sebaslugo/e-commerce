@@ -57,10 +57,8 @@ export function postCategories(request) {
     }
 }
 
-export function axiosPostCategories(newData) {
-    console.log("maumaumau")
-    return dispatch => {
-        console.log("estoy en elpos", newData)
+export function axiosPostCategories(newData) {    
+    return dispatch => {        
         dispatch(postCategories())
         axios({
             method: 'POST',
@@ -68,52 +66,42 @@ export function axiosPostCategories(newData) {
             data: {
                 name: newData.name
             }
-
         })
-            .then(res => {
-                dispatch({
-                    type: CREATE_CATEGORY,
-                    payload: res.data.name
-                })
-                console.log("estoy en el .then", res)
-            }
-            )
-            .catch(err => console.error(err.message));
+        .then(res => {
+            dispatch({
+                type: CREATE_CATEGORY,
+                payload: res.data.name
+            })
+        }
+        )
+        .catch(err => console.error(err.message));
     };
 }
 
 export function putCategories(request) {
-    try {
-        return {
-            type: EDIT_CATEGORY,
-            categories: request
-        }
-    } catch (err) {
-        console.error(err.message);
+    return {
+        type: EDIT_CATEGORY,
+        categories: request
     }
 }
 
-export function axiosPutCategories(newData) {
-    // console.log("maumaumau")
-    return dispatch => {
-        console.log("estoy en edit", newData)
-        dispatch(putCategories())
+export function axiosPutCategories(newData, oldData) {
+    return dispatch => {    
+        dispatch(putCategories());
         axios({
             method: 'PUT',
             url: `http://localhost:3001/products/category/${newData.id}`,
             data: {
                 name: newData.name
             }
-
         })
-            .then(res => {
-                dispatch({
-                    type: EDIT_CATEGORY,
-                    payload: res.data.name
-                })
-                console.log("estoy en el .then", res)
-            }
-            )
-            .catch(err => console.error(err.message));
+        .then(res => {
+            dispatch({
+                type: EDIT_CATEGORY,
+                payload: res.data.name
+            })            
+        }
+        )
+        .catch(err => console.error(err.message));
     };
 }

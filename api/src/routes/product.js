@@ -86,14 +86,16 @@ server.delete('/category/:id', (req, res, next) => {
 			id: id
 		}
 	})
-		.then(producto => {
-			if (producto > 0) {
-				return res.status(200).json({ message: 'La categoría ID: ' + id + ', ha sido eliminada correctamente.' });
-			} else {
-				return res.json({ message: 'El ID: ' + id + ', no corresponde a ninguna categoría en existencia.' });
-			}
-		})
-		.catch(err => res.send(400).json(err.message));
+
+	.then(producto => {
+		if (producto > 0) {
+			return res.status(200).json({message: 'La categoría ID: ' + id + ', ha sido eliminada correctamente.'});
+		} else {
+			return res.json({message: 'El ID: ' + id + ', no corresponde a ninguna categoría en existencia.'});
+		}
+	})
+	.catch(err => res.status(400).json(err.message));	
+
 });
 
 /* ------------------------------------------------------------------------------- */
