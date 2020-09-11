@@ -17,6 +17,15 @@ module.exports = sequelize => {
                 }
             }
         },
+        lastName: {
+            type: DataTypes.STRING,
+            validate: {
+                notEmpty: {
+                    args: true,
+                    msg: 'last name must be joined!'
+                }
+            }
+        },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -59,15 +68,6 @@ module.exports = sequelize => {
                     msg: 'Password must be within the parameters'
                 }
             }
-        },
-        birthday: {
-            type: DataTypes.STRING,
-            validate: {
-                isBefore: '2004-01-01'
-            }
-            // verificar si funciona correctamente
         }
-
-        
     })
 }
