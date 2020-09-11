@@ -1,29 +1,39 @@
-import React, { useState } from "react";
-import "./Header.css";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
-import Home from './home';
-import axios from 'axios';
+import { Button } from '@material-ui/core';
+import { withRouter } from 'react-router';
+import PropTypes from 'prop-types';
 
-function Header() {
+import "./Header.css";
 
-  const [searchText, setSearchText] = useState ('');
-
-  const handleSearchTextChange = event => {
-    setSearchText(event.target.value);    
+class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: ""
+    };
   }
 
-  const handleSearchTextClick = () => {
-    axios.get(`http://localhost:3001/search/?s=${searchText}`)
-      .then(res => {
-        console.log(res.data);      
-      });
+  handleSearchTextChange(event) {
+    this.setState({ title: event.target.value });
   }
 
-  //console.log(searchText);
-  return (
-    <nav className="header-header">
+  handleSearchTextClick() {
+    this.props.history.push(`/search/results?productName=${this.state.title}`);
+  }
+
+  static propTypes = {
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+  }
+  render () {    
+    // const { match, location, history } = this.props;
+    // console.log(history); 
+    return (
+      <nav className="header-header">
       {/* Logo izquierda to Home */}
       <Link to="/">
         <img
@@ -36,13 +46,13 @@ function Header() {
       {/* Buscador */}
       <div className="header__search">
         <input type="text" className="header__searchInput"
-          value={searchText}
+          value={this.state.title}
 					placeholder="Buscar producto..."
-					onChange={handleSearchTextChange}
+					onChange={(e) => this.handleSearchTextChange(e)}
         />
-        <Link onClick={handleSearchTextClick}>
+        <Button className="header__searchButton" onClick={() => this.handleSearchTextClick()} >
           <SearchIcon className="header__searchIcon" />
-        </Link>
+        </Button>
       </div>
 
       <div className="header__nav">
@@ -63,7 +73,8 @@ function Header() {
         </Link>
       </div>
     </nav>
-  );
+    );
+  }
 }
 
-export default Header;
+export default withRouter(Header);

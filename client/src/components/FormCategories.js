@@ -61,10 +61,6 @@ export default function MaterialTableDemo() {
     }, 600);    
   }
 
-  const refreshPage = () => {
-    window.location.reload(false);    
-  }
-
   return (
     <div className="FormCategories">
       <MaterialTable
