@@ -34,3 +34,8 @@ export const EDIT_PRODUCT = 'EDIT_PRODUCT';
 /* ------------------------------------------------------------------------------- */
 export const CREATE_USER = 'CREATE_USER'
 
+// VARIABLES DE ACTION ORDEN
+
+export const  GET_ORDEN = 'GET_ORDEN';
+
+

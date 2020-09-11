@@ -40,15 +40,15 @@ Category.belongsToMany(Product, { through: 'prodcat' });
 Product.belongsToMany(Category, { through: 'prodcat' });
 
 
-Order.belongsToMany(Product, { through: OrderList });
+Order.belongsToMany(Product, { through: OrderList});
 Product.belongsToMany(Order, { through: OrderList});
 
 
 Order.belongsTo(User,{as:'user'}); 
 
-
-
-
+OrderList.addHook('afterValidate', (orderList) => {
+  orderList.total = orderList.price * orderList.quantity;
+});
 
 
 module.exports = {

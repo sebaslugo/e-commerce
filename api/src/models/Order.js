@@ -11,10 +11,6 @@ module.exports = (sequelize) => {
             type: DataTypes.ENUM('creada', 'procesando', 'cancelada', 'completa','carrito'),
             defaultValue: 'carrito',
         },
-        total: {
-            type: DataTypes.DECIMAL,
-            defaultValue: 0
-        },
 
     });
 

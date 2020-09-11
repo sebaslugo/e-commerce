@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Product, Order, OrderList } = require('../db.js');
+const { Product, Order, OrderList,User } = require('../db.js');
 
 
 router
@@ -9,7 +9,7 @@ router
 
     .route('/')
     .get((req,res)=>{
-        Order.findAll()
+        Order.findAll({include:{model:User,as:'user'}})
         .then((orders) => {
             res.json(orders)
         })
@@ -28,16 +28,19 @@ router
         let orden
         Order.findOne({
             where:{id:id},
+            include:[{model:User,as:'user'},{model:Product}]
             })
         .then((order) => {
             orden = order
-            return OrderList.findAll({where:{orderId:order.id}})
+            return OrderList.findAll({
+                where:{orderId:order.id},     
+            })
         })
         .then((items)=>{
             res.json({orden,items})
         })
         .catch((err) => {
-            res.json({ err: "Orden no existente" });
+            res.json({ err });
         });
     })
 
