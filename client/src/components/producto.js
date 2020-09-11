@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./producto.css";
 import { Carousel, CarouselItem } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,7 +10,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import axios from 'axios';
+import store from '../redux/store/index';
+import { fetchProducts } from '../redux/actions/producto.js'
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles({
   root: {
@@ -20,77 +22,84 @@ const useStyles = makeStyles({
     height: 140,
   },
 });
-/* const validate = (price) => {
-  return price;
-}; */
+
 
 
 function Producto(props) {
-  const [price, setPrice] = useState(0);
-  const [producto,setProducto] = useState({})
+  const dispatch = useDispatch();
+  const [precio, setPrecio] = useState(0);
+  const [producto, setProducto] = useState({
+    imagenes: []
+  })
   const classes = useStyles();
+  const id = document.URL.split("/").pop()
+
+  const buyButton = () => {
+    if (producto.stock > 1) {
+      return <Button size="small" color="primary">
+        Comprar
+     </Button>
+    }
+    else {
+      return <> <p style={{ color: "red" }}>NO HAY STOCK!</p>
+      </>
+    }
+  }
+
+  useEffect(() => {
+    dispatch(fetchProducts(id));
+    store.subscribe(() => setProducto(store.getState().productos.data.producto))
+
+  }, []);
+
 
   const onChange = (event) => {
     event.preventDefault();
-    setPrice(event.target.value * producto.price);
+    setPrecio(event.target.value * producto.price);
   };
-  useEffect(() => {
-    axios
-    .get(`http://localhost:3001/products/${props.match.params.id}`)
-        .then(res => {
-          console.log(res)
-        setProducto(res.data.producto)
 
-        })
-  },{})
   return (
-    <div className="producto_product">
-      <h1> Producto </h1>
+
+    < div className="producto_product" >
+      <h1>{producto.name}</h1>
       <Card className={classes.root}>
-      <CardContent>
-        <CardMedia className={classes.media}/>
-        <Carousel>
-           {producto.imagenes && producto.imagenes.map((img)=>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src={`http://localhost:3001/${img}`}
-                alt="First slide"
-              />
-            </Carousel.Item>
-            )} 
-            
+        <CardContent>
+          <CardMedia className={classes.media} />
+          <Carousel>
+            {producto.imagenes.map((img, id) =>
+              <Carousel.Item key={id}>
+                <img key={id} src={`http://localhost:3001/${img}`} ></img>
+              </Carousel.Item>
+            )}
           </Carousel>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {producto.name}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {producto.description}
-          </Typography>
-        </CardContent>
-        <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Cantidad
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {producto.name}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {producto.description}
+            </Typography>
+          </CardContent>
+          <CardContent>
+            <Typography variant="body2" color="textSecondary" component="p">
+              Cantidad
             <input type="number" onChange={onChange} />
-          </Typography>
-          <hr/>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Precio = $ 
-            <span>{price}</span>
-          </Typography>
+            </Typography>
+            <hr />
+            <Typography variant="body2" color="textSecondary" component="p">
+              Precio = $
+            <span>{precio}</span>
+            </Typography>
+          </CardContent>
         </CardContent>
-      </CardContent>
-      <CardActions>
-        <Button size="small" color="primary">
-          Comprar
+        <CardActions>
+          {buyButton()}
+          <Button size="small" color="primary">
+            Favoritos
         </Button>
-        <Button size="small" color="primary">
-          Favoritos
-        </Button>
-      </CardActions>
-    </Card>
-    </div>
+        </CardActions>
+      </Card>
+    </div >
   );
 }
 
