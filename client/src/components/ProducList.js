@@ -36,12 +36,12 @@ export default function ProudctList() {
   const handleOpen = (event, rowData) => {
 
     setOpen(true)
-    // if (!rowData.content) {
-    //   setProducto(rowData);
-    // }
-    // else {
-    //   setProducto({})
-    // }
+    if (!rowData.content) {
+      setProducto(rowData);
+    }
+    else {
+      setProducto({})
+    }
 
   }
 
@@ -63,20 +63,14 @@ export default function ProudctList() {
         title="Product List"
         columns={table.columns}
         data={productos}
-        // actions={[
-        //   {
-        //     icon: 'edit',
-        //     // tooltip: 'Add Product',
-        //     onClick: (event, rowData) => handleOpen(event, rowData)
-        //   }
-        // ]}
+        actions={[
+          {
+            icon: 'edit',
+            // tooltip: 'Add Product',
+            onClick: (event, rowData) => handleOpen(event, rowData)
+          }
+        ]}
         editable={{
-          onRowUpdate: (newData, oldData) =>
-            setTimeout(() => {
-              dispatch(axiosEditProducts(newData))
-              refreshPage()
-            })
-          ,
           onRowDelete: (oldData) =>
             new Promise((resolve) => {
               setTimeout(() => {
