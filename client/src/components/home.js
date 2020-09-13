@@ -12,6 +12,9 @@ import {
 } from "semantic-ui-react";
 import portada from "../imagenes/portada.jpg";
 import axios from 'axios';
+
+import AgregarAlCarrito from './AgregarAlCarrito'
+
 import {getCategories} from '../redux/actions/category';
 import {getProducts,getProductCategory} from '../redux/actions/productList';
 import store from '../redux/store/index';
@@ -34,6 +37,7 @@ function Home() {
   },[])
   
   console.log(productos)
+
   const handleItemClick = (e, { name }) => {
     let page = []; 
     setActiveItem(name);
@@ -43,6 +47,7 @@ function Home() {
       setActive(1)
   
     } else {
+
       dispatch (getProductCategory(name));      
     }
     
@@ -85,6 +90,7 @@ function Home() {
             <div className="home-content">
               <div className="home-productos">
                 <Card.Group>
+
                   {productPage.length > 0 && productPage[active - 1].map((producto) => (               
                     <Card key = {key++}>
                       <Card.Content>
@@ -97,13 +103,14 @@ function Home() {
                           {producto.description}
                         </Card.Description>
                       </Card.Content>
-                      <Card.Content extra>                        
+                      <Card.Content extra>
                         <div className="home-price">
-                        <Link to={"/producto/" + producto.id}>
-                          <Button inverted color="yellow">
-                            Ver Producto
+                          <Link to={"/producto/" + producto.id}>
+                            <Button inverted color="yellow">
+                              Ver Producto
                           </Button>
-                        </Link>
+                          </Link>
+                          <AgregarAlCarrito producto={producto} precio={producto.price} cantidad={1} />
                           <Card.Header className="home-priceCard">
                             {`$ ${producto.price}`}
                           </Card.Header>

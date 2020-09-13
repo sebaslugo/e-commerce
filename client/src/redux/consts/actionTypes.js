@@ -33,7 +33,14 @@ export const CREATE_USER = 'CREATE_USER'
 
 // VARIABLES DE ACTION ORDEN
 
+
+export const GET_ORDEN = 'GET_ORDEN';
 export const  GET_ORDEN = 'GET_ORDEN';
 export const GET_ORDERS = 'GET_ORDERS';
+
+/* ------------------------------------------------------------------------------- */
+/* AGREGAR_AL_CARRITO */
+/* ------------------------------------------------------------------------------- */
+export const AGREGAR_AL_CARRITO = 'AGREGAR_AL_CARRITO';
 
 
