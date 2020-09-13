@@ -14,7 +14,6 @@ import portada from "../imagenes/portada.jpg";
 import axios from 'axios';
 import {getCategories} from '../redux/actions/category';
 import {getProducts,getProductCategory} from '../redux/actions/productList';
-import store from '../redux/store/index';
 import { useDispatch,useSelector } from 'react-redux';
 let page = []; 
 let key = 0;
@@ -30,7 +29,7 @@ function Home() {
     
   useEffect(() => {  
     dispatch(getCategories());
-    dispatch(getProducts())     
+    dispatch(getProducts());   
   },[])
   
   console.log(productos)
@@ -39,11 +38,10 @@ function Home() {
     setActiveItem(name);
     let url = '';
     if (name === 'Todos Los Productos') {
-      dispatch(getProducts())
-      setActive(1)
-  
+      dispatch(getProducts());
     } else {
       dispatch (getProductCategory(name));      
+      setActive(1)
     }
     
       for (let i = 0; i < productos.length; i += 6) {
