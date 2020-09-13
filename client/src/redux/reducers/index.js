@@ -8,7 +8,7 @@ import productos from "./producto"
 const rootReducer = combineReducers({
   categorias,
   productList,
-  busqueda,
+	busqueda,
   orden, 
   productos
 

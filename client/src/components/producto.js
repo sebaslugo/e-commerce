@@ -48,8 +48,10 @@ function Producto(props) {
 
   useEffect(() => {
     dispatch(fetchProducts(id));
-    store.subscribe(() => setProducto(store.getState().productos.data.producto))
-    
+
+    store.subscribe(() => setProducto(() => store.getState().productos.data.producto))
+
+
   }, []);
 
 
@@ -83,7 +85,7 @@ function Producto(props) {
           <CardContent>
             <Typography variant="body2" color="textSecondary" component="p">
               Cantidad
-            <input type="number" onChange={onChange} />
+            <input type="number" onChange={(e) => onChange(e)} />
             </Typography>
             <hr />
             <Typography variant="body2" color="textSecondary" component="p">
