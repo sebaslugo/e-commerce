@@ -11,7 +11,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import store from '../redux/store/index';
-import { fetchProducts } from '../redux/actions/producto.js'
+import { getProducts } from '../redux/actions/producto.js'
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles({
@@ -47,7 +47,7 @@ function Producto(props) {
   }
 
   useEffect(() => {
-    dispatch(fetchProducts(id));
+    dispatch(getProducts(id));
 
     store.subscribe(() => setProducto(() => store.getState().productos.data.producto))
 
