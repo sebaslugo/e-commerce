@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React,{useState, useEffect } from "react";
 import "./producto.css";
 import { Carousel, CarouselItem } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -49,7 +49,7 @@ function Producto(props) {
   useEffect(() => {
     dispatch(fetchProducts(id));
     store.subscribe(() => setProducto(store.getState().productos.data.producto))
-
+    
   }, []);
 
 

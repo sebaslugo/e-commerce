@@ -4,7 +4,7 @@ import { axiosOrden } from '../redux/actions/orden';
 import store from '../redux/store/index';
 import { Button, Checkbox, Icon, Table } from 'semantic-ui-react'
 let key=0;
-
+let array = [0,1,2]
 function Orden (props) {
     const dispatch = useDispatch();
     const [ordenes,setOrdenes] = useState(store.getState);
@@ -14,7 +14,7 @@ function Orden (props) {
 
         dispatch(axiosOrden(1));
         store.subscribe(()=>{
-            setOrdenes(store.getState().orden.data);
+            setOrdenes(() => store.getState().orden.data);
         });
 
     },{})
@@ -33,7 +33,8 @@ function Orden (props) {
                 </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                <Table.Row>
+                {array.map (() => (
+                    <Table.Row>
                     <Table.Cell>{ordenes.orden.user && ordenes.orden.user.name}</Table.Cell>
                     <Table.Cell>{ordenes.orden.status && ordenes.orden.status}</Table.Cell>
                     <Table.Cell>
@@ -64,7 +65,9 @@ function Orden (props) {
                     ))}
                     </ul>                  
                     </Table.Cell>                
-                </Table.Row>                
+                </Table.Row>       
+                ))}
+                         
                 </Table.Body>
                 <Table.Footer fullWidth>
                 <Table.Row>                    

@@ -7,7 +7,7 @@ import "./FormCategories.css";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchCategories, deleteCategory, axiosPostCategories, axiosPutCategories } from '../redux/actions/category.js';
+import { getCategories, deleteCategory, axiosPostCategories, axiosPutCategories } from '../redux/actions/category.js';
 import "./FormCategories.css";
 import store from '../redux/store/index';
 
@@ -17,7 +17,7 @@ export default function MaterialTableDemo() {
   const [data, setData] = useState();
 
   useEffect(() => {
-    dispatch(fetchCategories());
+    dispatch(getCategories());
     store.subscribe(() => setData(store.getState().categorias.data))
   }, []);
 
