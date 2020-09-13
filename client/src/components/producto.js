@@ -9,10 +9,14 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import store from '../redux/store/index';
 import { fetchProducts } from '../redux/actions/producto.js'
 import { useDispatch } from "react-redux";
+import AgregarAlCarrito from './AgregarAlCarrito'
 
 const useStyles = makeStyles({
   root: {
@@ -28,11 +32,13 @@ const useStyles = makeStyles({
 function Producto(props) {
   const dispatch = useDispatch();
   const [precio, setPrecio] = useState(0);
+  const [cantidad, setCantidad] = useState(0);
   const [producto, setProducto] = useState({
     imagenes: []
   })
   const classes = useStyles();
   const id = document.URL.split("/").pop()
+
 
   const buyButton = () => {
     if (producto.stock > 1) {
@@ -56,50 +62,64 @@ function Producto(props) {
   const onChange = (event) => {
     event.preventDefault();
     setPrecio(event.target.value * producto.price);
+    setCantidad(cantidad + 1)
   };
 
   return (
-
-    < div className="producto_product" >
-      <h1>{producto.name}</h1>
-      <Card className={classes.root}>
-        <CardContent>
-          <CardMedia className={classes.media} />
-          <Carousel>
-            {producto.imagenes.map((img, id) =>
-              <Carousel.Item key={id}>
-                <img key={id} src={`http://localhost:3001/${img}`} ></img>
-              </Carousel.Item>
-            )}
-          </Carousel>
+    <Container>
+      < div className="producto_product" >
+        <h1>{producto.name}</h1>
+        <Card className={classes.root}>
           <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {producto.name}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
-              {producto.description}
-            </Typography>
-          </CardContent>
-          <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p">
-              Cantidad
+            <CardMedia className={classes.media} />
+            <Carousel>
+              {producto.imagenes.map((img, id) =>
+                <Carousel.Item key={id}>
+                  <img key={id} src={`http://localhost:3001/${img}`} ></img>
+                </Carousel.Item>
+              )}
+            </Carousel>
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                {producto.name}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {producto.description}
+              </Typography>
+            </CardContent>
+            <CardContent>
+              <Typography variant="body2" color="textSecondary" component="p">
+                Cantidad
             <input type="number" onChange={(e) => onChange(e)} />
-            </Typography>
-            <hr />
-            <Typography variant="body2" color="textSecondary" component="p">
-              Precio = $
+              </Typography>
+              <hr />
+              <Typography variant="body2" color="textSecondary" component="p">
+                Precio = $
             <span>{precio}</span>
-            </Typography>
+              </Typography>
+            </CardContent>
           </CardContent>
-        </CardContent>
-        <CardActions>
-          {buyButton()}
-          <Button size="small" color="primary">
-            Favoritos
+          <CardActions>
+            {buyButton()}
+            <Button size="small" color="primary">
+              Favoritos
         </Button>
-        </CardActions>
-      </Card>
-    </div >
+            <AgregarAlCarrito producto={producto} precio={precio} cantidad={cantidad} />
+            {/* <IconButton
+            type="submit"
+            color="primary"
+            aria-label="Añadir al carrito"
+            // onSubmit={enviarDatos}
+            onClick={enviarDatos}
+            className={classes.submit}
+          >
+            <AddShoppingCartIcon />
+          </IconButton> */}
+          </CardActions>
+        </Card>
+      </div >
+    </Container>
+
   );
 }
 
