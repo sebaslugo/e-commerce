@@ -20,7 +20,7 @@ export function getCategories() {
     } */
 }
 
-export function fetchCategories() {
+/* export function fetchCategories() {
     return dispatch => {
         dispatch(getCategories())
         axios.get("http://localhost:3001/products/category")
@@ -31,7 +31,7 @@ export function fetchCategories() {
                 })
             );
     };
-}
+} */
 
 export function delCategory(request) {
     return {

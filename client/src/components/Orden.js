@@ -27,47 +27,37 @@ function Orden (props) {
                     <Table.HeaderCell>User</Table.HeaderCell>
                     <Table.HeaderCell>State</Table.HeaderCell>
                     <Table.HeaderCell>NameProduct</Table.HeaderCell>
-                    <Table.HeaderCell>Price</Table.HeaderCell>
                     <Table.HeaderCell>Quantity</Table.HeaderCell>
-                    <Table.HeaderCell>Total</Table.HeaderCell>
+                    <Table.HeaderCell>Price</Table.HeaderCell>
                 </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                {array.map (() => (
-                    <Table.Row>
-                    <Table.Cell>{ordenes.orden.user && ordenes.orden.user.name}</Table.Cell>
-                    <Table.Cell>{ordenes.orden.status && ordenes.orden.status}</Table.Cell>
-                    <Table.Cell>
-                    <ul>
-                    {ordenes.orden.products && ordenes.orden.products.map((producto)=>(
-                        <li key={key++}>{producto.name}</li>
-                    ))}
-                    </ul>
-                    </Table.Cell> 
-                    <Table.Cell>
-                    <ul>
-                    {ordenes.items && ordenes.items.map((producto)=>(
-                        <li key={key++}>{producto.price}</li>
-                    ))}
-                    </ul>
-                    </Table.Cell>  
-                    <Table.Cell>
-                    <ul>
-                    {ordenes.items && ordenes.items.map((producto)=>(
-                        <li key={key++}>{producto.quantity}</li>
-                    ))}
-                    </ul>
-                    </Table.Cell>
-                    <Table.Cell>
-                    <ul>
-                    {ordenes.items && ordenes.items.map((producto)=>(
-                        <li key={key++}>{producto.total}</li>
-                    ))}
-                    </ul>                  
-                    </Table.Cell>                
-                </Table.Row>       
+               
+                <Table.Row>
+                <Table.Cell>{ordenes.orden.user && ordenes.orden.user.name}</Table.Cell>
+                <Table.Cell>{ordenes.orden.status && ordenes.orden.status}</Table.Cell>
+                <Table.Cell>
+                <ul>
+                {ordenes.orden.products && ordenes.orden.products.map((producto)=>(
+                    <li key={key++}>{producto.name}</li>
                 ))}
-                         
+                </ul>
+                </Table.Cell> 
+                <Table.Cell>
+                <ul>
+                {ordenes.items && ordenes.items.map((producto)=>(
+                    <li key={key++}>{producto.quantity}</li>
+                ))}
+                </ul>
+                </Table.Cell> 
+                <Table.Cell>
+                <ul>
+                {ordenes.items && ordenes.items.map((producto)=>(
+                    <li key={key++}>{producto.price}</li>
+                ))}
+                </ul>
+                </Table.Cell>              
+                </Table.Row>                             
                 </Table.Body>
                 <Table.Footer fullWidth>
                 <Table.Row>                    
