@@ -36,7 +36,6 @@ export const CREATE_USER = 'CREATE_USER'
 
 
 export const GET_ORDEN = 'GET_ORDEN';
-export const  GET_ORDEN = 'GET_ORDEN';
 export const GET_ORDERS = 'GET_ORDERS';
 
 /* ------------------------------------------------------------------------------- */
