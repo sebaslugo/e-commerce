@@ -14,49 +14,49 @@ import portada from "../imagenes/portada.jpg";
 import axios from 'axios';
 
 function Home() {
-  
-  const [active, setActive] = useState(1);  
+
+  const [active, setActive] = useState(1);
   const [activeItem, setActiveItem] = useState("productos");
-  const [productos, setProductos] = useState ([]); 
-  const paginas = Math.ceil(productos.length / 6); 
-  const [productPage, setProductPage] = useState ([]);
+  const [productos, setProductos] = useState([]);
+  const paginas = Math.ceil(productos.length / 6);
+  const [productPage, setProductPage] = useState([]);
   const [categorias, setCategorias] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:3001/products')
-    .then(res => {
-      setProductos(res.data)
-      let page = [];    
-      for (let i = 0; i < res.data.length; i += 6) {
-        let seccion = res.data.slice(i, i + 6);
-        page.push(seccion)
-      }
-      setProductPage(page)
-    });
+      .then(res => {
+        setProductos(res.data)
+        let page = [];
+        for (let i = 0; i < res.data.length; i += 6) {
+          let seccion = res.data.slice(i, i + 6);
+          page.push(seccion)
+        }
+        setProductPage(page)
+      });
     axios.get('http://localhost:3001/products/category')
-      .then(res => {          
+      .then(res => {
         setCategorias(res.data)
-    });
-  },[])
-  
+      });
+  }, [])
+
   const handleItemClick = (e, { name }) => {
     setActiveItem(name);
     let url = '';
     if (name === 'Todos Los Productos') {
       url = 'http://localhost:3001/products';
     } else {
-      url = `http://localhost:3001/products/category/${ name }`;
+      url = `http://localhost:3001/products/category/${name}`;
     }
     axios.get(`${url}`)
       .then(res => {
         setProductos(res.data)
-        let page = [];    
+        let page = [];
         for (let i = 0; i < res.data.length; i += 6) {
           let seccion = res.data.slice(i, i + 6);
           page.push(seccion)
         }
         setProductPage(page)
-     });
+      });
   };
 
   const handleClick = (e, { activePage }) => {
@@ -91,7 +91,7 @@ function Home() {
             <div className="home-content">
               <div className="home-productos">
                 <Card.Group>
-                  {productPage.length > 0 && productPage[active - 1].map((producto) => (               
+                  {productPage.length > 0 && productPage[active - 1].map((producto) => (
                     <Card>
                       <Card.Content>
                         <Image size="small" src={`http://localhost:3001/${producto.imagenes[0]}`} />
@@ -103,13 +103,13 @@ function Home() {
                           {producto.description}
                         </Card.Description>
                       </Card.Content>
-                      <Card.Content extra>                        
+                      <Card.Content extra>
                         <div className="home-price">
-                        <Link to={"/producto/" + producto.id}>
-                          <Button inverted color="yellow">
-                            Ver Producto
+                          <Link to={"/producto/" + producto.id}>
+                            <Button inverted color="yellow">
+                              Ver Producto
                           </Button>
-                        </Link>
+                          </Link>
                           <Card.Header className="home-priceCard">
                             {`$ ${producto.price}`}
                           </Card.Header>

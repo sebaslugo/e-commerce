@@ -10,13 +10,6 @@ export const DELETE_CATEGORY = 'DELETE_CATEGORY';
 export const GET_CATEGORY = 'GET_CATEGORY';
 
 
-
-/* ------------------------------------------------------------------------------- */
-/* ACTIONS TYPE PRODUCTO */
-/* ------------------------------------------------------------------------------- */
-// export const GET_PRODUCTO = 'GET_PRODUCT';
-
-
 /* ------------------------------------------------------------------------------- */
 /* SEARCH */
 /* ------------------------------------------------------------------------------- */
@@ -36,6 +29,13 @@ export const CREATE_USER = 'CREATE_USER'
 
 // VARIABLES DE ACTION ORDEN
 
-export const  GET_ORDEN = 'GET_ORDEN';
+export const GET_ORDEN = 'GET_ORDEN';
+
+/* ------------------------------------------------------------------------------- */
+/* SHOPPING CART */
+/* ------------------------------------------------------------------------------- */
+export const GET_CART = 'GET_CART'
+export const ADD_CART = 'ADD_CART'
+export const EMPTY_CART = 'EMPTY_CART'
 
 
