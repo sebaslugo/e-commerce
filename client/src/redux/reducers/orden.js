@@ -1,4 +1,4 @@
-import { GET_ORDEN} from '../consts/actionTypes';
+import { GET_ORDEN, GET_ORDERS } from '../consts/actionTypes';
 
 /* ------------------------------------------------------------------------------- */
 /* INITIAL STATE */
@@ -6,9 +6,15 @@ import { GET_ORDEN} from '../consts/actionTypes';
 
 const initialState = {};
 
-export default function categorias(state = initialState, action) {
+export default function orden(state = initialState, action) {
     switch (action.type) {
         case GET_ORDEN:
+            return {
+                ...state,
+                data: action.payload
+            }
+            break;
+        case GET_ORDERS:
             return {
                 ...state,
                 data: action.payload

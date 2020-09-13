@@ -2,17 +2,16 @@ import React, { useState,useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import { axiosOrden } from '../redux/actions/orden';
 import store from '../redux/store/index';
-import { Button, Checkbox, Icon, Table } from 'semantic-ui-react'
-let key=0;
+import { Button, Container, Table } from 'semantic-ui-react';
+import { useParams } from 'react-router-dom';
 
-function Orden (props) {
+function Orden () {
     const dispatch = useDispatch();
     const [ordenes,setOrdenes] = useState(store.getState);
-    useEffect(() => {
+    const { id } = useParams();
 
-        // traer el id de la orden para setearlo en la accion
-
-        dispatch(axiosOrden(1));
+    useEffect(() => {        
+        dispatch(axiosOrden(id));
         store.subscribe(()=>{
             setOrdenes(store.getState().orden.data);
         });
@@ -20,7 +19,8 @@ function Orden (props) {
     },{})
     console.log(ordenes)
     return(
-        <div>
+        <Container style={{marginTop: '1.5rem'}}>
+            <h2>Order Detail</h2>
             <Table compact celled definition>
                 <Table.Header>
                 <Table.Row>
@@ -38,29 +38,29 @@ function Orden (props) {
                     <Table.Cell>{ordenes.orden.status && ordenes.orden.status}</Table.Cell>
                     <Table.Cell>
                     <ul>
-                    {ordenes.orden.products && ordenes.orden.products.map((producto)=>(
-                        <li key={key++}>{producto.name}</li>
+                    {ordenes.orden.products && ordenes.orden.products.map((producto, index)=>(
+                        <li key={index}>{producto.name}</li>
                     ))}
                     </ul>
                     </Table.Cell> 
                     <Table.Cell>
                     <ul>
-                    {ordenes.items && ordenes.items.map((producto)=>(
-                        <li key={key++}>{producto.price}</li>
+                    {ordenes.items && ordenes.items.map((producto, index)=>(
+                        <li key={index}>{producto.price}</li>
                     ))}
                     </ul>
                     </Table.Cell>  
                     <Table.Cell>
                     <ul>
-                    {ordenes.items && ordenes.items.map((producto)=>(
-                        <li key={key++}>{producto.quantity}</li>
+                    {ordenes.items && ordenes.items.map((producto, index)=>(
+                        <li key={index}>{producto.quantity}</li>
                     ))}
                     </ul>
                     </Table.Cell>
                     <Table.Cell>
                     <ul>
-                    {ordenes.items && ordenes.items.map((producto)=>(
-                        <li key={key++}>{producto.total}</li>
+                    {ordenes.items && ordenes.items.map((producto, index)=>(
+                        <li key={index}>{producto.total}</li>
                     ))}
                     </ul>                  
                     </Table.Cell>                
@@ -69,13 +69,13 @@ function Orden (props) {
                 <Table.Footer fullWidth>
                 <Table.Row>                    
                     <Table.HeaderCell colSpan='6'>
-                        {ordenes.orden.status === 'creada' && <Button size='small'>Aprovada</Button>}
+                        {ordenes.orden.status === 'creada' && <Button size='small'>Aprobada</Button>}
                         {ordenes.orden.status === 'creada' &&<Button size='small'>Cancelada</Button>}
                     </Table.HeaderCell>
                 </Table.Row>
                 </Table.Footer>
             </Table>
-        </div>
+        </Container>
     )
 }
 
