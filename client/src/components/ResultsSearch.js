@@ -1,26 +1,16 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  Grid,
-  Segment,
-  Card
-} from "semantic-ui-react";
-import queryString from "query-string";
+import { useSelector } from "react-redux";
+import { Grid, Segment, Card } from "semantic-ui-react";
 
-import { axiosSearchProduct } from "../redux/actions/search";
 import ProductResult from "./ProductResult";
 
 export default function ResultSearch({ location }) {
-  const dispatch = useDispatch();
 
   const content = useSelector((state) => state.busqueda.data);
   console.log(content);
 
   useEffect(() => {
-    const { productName } = queryString.parse(location.search);
-    if (productName && !content) {
-      dispatch(axiosSearchProduct(productName));
-    }
+    /* sin uso por el momento */
   });
   const renderProducts = () => {
     if (content) {
