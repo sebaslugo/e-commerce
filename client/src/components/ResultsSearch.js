@@ -7,7 +7,7 @@ import {
 } from "semantic-ui-react";
 import queryString from "query-string";
 
-import { axiosSearchProduct } from "../redux/actions/search";
+import { searchProducts } from "../redux/actions/search";
 import ProductResult from "./ProductResult";
 
 export default function ResultSearch({ location }) {
@@ -19,7 +19,7 @@ export default function ResultSearch({ location }) {
   useEffect(() => {
     const { productName } = queryString.parse(location.search);
     if (productName && !content) {
-      dispatch(axiosSearchProduct(productName));
+      dispatch(searchProducts(productName));
     }
   });
   const renderProducts = () => {
