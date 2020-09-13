@@ -5,14 +5,22 @@ import axios from 'axios';
 import { GET_CATEGORY, DELETE_CATEGORY, CREATE_CATEGORY, EDIT_CATEGORY } from '../consts/actionTypes';
 
 
-export function getCategories(request) {
-    return {
+export function getCategories() {
+    return function(dispatch) {
+        return axios.get("http://localhost:3001/products/category")
+          .then(response =>{
+            console.log(response);
+            dispatch({ type: GET_CATEGORY, payload: response.data });
+          })
+          
+    };
+    /* return {
         type: GET_CATEGORY,
         categories: request
-    }
+    } */
 }
 
-export function fetchCategories() {
+/* export function fetchCategories() {
     return dispatch => {
         dispatch(getCategories())
         axios.get("http://localhost:3001/products/category")
@@ -23,7 +31,7 @@ export function fetchCategories() {
                 })
             );
     };
-}
+} */
 
 export function delCategory(request) {
     return {

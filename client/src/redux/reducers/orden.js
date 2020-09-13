@@ -6,7 +6,7 @@ import { GET_ORDEN} from '../consts/actionTypes';
 
 const initialState = {};
 
-export default function categorias(state = initialState, action) {
+export default function orden(state = initialState, action) {
     switch (action.type) {
         case GET_ORDEN:
             return {

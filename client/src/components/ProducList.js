@@ -6,7 +6,7 @@ import './ProductList.css'
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { axiosProducts, axiosCategories, axiosDeleteProducts, axiosEditProducts } from '../redux/actions/productList'
+import {  getProducts, axiosCategories, axiosDeleteProducts, axiosEditProducts } from '../redux/actions/productList'
 import store from '../redux/store/index';
 
 export default function ProudctList() {
@@ -36,6 +36,7 @@ export default function ProudctList() {
   const handleOpen = (event, rowData) => {
 
     setOpen(true)
+
     if (!rowData.content) {
       setProducto(rowData);
     }
@@ -43,10 +44,11 @@ export default function ProudctList() {
       setProducto({})
     }
 
-  }
+
+  } 
 
   useEffect(() => {
-    dispatch(axiosProducts());
+    dispatch( getProducts());
     store.subscribe(() => setProductos(store.getState().productList.data))
     axios
       .get('http://localhost:3001/products/category')
