@@ -14,11 +14,6 @@ export default function productList(state = initialState, action) {
                 data: action.payload
             }
             break;
-        case GET_CATEGORY:
-            return {
-                ...state,
-                data: action.payload
-            }
         case DELETE_PRODUCT:
             return {
                 ...state,
