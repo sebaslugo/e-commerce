@@ -14,7 +14,9 @@ import OrderList from "./components/OrderList";
 import UserLogin from "./components/LoginUser";
 import CreateUser from "./components/CreateUser";
 import Results from './components/ResultsSearch';
+import ShoppingCart from './components/ShoppingCart';
 import Admin from './components/Admin';
+
 
 function App() {
   
@@ -34,6 +36,7 @@ function App() {
         <Route exact path="/Admin/orderlist" component={OrderList} />
         <Route exact path="/Login/loginuser" component={UserLogin} />
         <Route exact path="/Login/createuser" component={CreateUser} />
+        <Route exact path="/user/cart/:id" component={ShoppingCart} />
       </div>
     </Router>
   );

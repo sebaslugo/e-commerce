@@ -21,6 +21,8 @@ import { useDispatch,useSelector } from 'react-redux';
 let page = []; 
 let key = 0;
 function Home() {
+
+  
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);  
   const [activeItem, setActiveItem] = useState("Todos Los Productos");
@@ -37,6 +39,7 @@ function Home() {
   
   console.log(productos)
 
+
   const handleItemClick = (e, { name }) => {
     let page = []; 
     setActiveItem(name);
@@ -44,6 +47,8 @@ function Home() {
     if (name === 'Todos Los Productos') {
       dispatch(getProducts());
     } else {
+
+
 
       dispatch (getProductCategory(name));      
       setActive(1)
@@ -55,6 +60,7 @@ function Home() {
       }
       setProductPage(page) 
      
+
   };
   const handleClick = (e, { activePage }) => {
     setActive(activePage);
@@ -91,6 +97,7 @@ function Home() {
 
                   {productPage.length > 0 && productPage[active - 1].map((producto) => (               
                     <Card key = {key++}>
+
                       <Card.Content>
                         {producto.imagenes && producto.imagenes.length > 0 && <Image size="small" src={`http://localhost:3001/${producto.imagenes[0]}`} />}
                         <Card.Header className="home-header">
@@ -108,7 +115,9 @@ function Home() {
                               Ver Producto
                           </Button>
                           </Link>
+
                           <AgregarAlCarrito producto={producto} precio={producto.price} cantidad={1} />
+
                           <Card.Header className="home-priceCard">
                             {`$ ${producto.price}`}
                           </Card.Header>
