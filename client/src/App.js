@@ -1,6 +1,6 @@
 import React from "react";
 import 'semantic-ui-css/semantic.min.css';
-import '@material-ui/core/styles';
+import  '@material-ui/core/styles';
 import { Route, BrowserRouter as Router } from "react-router-dom";
 
 import "./App.css";
@@ -15,16 +15,12 @@ import UserLogin from "./components/LoginUser";
 import CreateUser from "./components/CreateUser";
 import Results from './components/ResultsSearch';
 
-
-const imagenes = ['https://i.pinimg.com/236x/b7/e3/8b/b7e38b7111481c2c72c98990ec3d3889.jpg', 'https://i.pinimg.com/236x/b7/e3/8b/b7e38b7111481c2c72c98990ec3d3889.jpg']
-
 function App() {
-
+  
   return (
-
+    
     <Router>
       <div className="App">
-
         <Header />
         <Route exact path="/" component={Home}></Route>
         <Route exact path="/:category" component={Home}></Route>
@@ -37,7 +33,6 @@ function App() {
         <Route exact path="/Login/loginuser" component={UserLogin} />
         <Route exact path="/Login/createuser" component={CreateUser} />
       </div>
-
     </Router>
   );
 }

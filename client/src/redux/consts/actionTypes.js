@@ -10,6 +10,11 @@ export const DELETE_CATEGORY = 'DELETE_CATEGORY';
 export const GET_CATEGORY = 'GET_CATEGORY';
 
 /* ------------------------------------------------------------------------------- */
+/* ACTIONS TYPE PRODUCTO CATEGORY */
+/* ------------------------------------------------------------------------------- */
+export const GET_PRODUCT_CATEGORY = 'GET_PRODUCT_CATEGORY';
+
+/* ------------------------------------------------------------------------------- */
 /* SEARCH */
 /* ------------------------------------------------------------------------------- */
 export const SEARCH_PRODUCT = 'SEARCH_PRODUCT';

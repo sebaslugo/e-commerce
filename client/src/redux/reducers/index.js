@@ -6,7 +6,7 @@ import orden from './orden'
 import productos from "./producto"
 
 const rootReducer = combineReducers({
-	categorias,
+  categorias,
   productList,
 	busqueda,
   orden, 

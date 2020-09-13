@@ -1,9 +1,10 @@
 import React, { useState,useEffect} from 'react';
 import { useDispatch } from 'react-redux';
-import { axiosOrden } from '../redux/actions/orden';
-import store from '../redux/store/index';
 import { Button, Container, Table } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
+
+import { axiosOrden } from '../redux/actions/orden';
+import store from '../redux/store/index';
 
 function Orden () {
     const dispatch = useDispatch();
@@ -13,7 +14,7 @@ function Orden () {
     useEffect(() => {        
         dispatch(axiosOrden(id));
         store.subscribe(()=>{
-            setOrdenes(store.getState().orden.data);
+            setOrdenes(() => store.getState().orden.data);
         });
 
     },{})
@@ -27,12 +28,12 @@ function Orden () {
                     <Table.HeaderCell>User</Table.HeaderCell>
                     <Table.HeaderCell>State</Table.HeaderCell>
                     <Table.HeaderCell>NameProduct</Table.HeaderCell>
-                    <Table.HeaderCell>Price</Table.HeaderCell>
                     <Table.HeaderCell>Quantity</Table.HeaderCell>
-                    <Table.HeaderCell>Total</Table.HeaderCell>
+                    <Table.HeaderCell>Price</Table.HeaderCell>
                 </Table.Row>
                 </Table.Header>
                 <Table.Body>
+               
                 <Table.Row>
                     <Table.Cell>{ordenes.orden.user && ordenes.orden.user.name}</Table.Cell>
                     <Table.Cell>{ordenes.orden.status && ordenes.orden.status}</Table.Cell>
@@ -64,7 +65,7 @@ function Orden () {
                     ))}
                     </ul>                  
                     </Table.Cell>                
-                </Table.Row>                
+                </Table.Row>
                 </Table.Body>
                 <Table.Footer fullWidth>
                 <Table.Row>                    

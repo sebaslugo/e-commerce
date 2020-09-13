@@ -1,21 +1,34 @@
 import axios from 'axios';
-import { GET_PRODUCT, GET_CATEGORY, DELETE_PRODUCT, EDIT_PRODUCT } from '../consts/actionTypes';
+import { GET_PRODUCT, GET_CATEGORY, DELETE_PRODUCT, EDIT_PRODUCT,GET_PRODUCT_CATEGORY } from '../consts/actionTypes';
+
+
+
+
+
 /*--------------------------------------------------------------------------------------- */
 /*GET PRODUCTS */
 /*--------------------------------------------------------------------------------------- */
 export function getProducts(request) {
-    return {
+    return function(dispatch) {
+        return axios.get("http://localhost:3001/products")
+          .then(response =>{
+            console.log(response);
+            dispatch({ type: GET_PRODUCT_CATEGORY, payload: response.data });
+          })
+          
+    };
+    /* return {
         type: GET_PRODUCT,
         categories: request
-    }
+    } */
 }
 
-export function axiosProducts() {
+/* export function axiosProducts() {
+ 
     return dispatch => {
         dispatch(getProducts())
         axios.get("http://localhost:3001/products")
-            .then(res => {
-                console.log('ESTOY EN EL .THEN', res)
+            .then(res => {  
                 dispatch({
                     type: GET_PRODUCT,
                     payload: res.data
@@ -23,7 +36,27 @@ export function axiosProducts() {
             }
             );
     };
+} */
+
+
+/// tods los productos de una categoria
+
+export function getProductCategory(name){
+    return function(dispatch) {
+        return axios.get(`http://localhost:3001/products/category/${name}`)
+          .then(response =>{
+            console.log(response);
+            dispatch({ type: GET_PRODUCT_CATEGORY, payload: response.data });
+          })
+          
+    };
+    /* return {
+        type: GET_PRODUCT_CATEGORY,
+        categories: request
+    } */
 }
+
+
 
 /*--------------------------------------------------------------------------------------- */
 /*GET CATEGORIES */
