@@ -178,6 +178,7 @@ server
             include:[{model:Product,as:'products'},{model:User,as:'user'}]
         })
         .then((carrito) =>{
+        
             res.status(200).json(carrito)
         })
         .catch(err => res.status(400).json(err))
