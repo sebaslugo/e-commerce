@@ -17,8 +17,6 @@ export function getCategories() {
 
 }
 
-
-
 export function deleteCategory(oldData) {
     return function(dispatch) {
         return axios.delete(`http://localhost:3001/products/category/${oldData.id}`)
@@ -70,5 +68,37 @@ export function putCategories(newData, oldData) {
         })
         .catch(err => console.error(err.message));
         };   
+}
+
+export function deleteProductCategory (productId,categoryId) {
+    return function(dispatch) {
+        return axios
+        .delete(`http://localhost:3001/products/${productId}/category/${categoryId}`)
+        .then(function (response) {
+            //handle success
+            alert('se elimino el producto de la categoria')
+        })
+        .catch(function (response) {
+            //handle error
+            alert('ups,intenta de nuevo')
+        }); 
+          
+    };
+}
+
+export function addProductCategory (productId,categoryId) {
+    return function(dispatch) {
+        return axios
+        .post(`http://localhost:3001/products/${productId}/category/${categoryId}`)
+        .then(function (response) {
+            //handle success
+            alert('se agrego el producto a la categoria')
+        })
+        .catch(function (response) {
+            //handle error
+            alert(response)
+        }); 
+          
+    };
 }
 

@@ -14,7 +14,7 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import store from '../redux/store/index';
-import { fetchProducts } from '../redux/actions/producto.js'
+import { getProducts } from '../redux/actions/producto.js'
 import { useDispatch } from "react-redux";
 import AgregarAlCarrito from './AgregarAlCarrito'
 
@@ -53,7 +53,7 @@ function Producto(props) {
   }
 
   useEffect(() => {
-    dispatch(fetchProducts(id));
+    dispatch(getProducts(id));
 
     store.subscribe(() => setProducto(() => store.getState().productos.data.producto))
 

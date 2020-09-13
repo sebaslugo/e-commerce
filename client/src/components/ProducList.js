@@ -5,8 +5,8 @@ import Form from './Form'
 import './ProductList.css'
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-
-import {  getProducts, axiosCategories, axiosDeleteProducts, axiosEditProducts } from '../redux/actions/productList'
+import {getCategories} from '../redux/actions/category';
+import {  getProducts, deleteProducts } from '../redux/actions/productList'
 import store from '../redux/store/index';
 
 export default function ProudctList() {
@@ -15,7 +15,7 @@ export default function ProudctList() {
   const content = useSelector(state => state)
 
   const [productos, setProductos] = useState([])
-  const [categorias, setCategorias] = useState([])
+  const categorias = useSelector(state => state.categorias.data) 
   const [table, setTable] = useState({
     columns: [
       { title: 'Name', field: 'name' },
@@ -31,6 +31,7 @@ export default function ProudctList() {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
+    dispatch( getProducts());
     setOpen(false)
   }
   const handleOpen = (event, rowData) => {
@@ -49,12 +50,8 @@ export default function ProudctList() {
 
   useEffect(() => {
     dispatch( getProducts());
+    dispatch(getCategories());
     store.subscribe(() => setProductos(store.getState().productList.data))
-    axios
-      .get('http://localhost:3001/products/category')
-      .then(res => {
-        setCategorias(res.data)
-      })
   }, [])
 
   return (
@@ -78,11 +75,8 @@ export default function ProudctList() {
               setTimeout(() => {
                 resolve();
                 setTable((prevState) => {
-                  dispatch(axiosDeleteProducts(oldData))
+                  dispatch(deleteProducts(oldData))
                   refreshPage();
-                  // const data = [...prevState.data];
-                  // data.splice(data.indexOf(oldData), 1);
-                  // return { ...prevState, data };
                 });
               }, 600);
             }),
