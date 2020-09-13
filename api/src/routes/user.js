@@ -134,11 +134,37 @@ server
                 res.status(400).json(err)
             })
     })
-    /* ------------------------------------------------------------------------------- */
-    //S40:Crear Ruta para vaciar el carrito
-    /* ------------------------------------------------------------------------------- */
+
+    
+
+    // modificar cantidad de producto en el carrito
+
+    .put ((req,res) => {
+        const id = req.params.userId
+        const {productId,quantity} = req.body
+        Order.findOne(
+            {where:{userId:id,status:'carrito'}
+        })
+        .then((carrito)=>{
+            return OrderList.findOne({
+                where:{orderId:carrito.id,productId:productId}
+            })            
+        })
+        .then((producto) => {
+            producto.quantity = quantity;
+            return producto.save();
+        })
+        .then((cambio)=>{
+            res.json(cambio)
+        })
+    })
+/* ------------------------------------------------------------------------------- */
+//S40:Crear Ruta para vaciar el carrito
+/* ------------------------------------------------------------------------------- */
+
     .delete((req, res) => {
         const id = req.params.userId;
+
 
         Order.destroy({
             where: { userId: id, status: 'carrito' },
@@ -167,7 +193,6 @@ server
                 }
             })
             .catch(err => res.status(400).json(err))
-
     })
 
 module.exports = server;

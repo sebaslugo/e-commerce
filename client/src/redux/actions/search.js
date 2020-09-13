@@ -6,16 +6,8 @@ import axios from 'axios'
 
 import { SEARCH_PRODUCT } from '../consts/actionTypes';
 
-export function searchProduct(request) {
-    return {
-        type: SEARCH_PRODUCT,
-        results: request
-    }
-}
-
-export function axiosSearchProduct(query) {
-    return dispatch => {
-        dispatch(searchProduct())
+export function searchProducts(query) {
+    return dispatch => {        
         axios.get(`http://localhost:3001/search/?s=${query}`)
             .then(res =>
                 dispatch({

@@ -13,52 +13,55 @@ import {
 import portada from "../imagenes/portada.jpg";
 import axios from 'axios';
 
+import AgregarAlCarrito from './AgregarAlCarrito'
+
+import {getCategories} from '../redux/actions/category';
+import {getProducts,getProductCategory} from '../redux/actions/productList';
+import { useDispatch,useSelector } from 'react-redux';
+let page = []; 
+let key = 0;
 function Home() {
 
-  const [active, setActive] = useState(1);
-  const [activeItem, setActiveItem] = useState("productos");
-  const [productos, setProductos] = useState([]);
-  const paginas = Math.ceil(productos.length / 6);
-  const [productPage, setProductPage] = useState([]);
-  const [categorias, setCategorias] = useState([]);
+  
+  const dispatch = useDispatch();
+  const [active, setActive] = useState(1);  
+  const [activeItem, setActiveItem] = useState("Todos Los Productos");
+  const productos = useSelector(state => state.productList.data) 
+  const paginas = productos &&  Math.ceil(productos.length / 6); 
+  const [productPage, setProductPage] = useState ([]);
+  const categorias = useSelector(state => state.categorias.data) 
+  
+    
+  useEffect(() => {  
+    dispatch(getCategories());
+    dispatch(getProducts());   
+  },[])
+  
+  console.log(productos)
 
-  useEffect(() => {
-    axios.get('http://localhost:3001/products')
-      .then(res => {
-        setProductos(res.data)
-        let page = [];
-        for (let i = 0; i < res.data.length; i += 6) {
-          let seccion = res.data.slice(i, i + 6);
-          page.push(seccion)
-        }
-        setProductPage(page)
-      });
-    axios.get('http://localhost:3001/products/category')
-      .then(res => {
-        setCategorias(res.data)
-      });
-  }, [])
 
   const handleItemClick = (e, { name }) => {
+    let page = []; 
     setActiveItem(name);
     let url = '';
     if (name === 'Todos Los Productos') {
-      url = 'http://localhost:3001/products';
+      dispatch(getProducts());
     } else {
-      url = `http://localhost:3001/products/category/${name}`;
-    }
-    axios.get(`${url}`)
-      .then(res => {
-        setProductos(res.data)
-        let page = [];
-        for (let i = 0; i < res.data.length; i += 6) {
-          let seccion = res.data.slice(i, i + 6);
-          page.push(seccion)
-        }
-        setProductPage(page)
-      });
-  };
 
+
+
+      dispatch (getProductCategory(name));      
+      setActive(1)
+    }
+    
+      for (let i = 0; i < productos.length; i += 6) {
+        let seccion = productos.slice(i, i + 6);
+        page.push(seccion)
+      }
+      setProductPage(page) 
+     
+
+  };
   const handleClick = (e, { activePage }) => {
     setActive(activePage);
   };
@@ -75,9 +78,9 @@ function Home() {
                 onClick={handleItemClick}
               />
             </Link>
-            {categorias.map((categoria) => (
+            {categorias && categorias.length > 0 && categorias.map((categoria,index) => (
               <Link to={`/${categoria.name}`}>
-                <Menu.Item
+                <Menu.Item key = {index}
                   name={categoria.name}
                   active={activeItem === categoria.name}
                   onClick={handleItemClick}
@@ -91,10 +94,12 @@ function Home() {
             <div className="home-content">
               <div className="home-productos">
                 <Card.Group>
-                  {productPage.length > 0 && productPage[active - 1].map((producto) => (
-                    <Card>
+
+                  {productPage.length > 0 && productPage[active - 1].map((producto) => (               
+                    <Card key = {key++}>
+
                       <Card.Content>
-                        <Image size="small" src={`http://localhost:3001/${producto.imagenes[0]}`} />
+                        {producto.imagenes && producto.imagenes.length > 0 && <Image size="small" src={`http://localhost:3001/${producto.imagenes[0]}`} />}
                         <Card.Header className="home-header">
                           {producto.name}
                         </Card.Header>
@@ -110,6 +115,9 @@ function Home() {
                               Ver Producto
                           </Button>
                           </Link>
+
+                          <AgregarAlCarrito producto={producto} precio={producto.price} cantidad={1} />
+
                           <Card.Header className="home-priceCard">
                             {`$ ${producto.price}`}
                           </Card.Header>
@@ -120,7 +128,7 @@ function Home() {
                 </Card.Group>
               </div>
               <div className="home-paginacion">
-                <Pagination
+                <Pagination key = {key++}
                   defaultActivePage={active}
                   onPageChange={handleClick}
                   firstItem={null}

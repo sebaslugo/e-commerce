@@ -5,8 +5,8 @@ import Form from './Form'
 import './ProductList.css'
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { axiosProducts, axiosCategories, axiosDeleteProducts, axiosEditProducts } from '../redux/actions/productList'
+import {getCategories} from '../redux/actions/category';
+import {  getProducts, deleteProducts } from '../redux/actions/productList'
 import store from '../redux/store/index';
 
 export default function ProudctList() {
@@ -15,7 +15,7 @@ export default function ProudctList() {
   const content = useSelector(state => state)
 
   const [productos, setProductos] = useState([])
-  const [categorias, setCategorias] = useState([])
+  const categorias = useSelector(state => state.categorias.data) 
   const [table, setTable] = useState({
     columns: [
       { title: 'Name', field: 'name' },
@@ -31,28 +31,27 @@ export default function ProudctList() {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
+    dispatch( getProducts());
     setOpen(false)
   }
   const handleOpen = (event, rowData) => {
 
     setOpen(true)
-    // if (!rowData.content) {
-    //   setProducto(rowData);
-    // }
-    // else {
-    //   setProducto({})
-    // }
 
-  }
+    if (!rowData.content) {
+      setProducto(rowData);
+    }
+    else {
+      setProducto({})
+    }
+
+
+  } 
 
   useEffect(() => {
-    dispatch(axiosProducts());
+    dispatch( getProducts());
+    dispatch(getCategories());
     store.subscribe(() => setProductos(store.getState().productList.data))
-    axios
-      .get('http://localhost:3001/products/category')
-      .then(res => {
-        setCategorias(res.data)
-      })
   }, [])
 
   return (
@@ -63,30 +62,21 @@ export default function ProudctList() {
         title="Product List"
         columns={table.columns}
         data={productos}
-        // actions={[
-        //   {
-        //     icon: 'edit',
-        //     // tooltip: 'Add Product',
-        //     onClick: (event, rowData) => handleOpen(event, rowData)
-        //   }
-        // ]}
+        actions={[
+          {
+            icon: 'edit',
+            // tooltip: 'Add Product',
+            onClick: (event, rowData) => handleOpen(event, rowData)
+          }
+        ]}
         editable={{
-          onRowUpdate: (newData, oldData) =>
-            setTimeout(() => {
-              dispatch(axiosEditProducts(newData))
-              refreshPage()
-            })
-          ,
           onRowDelete: (oldData) =>
             new Promise((resolve) => {
               setTimeout(() => {
                 resolve();
                 setTable((prevState) => {
-                  dispatch(axiosDeleteProducts(oldData))
+                  dispatch(deleteProducts(oldData))
                   refreshPage();
-                  // const data = [...prevState.data];
-                  // data.splice(data.indexOf(oldData), 1);
-                  // return { ...prevState, data };
                 });
               }, 600);
             }),

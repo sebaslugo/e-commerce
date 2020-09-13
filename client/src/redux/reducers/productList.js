@@ -1,4 +1,4 @@
-import { GET_PRODUCT, GET_CATEGORY, DELETE_PRODUCT, EDIT_PRODUCT } from '../consts/actionTypes.js';
+import { GET_PRODUCT, GET_CATEGORY, DELETE_PRODUCT, EDIT_PRODUCT, GET_PRODUCT_CATEGORY} from '../consts/actionTypes.js';
 
 /* ------------------------------------------------------------------------------- */
 /* INITIAL STATE */
@@ -14,17 +14,17 @@ export default function productList(state = initialState, action) {
                 data: action.payload
             }
             break;
-        case GET_CATEGORY:
-            return {
-                ...state,
-                data: action.payload
-            }
         case DELETE_PRODUCT:
             return {
                 ...state,
                 data: action.payload
             }
         case EDIT_PRODUCT:
+            return {
+                ...state,
+                data: action.payload
+            }
+        case GET_PRODUCT_CATEGORY:
             return {
                 ...state,
                 data: action.payload

@@ -5,62 +5,33 @@ import axios from 'axios';
 import { GET_CATEGORY, DELETE_CATEGORY, CREATE_CATEGORY, EDIT_CATEGORY } from '../consts/actionTypes';
 
 
-export function getCategories(request) {
-    return {
-        type: GET_CATEGORY,
-        categories: request
-    }
-}
-
-export function fetchCategories() {
-    return dispatch => {
-        dispatch(getCategories())
-        axios.get("http://localhost:3001/products/category")
-            .then(res =>
-                dispatch({
-                    type: GET_CATEGORY,
-                    payload: res.data
-                })
-            );
+export function getCategories() {
+    return function(dispatch) {
+        return axios.get("http://localhost:3001/products/category")
+          .then(response =>{
+            console.log(response);
+            dispatch({ type: GET_CATEGORY, payload: response.data });
+          })
+          
     };
-}
 
-export function delCategory(request) {
-    return {
-        type: DELETE_CATEGORY,
-        categories: request
-    }
 }
 
 export function deleteCategory(oldData) {
-    return dispatch => {
-        dispatch(delCategory())
-        axios.delete(`http://localhost:3001/products/category/${oldData.id}`)
-            .then(res =>
-                dispatch({
-                    type: DELETE_CATEGORY,
-                    payload: res.data
-                })
-            );
-    }
+    return function(dispatch) {
+        return axios.delete(`http://localhost:3001/products/category/${oldData.id}`)
+          .then(response =>{
+            console.log(response);
+            dispatch({ type: DELETE_CATEGORY, payload: response.data });
+          })
+          
+    };
 }
 
-export function postCategories(request) {
-    try {
-        return {
-            type: CREATE_CATEGORY,
 
-            categories: request
-        }
-    } catch (err) {
-        console.error(err.message);
-    }
-}
-
-export function axiosPostCategories(newData) {    
-    return dispatch => {        
-        dispatch(postCategories())
-        axios({
+export function postCategories(newData) {
+    return function(dispatch) {
+        return axios({
             method: 'POST',
             url: "http://localhost:3001/products/category",
             data: {
@@ -75,20 +46,14 @@ export function axiosPostCategories(newData) {
         }
         )
         .catch(err => console.error(err.message));
+          
     };
+   
 }
 
-export function putCategories(request) {
-    return {
-        type: EDIT_CATEGORY,
-        categories: request
-    }
-}
-
-export function axiosPutCategories(newData, oldData) {
-    return dispatch => {    
-        dispatch(putCategories());
-        axios({
+export function putCategories(newData, oldData) {
+    return function(dispatch) {
+        return axios({
             method: 'PUT',
             url: `http://localhost:3001/products/category/${newData.id}`,
             data: {
@@ -100,8 +65,40 @@ export function axiosPutCategories(newData, oldData) {
                 type: EDIT_CATEGORY,
                 payload: res.data.name
             })            
-        }
-        )
+        })
         .catch(err => console.error(err.message));
+        };   
+}
+
+export function deleteProductCategory (productId,categoryId) {
+    return function(dispatch) {
+        return axios
+        .delete(`http://localhost:3001/products/${productId}/category/${categoryId}`)
+        .then(function (response) {
+            //handle success
+            alert('se elimino el producto de la categoria')
+        })
+        .catch(function (response) {
+            //handle error
+            alert('ups,intenta de nuevo')
+        }); 
+          
     };
 }
+
+export function addProductCategory (productId,categoryId) {
+    return function(dispatch) {
+        return axios
+        .post(`http://localhost:3001/products/${productId}/category/${categoryId}`)
+        .then(function (response) {
+            //handle success
+            alert('se agrego el producto a la categoria')
+        })
+        .catch(function (response) {
+            //handle error
+            alert(response)
+        }); 
+          
+    };
+}
+

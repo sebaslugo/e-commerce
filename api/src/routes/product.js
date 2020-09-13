@@ -217,20 +217,23 @@ server.post('/', upload.array('image', 5), (req, res) => {
 		return res.status(400).json({ message: 'El producto no se puede crear si no envía todas las propiedades' });
 	}
 });
-
 /* ------------------------------------------------------------------------------- */
 /* S26: Crear ruta para Modificar Producto */
 /* ------------------------------------------------------------------------------- */
 server.put('/:id', upload.array('image', 5), (req, res, next) => {
 	const { id } = req.params;
-	const { name, description, price, stock } = req.body;
-	let images = 'sin_imagen.jpg';
+	const { name, description, price, stock,imagenes } = req.body;
+	let images = '';
 	if (req.files) {
 		if (req.files.length > 0) {
 			images = req.files.map(image => {
 				return image.filename;
 			}).join();
 		}
+	}
+	console.log(imagenes)
+	if(imagenes){
+		images=images + ',' + imagenes
 	}
 	Product.update(
 		{ name, description, price, stock, image: images },

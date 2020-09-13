@@ -3,7 +3,11 @@
     flex-direction: column;
     
 }
-
+.ui.small.image, .ui.small.images .image, .ui.small.images img, .ui.small.images svg {
+    width: 150px;
+    height: 170px;
+    font-size: .92857143rem;
+}
 .w-100 {
     width: 100%!important;
     height: 300px;
