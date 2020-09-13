@@ -8,8 +8,5 @@ module.exports = (sequelize) => {
     quantity: {
       type: DataTypes.INTEGER,
     },
-    total:{
-      type:DataTypes.INTEGER,
-    },
   });
 };

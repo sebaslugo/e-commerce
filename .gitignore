@@ -1,8 +1,3 @@
-# Images
-*.jpeg
-*.png
-*.jpg
-
 # Logs
 logs
 *.log

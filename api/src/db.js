@@ -46,9 +46,7 @@ Product.belongsToMany(Order, { through: OrderList});
 
 Order.belongsTo(User,{as:'user'}); 
 
-OrderList.addHook('afterValidate', (orderList) => {
-  orderList.total = orderList.price * orderList.quantity;
-});
+
 
 
 module.exports = {

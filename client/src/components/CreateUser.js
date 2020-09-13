@@ -14,7 +14,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { yellow, purple, grey } from '@material-ui/core/colors';
 import { useDispatch, useSelector } from 'react-redux';
-import axiosPostCreateUser from '../redux/actions/createUser.js'
+import {postCreateUser} from '../redux/actions/createUser.js'
 
 
 const ColorButton = withStyles((theme) => ({
@@ -88,7 +88,7 @@ export default function CreateUser() {
 
     const enviarDatos = (event) => {
         console.log(datos)
-        dispatch(axiosPostCreateUser(datos))
+        dispatch(postCreateUser(datos))
     }
 
     return (
