@@ -17,26 +17,9 @@ export function getProducts(request) {
           })
           
     };
-    /* return {
-        type: GET_PRODUCT,
-        categories: request
-    } */
+   
 }
 
-/* export function axiosProducts() {
- 
-    return dispatch => {
-        dispatch(getProducts())
-        axios.get("http://localhost:3001/products")
-            .then(res => {  
-                dispatch({
-                    type: GET_PRODUCT,
-                    payload: res.data
-                })
-            }
-            );
-    };
-} */
 
 
 /// tods los productos de una categoria
@@ -50,10 +33,7 @@ export function getProductCategory(name){
           })
           
     };
-    /* return {
-        type: GET_PRODUCT_CATEGORY,
-        categories: request
-    } */
+  
 }
 
 
@@ -62,27 +42,7 @@ export function getProductCategory(name){
 /*GET CATEGORIES */
 /*--------------------------------------------------------------------------------------- */
 
-export function getCategories(request) {
-    return {
-        type: GET_CATEGORY,
-        categories: request
-    }
-}
 
-export function axiosCategories() {
-    return dispatch => {
-        dispatch(getCategories())
-        axios.get("http://localhost:3001/products/category")
-            .then(res => {
-                console.log('ESTOY EN EL .THEN de categories', res)
-                dispatch({
-                    type: GET_CATEGORY,
-                    payload: res.data
-                })
-            }
-            );
-    };
-}
 /*--------------------------------------------------------------------------------------- */
 /*DELETE PRODUCTS */
 /*--------------------------------------------------------------------------------------- */

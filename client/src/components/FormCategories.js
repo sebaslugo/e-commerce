@@ -7,7 +7,7 @@ import "./FormCategories.css";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getCategories, deleteCategory, axiosPostCategories, axiosPutCategories } from '../redux/actions/category.js';
+import { getCategories, deleteCategory, postCategories, putCategories } from '../redux/actions/category.js';
 import "./FormCategories.css";
 import store from '../redux/store/index';
 
@@ -30,7 +30,7 @@ export default function MaterialTableDemo() {
   console.log(data);
 
   const handleRowAdd = (newData, resolve) => {
-    dispatch(axiosPostCategories(newData));
+    dispatch(postCategories(newData));
     setTimeout(() => {
       let dataToAdd = [...data];
       dataToAdd.push(newData);
@@ -40,7 +40,7 @@ export default function MaterialTableDemo() {
   }
 
   const handleRowUpdate = (newData, oldData, resolve) => {
-    dispatch(axiosPutCategories(newData, oldData));
+    dispatch(putCategories(newData, oldData));
     setTimeout(() => {
       const dataUpdate = [...data];
       const index = oldData.tableData.id;

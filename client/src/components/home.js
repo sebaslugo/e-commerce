@@ -15,27 +15,22 @@ import axios from 'axios';
 import {getCategories} from '../redux/actions/category';
 import {getProducts,getProductCategory} from '../redux/actions/productList';
 import store from '../redux/store/index';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 let page = []; 
 let key = 0;
 function Home() {
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);  
   const [activeItem, setActiveItem] = useState("Todos Los Productos");
-  const [productos, setProductos] = useState (store.getState); 
+  const productos = useSelector(state => state.productList.data) 
   const paginas = productos &&  Math.ceil(productos.length / 6); 
   const [productPage, setProductPage] = useState ([]);
-  const [categorias, setCategorias] = useState(store.getState);
+  const categorias = useSelector(state => state.categorias.data) 
   
     
   useEffect(() => {  
     dispatch(getCategories());
-    dispatch(getProducts())
-    store.subscribe(()=>{
-        setCategorias(() => store.getState().categorias.data)
-        setProductos(() => store.getState().productList.data)
-    });
-       
+    dispatch(getProducts())     
   },[])
   
   console.log(productos)
@@ -45,12 +40,10 @@ function Home() {
     let url = '';
     if (name === 'Todos Los Productos') {
       dispatch(getProducts())
-      /* getProductos()  */ 
+      setActive(1)
   
     } else {
-      /* url = `http://localhost:3001/products/category/${ name } */
-      dispatch (getProductCategory(name));
-      
+      dispatch (getProductCategory(name));      
     }
     
       for (let i = 0; i < productos.length; i += 6) {
@@ -58,16 +51,7 @@ function Home() {
         page.push(seccion)
       }
       setProductPage(page) 
-     /*  axios.get(`${url}`)
-      .then(res => {
-      setProductos(res.data)
-      let page = [];    
-      for (let i = 0; i < res.data.length; i += 6) {
-        let seccion = res.data.slice(i, i + 6);
-        page.push(seccion)
-      }
-      setProductPage(page) 
-     }); */
+     
   };
   const handleClick = (e, { activePage }) => {
     setActive(activePage);
@@ -85,9 +69,9 @@ function Home() {
                 onClick={handleItemClick}
               />
             </Link>
-            {categorias.length > 0 && categorias.map((categoria) => (
+            {categorias && categorias.length > 0 && categorias.map((categoria,index) => (
               <Link to={`/${categoria.name}`}>
-                <Menu.Item key = {key++}
+                <Menu.Item key = {index}
                   name={categoria.name}
                   active={activeItem === categoria.name}
                   onClick={handleItemClick}
@@ -104,7 +88,7 @@ function Home() {
                   {productPage.length > 0 && productPage[active - 1].map((producto) => (               
                     <Card key = {key++}>
                       <Card.Content>
-                        <Image size="small" src={`http://localhost:3001/${producto.imagenes[0]}`} />
+                        {producto.imagenes && producto.imagenes.length > 0 && <Image size="small" src={`http://localhost:3001/${producto.imagenes[0]}`} />}
                         <Card.Header className="home-header">
                           {producto.name}
                         </Card.Header>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { axiosGetOrders } from '../redux/actions/orden';
+import { useDispatch,useSelector } from 'react-redux';
+import { getOrders } from '../redux/actions/orden';
 import store from '../redux/store';
 import { Container, Table, Button } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
@@ -11,7 +11,7 @@ export default function OrderList() {
     const [orders, setOrders] = useState();
 
     useEffect(() => {
-        dispatch(axiosGetOrders());
+        dispatch(getOrders());
         store.subscribe(() => setOrders(store.getState().orden.data));
     }, []);
 
@@ -33,7 +33,7 @@ export default function OrderList() {
                 </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                {orders && orders.map((order, index) => (
+                {orders && orders.length > 0 && orders.map((order, index) => (
                     <Table.Row key={index}>
                     <Table.Cell>{order.id}</Table.Cell>
                     <Table.Cell>{order.status}</Table.Cell>
