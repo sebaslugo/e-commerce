@@ -1,4 +1,6 @@
 const { DataTypes } = require('sequelize');
+const { User } = require('../db.js');
+
 
 module.exports = (sequelize) => {
 
@@ -6,15 +8,13 @@ module.exports = (sequelize) => {
     
     sequelize.define('order', {
         status: {
-            type: DataTypes.ENUM('creada', 'procesando', 'cancelada', 'completa'),
-            defaultValue: 'procesando',
+            type: DataTypes.ENUM('creada', 'procesando', 'cancelada', 'completa','carrito'),
+            defaultValue: 'carrito',
         },
-        total: {
-            type: DataTypes.DECIMAL,
-            validate:{isDecimal: true},
-            allownull: false
-        }
 
     });
 
+
+    
+    
 };

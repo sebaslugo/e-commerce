@@ -20,17 +20,21 @@
     flex: 1;
 }
 .header__searchInput{
-    height: 21px;
+    height: 25px;
     padding: 10px;
     border: none;
-    width: 60%;
-    margin-left: 150px;
+    width: 40%;
+    margin-left: 300px;
 }
+
+.header__searchButton {
+    padding: 0px!important;
+    background-color: #ff0!important;
+    height: 25px!important;
+}
+
 .header__searchIcon{
-    padding: 3px;
-    height: 21px;
-    margin-bottom: 3px;
-    background-color: yellow;
+    margin-top:1px;
     color: black;
 }
 .header__nav{

@@ -12,53 +12,48 @@ import {
 } from "semantic-ui-react";
 import portada from "../imagenes/portada.jpg";
 import axios from 'axios';
-
+import {getCategories} from '../redux/actions/category';
+import {getProducts,getProductCategory} from '../redux/actions/productList';
+import store from '../redux/store/index';
+import { useDispatch,useSelector} from 'react-redux';
+let page = []; 
+let key = 0;
 function Home() {
-  
+  const dispatch = useDispatch();
   const [active, setActive] = useState(1);  
-  const [activeItem, setActiveItem] = useState("productos");
-  const [productos, setProductos] = useState ([]); 
-  const paginas = Math.ceil(productos.length / 6); 
+  const [activeItem, setActiveItem] = useState("Todos Los Productos");
+  /* const [productos, setProductos] = useState (store.getState); */
+  const productos = useSelector(store => store.productList.data)
+  const paginas = productos &&  Math.ceil(productos.length / 6); 
   const [productPage, setProductPage] = useState ([]);
-  const [categorias, setCategorias] = useState([]);
-
-  useEffect(() => {
-    axios.get('http://localhost:3001/products')
-    .then(res => {
-      setProductos(res.data)
-      let page = [];    
-      for (let i = 0; i < res.data.length; i += 6) {
-        let seccion = res.data.slice(i, i + 6);
-        page.push(seccion)
-      }
-      setProductPage(page)
-    });
-    axios.get('http://localhost:3001/products/category')
-      .then(res => {          
-        setCategorias(res.data)
-    });
+  const categorias = useSelector(store => store.categorias.data)
+  
+    
+  useEffect(() => {  
+    dispatch(getCategories());
+    dispatch(getProducts())
+     
   },[])
   
+  console.log(categorias)
   const handleItemClick = (e, { name }) => {
+    let page = []; 
     setActiveItem(name);
     let url = '';
     if (name === 'Todos Los Productos') {
-      url = 'http://localhost:3001/products';
+      dispatch(getProducts())
+        
     } else {
-      url = `http://localhost:3001/products/category/${ name }`;
+      dispatch (getProductCategory(name));
+      setActive(1);
     }
-    axios.get(`${url}`)
-      .then(res => {
-        setProductos(res.data)
-        let page = [];    
-        for (let i = 0; i < res.data.length; i += 6) {
-          let seccion = res.data.slice(i, i + 6);
-          page.push(seccion)
-        }
-        setProductPage(page)
-     });
+    
+      for (let i = 0; i < productos.length; i += 6) {
+        let seccion = productos.slice(i, i + 6);
+        page.push(seccion)
+      }
+      setProductPage(page) 
   };
-
   const handleClick = (e, { activePage }) => {
     setActive(activePage);
   };
@@ -75,9 +70,9 @@ function Home() {
                 onClick={handleItemClick}
               />
             </Link>
-            {categorias.map((categoria) => (
+            {categorias && categorias.length>0 && categorias.map((categoria) => (
               <Link to={`/${categoria.name}`}>
-                <Menu.Item
+                <Menu.Item key = {key++}
                   name={categoria.name}
                   active={activeItem === categoria.name}
                   onClick={handleItemClick}
@@ -92,7 +87,7 @@ function Home() {
               <div className="home-productos">
                 <Card.Group>
                   {productPage.length > 0 && productPage[active - 1].map((producto) => (               
-                    <Card>
+                    <Card key = {key++}>
                       <Card.Content>
                         <Image size="small" src={`http://localhost:3001/${producto.imagenes[0]}`} />
                         <Card.Header className="home-header">
@@ -120,7 +115,7 @@ function Home() {
                 </Card.Group>
               </div>
               <div className="home-paginacion">
-                <Pagination
+                <Pagination key = {key++}
                   defaultActivePage={active}
                   onPageChange={handleClick}
                   firstItem={null}

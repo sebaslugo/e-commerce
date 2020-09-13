@@ -2,88 +2,83 @@ import React from "react";
 import MaterialTable from "material-table";
 import "@material-ui/icons";
 import "@material-ui/core/styles";
-import "./FormCategories.css"
-// var _ = require('lodash');
-import { useEffect, useState } from 'react';
-import axios from 'axios'
 
+import "./FormCategories.css";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { getCategories, deleteCategory, axiosPostCategories, axiosPutCategories } from '../redux/actions/category.js';
+import "./FormCategories.css";
+import store from '../redux/store/index';
 
 export default function MaterialTableDemo() {
-  const [cat, setCat] = useState();
-  const [state, setState] = React.useState({
+  const dispatch = useDispatch();
+  // const content = useSelector(state => state.categorias.data);
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    dispatch(getCategories());
+    store.subscribe(() => setData(store.getState().categorias.data))
+  }, []);
+
+  const [column, setColumn] = useState({
     columns: [
       { title: "Name", field: "name" },
     ],
   });
-  useEffect(() => {
-    axios
-      .get('http://localhost:3001/products/category')
-      .then(res => {
-        setCat(res.data)
-      })
-  }, [])
-  const refreshPage = () => {
-    window.location.reload(false)
+
+  console.log(data);
+
+  const handleRowAdd = (newData, resolve) => {
+    dispatch(axiosPostCategories(newData));
+    setTimeout(() => {
+      let dataToAdd = [...data];
+      dataToAdd.push(newData);
+      setData(dataToAdd);
+      resolve();    
+    }, 600); 
   }
 
+  const handleRowUpdate = (newData, oldData, resolve) => {
+    dispatch(axiosPutCategories(newData, oldData));
+    setTimeout(() => {
+      const dataUpdate = [...data];
+      const index = oldData.tableData.id;
+      dataUpdate[index] = newData;
+      setData([...dataUpdate]);
+      resolve();
+    }, 600);
+  }
+
+  const handleRowDelete = (oldData, resolve) => {
+    dispatch(deleteCategory(oldData));
+    setTimeout(() => {
+      const dataDelete = [...data];
+      const index = oldData.tableData.id;
+      dataDelete.splice(index, 1);
+      setData([...dataDelete]);
+      resolve();
+    }, 600);    
+  }
 
   return (
     <div className="FormCategories">
       <MaterialTable
         title="Categories List"
-        columns={state.columns}
-        data={cat}
+        columns={column.columns}
+        data={data}
         editable={{
           onRowAdd: (newData) =>
             new Promise((resolve) => {
-              console.log(newData)
-              setTimeout(() => {
-                resolve();
-                axios({
-                  method: 'post',
-                  url: 'http://localhost:3001/products/category',
-                  data: {
-                    name: newData.name
-                  }
-                }).then(res =>
-                  console.log(res))
-                console.log(newData)
-                refreshPage();
-              }, 600);
+              handleRowAdd(newData, resolve)
             }),
-
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve) => {
-              setTimeout(() => {
-                resolve();
-                console.log(newData)
-                console.log(oldData)
-                axios({
-                  method: 'PUT',
-                  url: `http://localhost:3001/products/category/${oldData.id}`,
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  data: {
-                    name: newData.name
-                  }
-                }).then(res =>
-                  console.log(res))
-                refreshPage();
-              }, 600);
-            }),
+              handleRowUpdate(newData, oldData, resolve);
+            }),            
           onRowDelete: (oldData) =>
             new Promise((resolve) => {
-              setTimeout(() => {
-                axios({
-                  method: 'DELETE',
-                  url: `http://localhost:3001/products/category/${oldData.id}`,
-                }).then(res => {
-                  console.log(res)
-                  setCat(res.data)
-                })
-                refreshPage();
-              }, 600);
+              handleRowDelete(oldData, resolve);
             }),
         }}
       />

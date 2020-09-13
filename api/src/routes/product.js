@@ -8,19 +8,19 @@ const multer = require('multer');
 /* ------------------------------------------------------------------------------- */
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, process.cwd() + "/images")//esto te trae la direccion del servidor
-    },
-    filename: (req, file, cb) => {
-        cb(null, 'img' + '-' + Date.now() + file.originalname);
-    }
+	destination: (req, file, cb) => {
+		cb(null, process.cwd() + "/images")//esto te trae la direccion del servidor
+	},
+	filename: (req, file, cb) => {
+		cb(null, 'img' + '-' + Date.now() + file.originalname);
+	}
 });
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
-        cb(null, true);
-    } else {
-        cb(null, false);
-    }
+	if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
+		cb(null, true);
+	} else {
+		cb(null, false);
+	}
 }
 const upload = multer({ storage, fileFilter });
 
@@ -43,8 +43,8 @@ server.post('/:idProducto/category/:idCategoria', (req, res, next) => {
 	prodcat.create({
 		productId: idProducto, categoryId: idCategoria
 	})
-	.then(() => res.status(200).json({message: 'Categoría ID: '+ idCategoria +', asignada al producto ID: ' + idProducto + ' exitosamente.'}))
-	.catch(err => res.status(404).json(err.message));
+		.then(() => res.status(200).json({ message: 'Categoría ID: ' + idCategoria + ', asignada al producto ID: ' + idProducto + ' exitosamente.' }))
+		.catch(err => res.status(404).json(err.message));
 });
 
 /* ------------------------------------------------------------------------------- */
@@ -57,8 +57,8 @@ server.delete('/:idProducto/category/:idCategoria', (req, res, next) => {
 			productId: idProducto, categoryId: idCategoria
 		}
 	})
-	.then(() => res.status(200).json({message: 'Categoría ID: '+ idCategoria +', eliminada del producto ID: ' + idProducto + ' exitosamente.'}))
-	.catch(err => res.status(404).json(err.message));
+		.then(() => res.status(200).json({ message: 'Categoría ID: ' + idCategoria + ', eliminada del producto ID: ' + idProducto + ' exitosamente.' }))
+		.catch(err => res.status(404).json(err.message));
 });
 
 /* ------------------------------------------------------------------------------- */
@@ -72,8 +72,8 @@ server.post('/category', (req, res, next) => {
 			description: description || 'Sin descripción'
 		}
 	})
-	.then(() => res.status(200).json({message: 'La categoría: ' + name + ', ha sido creada exitosamente.'}))
-	.catch(err => res.status(400).json(err.message));
+		.then(() => res.status(200).json({ message: 'La categoría: ' + name + ', ha sido creada exitosamente.' }))
+		.catch(err => res.status(400).json(err.message));
 });
 
 /* ------------------------------------------------------------------------------- */
@@ -86,6 +86,7 @@ server.delete('/category/:id', (req, res, next) => {
 			id: id
 		}
 	})
+
 	.then(producto => {
 		if (producto > 0) {
 			return res.status(200).json({message: 'La categoría ID: ' + id + ', ha sido eliminada correctamente.'});
@@ -93,7 +94,8 @@ server.delete('/category/:id', (req, res, next) => {
 			return res.json({message: 'El ID: ' + id + ', no corresponde a ninguna categoría en existencia.'});
 		}
 	})
-	.catch(err => res.send(400).json(err.message));	
+	.catch(err => res.status(400).json(err.message));	
+
 });
 
 /* ------------------------------------------------------------------------------- */
@@ -107,8 +109,8 @@ server.put("/category/:id", (req, res, next) => {
 		{ name, description },
 		{ where: { id: id } }
 	)
-	.then(() => res.status(201).json({message: 'La categoría: ' + name + ', ha sido actualizada exitosamente.'}))
-	.catch(err => res.status(400).json(err.message));
+		.then(() => res.status(201).json({ message: 'La categoría: ' + name + ', ha sido actualizada exitosamente.' }))
+		.catch(err => res.status(400).json(err.message));
 });
 
 /* ------------------------------------------------------------------------------- */
@@ -140,7 +142,7 @@ server.get('/category/:nameCat', async (req, res, next) => {
 			}
 		});
 		if (!listaProductos) {
-			return res.status(404).json({message: 'No existen productos para la categoría: ' + nameCat});
+			return res.status(404).json({ message: 'No existen productos para la categoría: ' + nameCat });
 		}
 		const idProductos = listaProductos.map((producto) => {
 			return producto['productId']
@@ -180,7 +182,7 @@ server.get('/:id', async (req, res, next) => {
 		}
 	});
 	if (!producto) {
-		return res.status(404).json({err: 'El ID: ' + id + ', no corresponde a un producto existente.'});
+		return res.status(404).json({ err: 'El ID: ' + id + ', no corresponde a un producto existente.' });
 	}
 	return res.json({ producto, categorias });
 });
@@ -190,9 +192,9 @@ server.get('/:id', async (req, res, next) => {
 /* ------------------------------------------------------------------------------- */
 server.post('/', upload.array('image', 5), (req, res) => {
 	const { name, description, price, stock } = req.body
-	console.log(req.body);	
+	console.log(req.body);
 	if (name && description && price && stock) {
-		
+
 		let images = 'sin_imagen.jpg';
 		// dentro del req.file esta la propiedad que nos llega desde el front por lo tanto accedo ahi para consultar el length de "file" que es donde vienen las imagenes
 		if (req.files.length > 0) {
@@ -207,12 +209,12 @@ server.post('/', upload.array('image', 5), (req, res) => {
 			stock: stock,
 			image: images
 		})
-		.then(product => {
-			return res.status(200).json(product);
-		})
-		.catch(err => res.status(400).json(err.message));
+			.then(product => {
+				return res.status(200).json(product);
+			})
+			.catch(err => res.status(400).json(err.message));
 	} else {
-		return res.status(400).json({message:'El producto no se puede crear si no envía todas las propiedades'});
+		return res.status(400).json({ message: 'El producto no se puede crear si no envía todas las propiedades' });
 	}
 });
 
@@ -221,18 +223,24 @@ server.post('/', upload.array('image', 5), (req, res) => {
 /* ------------------------------------------------------------------------------- */
 server.put('/:id', (req, res, next) => {
 	const { id } = req.params;
-	const { name, description, price, stock} = req.body;
-	if (req.files.length > 0) {
-		images = req.files.map(image => {
-			return image.filename;
-		}).join(); 
+
+	const { name, description, price, stock } = req.body;
+	let images = 'sin_imagen.jpg';
+	if (req.files) {
+		if (req.files.length > 0) {
+			images = req.files.map(image => {
+				return image.filename;
+			}).join();
+		}
+
 	}
 	Product.update(
 		{ name, description, price, stock, image },
 		{ returning: true, where: { id: id } }
 	)
-	.then(([rowsUpdated, [productUpdate]]) => res.status(201).json(productUpdate))
-	.catch(err => res.status(400).json(err.message));
+		// .then(product => res.status(200).json(product))
+		.then(([rowsUpdated, [productUpdate]]) => res.status(201).json(productUpdate))
+		.catch(err => res.status(400).json(err.message));
 });
 
 /* ------------------------------------------------------------------------------- */
@@ -245,14 +253,14 @@ server.delete('/:id', (req, res, next) => {
 			id: id
 		}
 	})
-	.then(producto => {
-		if (producto > 0) {
-			return res.status(200).json({message: 'El producto ID: ' + id + ', ha sido eliminado correctamente.'});
-		} else {
-			return res.json({message: 'El ID: ' + id + ', no corresponde a ningún producto en existencia.'});
-		}
-	})
-	.catch(err => res.send(400).json(err.message));		
+		.then(producto => {
+			if (producto > 0) {
+				return res.status(200).json({ message: 'El producto ID: ' + id + ', ha sido eliminado correctamente.' });
+			} else {
+				return res.json({ message: 'El ID: ' + id + ', no corresponde a ningún producto en existencia.' });
+			}
+		})
+		.catch(err => res.send(400).json(err.message));
 });
 
 module.exports = server;
