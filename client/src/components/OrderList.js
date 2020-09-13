@@ -33,7 +33,7 @@ export default function OrderList() {
                 </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                {orders && orders.map((order, index) => (
+                {orders && orders.length > 0 && orders.map((order, index) => (
                     <Table.Row key={index}>
                     <Table.Cell>{order.id}</Table.Cell>
                     <Table.Cell>{order.status}</Table.Cell>

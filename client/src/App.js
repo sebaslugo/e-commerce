@@ -14,6 +14,7 @@ import OrderList from "./components/OrderList";
 import UserLogin from "./components/LoginUser";
 import CreateUser from "./components/CreateUser";
 import Results from './components/ResultsSearch';
+import Admin from './components/Admin';
 
 function App() {
   
@@ -25,7 +26,8 @@ function App() {
         <Route exact path="/" component={Home}></Route>
         <Route exact path="/:category" component={Home}></Route>
         <Route exact path="/Producto/:id" component={Producto} />
-        <Route exact path="/search/results" component={Results} />    
+        <Route exact path="/search/results" component={Results} />
+        <Route exact path="/Admin/panel" component={Admin} />   
         <Route exact path="/Admin/products" component={ProducList} />
         <Route exact path="/Admin/categories" component={FormCategories} />
         <Route exact path="/Admin/order/:id" component={Orden} />
