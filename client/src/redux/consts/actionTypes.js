@@ -10,13 +10,9 @@ export const DELETE_CATEGORY = 'DELETE_CATEGORY';
 export const GET_CATEGORY = 'GET_CATEGORY';
 
 
-
-
 /* ------------------------------------------------------------------------------- */
-/* ACTIONS TYPE PRODUCTO */
+/* ACTIONS TYPE PRODUCTO CATEGORY */
 /* ------------------------------------------------------------------------------- */
-// export const GET_PRODUCTO = 'GET_PRODUCT';
-
 export const GET_PRODUCT_CATEGORY = 'GET_PRODUCT_CATEGORY';
 
 /* ------------------------------------------------------------------------------- */
@@ -40,5 +36,6 @@ export const CREATE_USER = 'CREATE_USER'
 // VARIABLES DE ACTION ORDEN
 
 export const  GET_ORDEN = 'GET_ORDEN';
+export const GET_ORDERS = 'GET_ORDERS';
 
 
