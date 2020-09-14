@@ -9,9 +9,9 @@ import {
   TextArea,
 } from 'semantic-ui-react'
 import axios from 'axios';
-import { getProducts, postProduct,editProduct  } from '../redux/actions/producto.js'
-import {deleteProductCategory,addProductCategory} from '../redux/actions/category'
-import store from '../redux/store/index';
+import { getProducts, postProduct,editProduct  } from '../../redux/actions/producto.js'
+import {deleteProductCategory,addProductCategory} from '../../redux/actions/category'
+import store from '../../redux/store/index';
 import { useDispatch,useSelector } from 'react-redux';
 
 

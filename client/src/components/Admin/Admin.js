@@ -5,9 +5,9 @@ import React from 'react';
 import { Container, Card, Icon, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-import products from '../imagenes/products.jpg';
-import categories from '../imagenes/categories.jpg';
-import orderlist from '../imagenes/orderlist.jpg';
+import products from '../../imagenes/products.jpg';
+import categories from '../../imagenes/categories.jpg';
+import orderlist from '../../imagenes/orderlist.jpg';
 
 export const Admin = () => {
     return (
