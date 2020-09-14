@@ -4,18 +4,18 @@ import  '@material-ui/core/styles';
 import { Route, BrowserRouter as Router } from "react-router-dom";
 
 import "./App.css";
-import Producto from "./components/producto";
-import ProducList from "./components/ProducList";
-import FormCategories from "./components/FormCategories"
-import Home from "./components/home";
+import Producto from "./components/Producto/producto";
+import ProducList from "./components/Admin/ProducList";
+import FormCategories from "./components/Admin/FormCategories"
+import Home from "./components/Home/home";
 import Header from "./components/Header";
-import Orden from "./components/Orden";
-import OrderList from "./components/OrderList";
+import Orden from "./components/Admin/Orden";
+import OrderList from "./components/Admin/OrderList";
 import UserLogin from "./components/LoginUser";
 import CreateUser from "./components/CreateUser";
 import Results from './components/ResultsSearch';
 import ShoppingCart from './components/ShoppingCart';
-import Admin from './components/Admin';
+import Admin from './components/Admin/Admin';
 
 
 function App() {

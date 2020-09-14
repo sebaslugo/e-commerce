@@ -6,9 +6,9 @@ import { Container } from 'semantic-ui-react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getCategories, deleteCategory, postCategories, putCategories } from '../redux/actions/category.js';
+import { getCategories, deleteCategory, postCategories, putCategories } from '../../redux/actions/category.js';
 
-import store from '../redux/store/index';
+import store from '../../redux/store/index';
 
 export default function MaterialTableDemo() {
   const dispatch = useDispatch();

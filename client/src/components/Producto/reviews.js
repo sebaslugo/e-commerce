@@ -1,5 +1,5 @@
 import React from 'react'
-import user from '../imagenes/user.jpg'
+import user from '../../imagenes/user.jpg'
 import { Button, Icon, Label,Form, TextArea,Feed,Rating  } from 'semantic-ui-react'
 
 const Reviews = () => (
