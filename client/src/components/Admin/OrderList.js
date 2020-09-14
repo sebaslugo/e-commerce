@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
-import { getOrders } from '../redux/actions/orden';
-import store from '../redux/store';
+import { getOrders } from '../../redux/actions/orden';
+import store from '../../redux/store';
 import { Container, Table, Button } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
 
