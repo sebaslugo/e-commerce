@@ -9,22 +9,16 @@ import agregarAlCarrito from '../redux/actions/agregarAlCarrito'
 export default function AgregarAlCarrito({ producto, precio, cantidad }) {
     const dispatch = useDispatch();
     // const content = useSelector(state => state)
-    const [datos, setDatos] = useState({
-        idProducto: '',
-        price: '',
-        quantity: ''
-    })
+    
     const enviarDatos = (event) => {
-        setDatos({
-            idProducto: producto.id,
-            price: precio,
-            quantity: cantidad
-        })
-        dispatch(agregarAlCarrito(datos))
-        console.log(datos);
-        console.log('muestro el producto:', producto.id)
-        console.log('Muestra el price', precio)
-        console.log('Muestra la cantidad;', cantidad)
+        
+        let product = {
+            productId:producto.id,
+            price:parseInt(precio),
+            quantity:parseInt(cantidad)
+        }
+        dispatch(agregarAlCarrito(product))
+        
 
 
     }

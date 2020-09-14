@@ -223,7 +223,7 @@ server.post('/', upload.array('image', 5), (req, res) => {
 server.put('/:id', upload.array('image', 5), (req, res, next) => {
 	const { id } = req.params;
 	const { name, description, price, stock,imagenes } = req.body;
-	let images = '';
+	let images='';
 	if (req.files) {
 		if (req.files.length > 0) {
 			images = req.files.map(image => {
@@ -233,7 +233,13 @@ server.put('/:id', upload.array('image', 5), (req, res, next) => {
 	}
 	console.log(imagenes)
 	if(imagenes){
-		images=images + ',' + imagenes
+		if(images){
+			images=images + ',' + imagenes
+		}
+		else{
+			images=imagenes
+		}
+		
 	}
 	Product.update(
 		{ name, description, price, stock, image: images },

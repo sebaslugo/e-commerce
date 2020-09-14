@@ -28,7 +28,7 @@ export function postProduct(bodyFormData){
                 return(response)
             })
             .then((res) => {
-                alert('se creo el producto '+ res.data.image)
+                alert('se creo el producto '+ res.data.name)
                 getProducts(res.data.id)
                 
                             

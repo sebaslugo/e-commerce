@@ -19,7 +19,8 @@ export function postCreateUser(newData) {
                 dispatch({
                     type: CREATE_USER,
                     payload: res.data
-                })
+                }),
+                alert('se creo el usuario')
             );
     };
     
