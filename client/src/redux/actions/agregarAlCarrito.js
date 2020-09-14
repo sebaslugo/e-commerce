@@ -9,11 +9,7 @@ export default function agregarAlCarrito(newData) {
             method: 'POST',
             url: 'http://localhost:3001/users/1/cart',//cambiarle el id del user en caso de ser necesario
             data: {
-                "product": {
-                    "productId": newData.idProducto,
-                    "price": newData.price,
-                    "quantity": newData.quantity
-                }
+                product: newData
             }
         }).then((response) => {
             console.log('response');

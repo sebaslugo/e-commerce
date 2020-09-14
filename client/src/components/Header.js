@@ -60,7 +60,7 @@ class Header extends Component {
 
       <div className="header__nav">
         {/*Login*/}
-        <Link to="/" className="header__link">
+        <Link to="/Login/createuser" className="header__link">
           <div className="header__login">
             <span className="header__loginLineOne">Hi, Sing In</span>
             <span className="header__loginLineTwo">Henry</span>
@@ -68,10 +68,10 @@ class Header extends Component {
         </Link>
 
         {/* Basket */}
-        <Link className="header__link" to="/">
+        <Link className="header__link" to="/user/cart/1">
           <div className="header__optionBasket">
             <ShoppingBasketIcon />
-            <span className="header__basket">0</span>
+            <span className="header__basket"></span>
           </div>
         </Link>
       </div>

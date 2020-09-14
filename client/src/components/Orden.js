@@ -47,17 +47,17 @@ function Orden () {
                     <Table.Cell>
                     <ul>
                     {ordenes.items && ordenes.items.map((producto, index)=>(
-                        <li key={index}>{producto.price}</li>
-                    ))}
-                    </ul>
-                    </Table.Cell>  
-                    <Table.Cell>
-                    <ul>
-                    {ordenes.items && ordenes.items.map((producto, index)=>(
                         <li key={index}>{producto.quantity}</li>
                     ))}
                     </ul>
-                    </Table.Cell>               
+                    </Table.Cell> 
+                    <Table.Cell>
+                    <ul>
+                    {ordenes.items && ordenes.items.map((producto, index)=>(
+                        <li key={index}>$ {producto.price}</li>
+                    ))}
+                    </ul>
+                    </Table.Cell>                                  
                 </Table.Row>
                 </Table.Body>
                 <Table.Footer fullWidth>
