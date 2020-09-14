@@ -13,8 +13,8 @@ import Orden from "./components/Orden";
 import OrderList from "./components/OrderList";
 import UserLogin from "./components/LoginUser";
 import CreateUser from "./components/CreateUser";
-import Results from './components/ResultsSearch';
-import ShoppingCart from './components/ShoppingCart';
+import Results from './components/ProductSearch/ResultsSearch';
+import ShoppingCart from './components/Carrito/ShoppingCart';
 import Admin from './components/Admin';
 
 

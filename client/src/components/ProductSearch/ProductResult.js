@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Image, Button } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 
-import "./home.css";
+import "../home.css";
 import "./ProductResult.css";
 
 const ProductResult = ({
