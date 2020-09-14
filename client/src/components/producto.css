@@ -2,9 +2,13 @@
   padding: 60px;
   color: black;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;    
   text-align: center;
+  justify-content: center;
+}
+
+.producto_title{
+  padding-top: 34px;
 }
 
 .head {
@@ -28,4 +32,14 @@ input {
   background-color: #fff;
   width: 500px;
 }
+
+.makeStyles-root-1 {
+  max-width: 500px;
+  margin-right: 120px;
+}
+
+.makeStyles-media-2 {
+  height: 51px;
+}
+
 
