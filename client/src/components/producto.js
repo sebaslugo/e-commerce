@@ -17,6 +17,7 @@ import store from '../redux/store/index';
 import { getProducts } from '../redux/actions/producto.js'
 import { useDispatch } from "react-redux";
 import AgregarAlCarrito from './AgregarAlCarrito'
+import Reviews from './reviews'
 
 const useStyles = makeStyles({
   root: {
@@ -69,11 +70,11 @@ function Producto(props) {
 
   return (
     <Container>
-      < div className="producto_product" >
-        <h1>{producto.name}</h1>
+      <h1 className = "producto_title">{producto.name}</h1>  
+      <hr/>
+      < div className="producto_product" >              
         <Card className={classes.root}>
           <CardContent>
-            <CardMedia className={classes.media} />
             <Carousel>
               {producto.imagenes.map((img, id) =>
                 <Carousel.Item key={id}>
@@ -103,22 +104,10 @@ function Producto(props) {
           </CardContent>
           <CardActions>
             {buyButton()}
-            <Button size="small" color="primary">
-              Favoritos
-        </Button>
             <AgregarAlCarrito producto={producto} precio={precio} cantidad={cantidad} />
-            {/* <IconButton
-            type="submit"
-            color="primary"
-            aria-label="Añadir al carrito"
-            // onSubmit={enviarDatos}
-            onClick={enviarDatos}
-            className={classes.submit}
-          >
-            <AddShoppingCartIcon />
-          </IconButton> */}
           </CardActions>
         </Card>
+        <Reviews/>
       </div >
     </Container>
 
