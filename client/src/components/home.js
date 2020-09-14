@@ -13,7 +13,7 @@ import {
 import portada from "../imagenes/portada.jpg";
 import axios from 'axios';
 
-import AgregarAlCarrito from './AgregarAlCarrito'
+import AgregarAlCarrito from './Carrito/AgregarAlCarrito'
 
 import {getCategories} from '../redux/actions/category';
 import {getProducts,getProductCategory} from '../redux/actions/productList';

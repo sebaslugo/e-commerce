@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import store from '../redux/store/index';
 import { getProducts } from '../redux/actions/producto.js'
 import { useDispatch } from "react-redux";
-import AgregarAlCarrito from './AgregarAlCarrito'
+import AgregarAlCarrito from './Carrito/AgregarAlCarrito'
 import Reviews from './reviews'
 
 const useStyles = makeStyles({

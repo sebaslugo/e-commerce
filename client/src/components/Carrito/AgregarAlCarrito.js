@@ -4,7 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react'
-import agregarAlCarrito from '../redux/actions/agregarAlCarrito'
+import agregarAlCarrito from '../../redux/actions/agregarAlCarrito'
 
 export default function AgregarAlCarrito({ producto, precio, cantidad }) {
     const dispatch = useDispatch();
