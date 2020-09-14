@@ -8,6 +8,7 @@ import {getCategories} from '../../redux/actions/category';
 import {getProducts,getProductCategory} from '../../redux/actions/productList';
 import { useDispatch,useSelector } from 'react-redux';
 import store from '../../redux/store/index';
+import AgregarAlCarrito from '../Carrito/AgregarAlCarrito'
 
 
 function Home() {

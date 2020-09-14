@@ -1,6 +1,6 @@
 import React,{useEffect,useState} from "react";
 import {Card,Image,Button} from "semantic-ui-react";
-import AgregarAlCarrito from '../AgregarAlCarrito';
+import AgregarAlCarrito from '../Carrito/AgregarAlCarrito';
 import { Link } from "react-router-dom";
 import {getProducts,getProductCategory} from '../../redux/actions/productList';
 import { useDispatch,useSelector } from 'react-redux';
