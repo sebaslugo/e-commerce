@@ -1,0 +1,9 @@
+.review-summary{
+    
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+   
+}
+
+

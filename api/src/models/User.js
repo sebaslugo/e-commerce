@@ -68,6 +68,12 @@ module.exports = sequelize => {
                     msg: 'Password must be within the parameters'
                 }
             }
-        }
+        },
+        fullName:{
+            type:DataTypes.VIRTUAL,
+            get(){
+              return this.name + ' ' + this.lastName;
+            }
+          }
     })
 }
