@@ -5,6 +5,8 @@ import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import { Button } from '@material-ui/core';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { searchProducts } from "../redux/actions/search";
 
 import "./Header.css";
 
@@ -21,6 +23,7 @@ class Header extends Component {
   }
 
   handleSearchTextClick() {
+    this.props.searchProducts(this.state.title);
     this.props.history.push(`/search/results?productName=${this.state.title}`);
   }
 
@@ -30,7 +33,7 @@ class Header extends Component {
     history: PropTypes.object.isRequired
   }
   render () {    
-    // const { match, location, history } = this.props;
+    const { title } = this.state;
     // console.log(history); 
     return (
       <nav className="header-header">
@@ -46,7 +49,7 @@ class Header extends Component {
       {/* Buscador */}
       <div className="header__search">
         <input type="text" className="header__searchInput"
-          value={this.state.title}
+          value={title}
 					placeholder="Buscar producto..."
 					onChange={(e) => this.handleSearchTextChange(e)}
         />
@@ -57,7 +60,7 @@ class Header extends Component {
 
       <div className="header__nav">
         {/*Login*/}
-        <Link to="/" className="header__link">
+        <Link to="/Login/createuser" className="header__link">
           <div className="header__login">
             <span className="header__loginLineOne">Hi, Sing In</span>
             <span className="header__loginLineTwo">Henry</span>
@@ -65,10 +68,10 @@ class Header extends Component {
         </Link>
 
         {/* Basket */}
-        <Link className="header__link" to="/">
+        <Link className="header__link" to="/user/cart/1">
           <div className="header__optionBasket">
             <ShoppingBasketIcon />
-            <span className="header__basket">0</span>
+            <span className="header__basket"></span>
           </div>
         </Link>
       </div>
@@ -77,4 +80,10 @@ class Header extends Component {
   }
 }
 
-export default withRouter(Header);
+function mapDispatchToProps(dispatch) {
+  return {
+    searchProducts: title => dispatch(searchProducts(title))
+  }
+}
+
+export default withRouter(connect(null, mapDispatchToProps)(Header));

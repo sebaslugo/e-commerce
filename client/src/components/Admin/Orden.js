@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import { Button, Container, Table } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 
-import { axiosOrden } from '../redux/actions/orden';
-import store from '../redux/store/index';
+import { getOrden } from '../../redux/actions/orden';
+import store from '../../redux/store/index';
 
 function Orden () {
     const dispatch = useDispatch();
@@ -12,7 +12,7 @@ function Orden () {
     const { id } = useParams();
 
     useEffect(() => {        
-        dispatch(axiosOrden(id));
+        dispatch(getOrden(id));
         store.subscribe(()=>{
             setOrdenes(() => store.getState().orden.data);
         });
@@ -47,29 +47,22 @@ function Orden () {
                     <Table.Cell>
                     <ul>
                     {ordenes.items && ordenes.items.map((producto, index)=>(
-                        <li key={index}>{producto.price}</li>
-                    ))}
-                    </ul>
-                    </Table.Cell>  
-                    <Table.Cell>
-                    <ul>
-                    {ordenes.items && ordenes.items.map((producto, index)=>(
                         <li key={index}>{producto.quantity}</li>
                     ))}
                     </ul>
-                    </Table.Cell>
+                    </Table.Cell> 
                     <Table.Cell>
                     <ul>
                     {ordenes.items && ordenes.items.map((producto, index)=>(
-                        <li key={index}>{producto.total}</li>
+                        <li key={index}>$ {producto.price}</li>
                     ))}
-                    </ul>                  
-                    </Table.Cell>                
+                    </ul>
+                    </Table.Cell>                                  
                 </Table.Row>
                 </Table.Body>
                 <Table.Footer fullWidth>
                 <Table.Row>                    
-                    <Table.HeaderCell colSpan='6'>
+                    <Table.HeaderCell colSpan='5'>
                         {ordenes.orden.status === 'creada' && <Button size='small'>Aprobada</Button>}
                         {ordenes.orden.status === 'creada' &&<Button size='small'>Cancelada</Button>}
                     </Table.HeaderCell>

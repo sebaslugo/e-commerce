@@ -10,6 +10,7 @@ export default function productos(state = initialState, action) {
                 ...state,
                 data: action.payload
             }
+            break;
         default:
             return { ...state };
     }

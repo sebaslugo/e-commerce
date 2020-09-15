@@ -9,25 +9,27 @@ import {
   TextArea,
 } from 'semantic-ui-react'
 import axios from 'axios';
+import { getProducts, postProduct,editProduct  } from '../../redux/actions/producto.js'
+import {deleteProductCategory,addProductCategory} from '../../redux/actions/category'
+import store from '../../redux/store/index';
+import { useDispatch,useSelector } from 'react-redux';
 
 
 function Formulario ({producto,categorias}) {
-    const[itemCategoria,setItemCategoria] = useState([])
-    const[checked,setchecked]=useState(false)
-    const [state,setState] = useState({}) 
+    const dispatch = useDispatch();
+    const [itemCategoria,setItemCategoria] = useState([])
+    const[checked,setchecked]=useState(false);
+    const[state,setState] = useState({});
 
-  useEffect(() => {
+    useEffect(() => {
     
-    if(producto){
-        axios 
-        .get(`http://localhost:3001/products/${producto.id}`)
-        .then(res => {
-        setState(res.data.producto)
-        setItemCategoria(res.data.categorias)
-        })
-        
-    }
-    
+        if(producto.id){
+            dispatch(getProducts(producto.id));
+            store.subscribe(() =>{
+                setState(() => store.getState().productos.data.producto)
+                setItemCategoria(() => store.getState().productos.data.categorias)
+            })
+        }
     },[])
 
     const handleCheck = (categoria) => {         
@@ -43,40 +45,34 @@ function Formulario ({producto,categorias}) {
 
     
     const handleSubmit = (e) => {
-        var bodyFormData = new FormData();
+        let bodyFormData = new FormData();
         bodyFormData.set('name',state.name);
         bodyFormData.set('price',state.price);
         bodyFormData.set('description',state.description);
         bodyFormData.set('stock',state.stock); 
-        if(state.image){
-            state.image.map((imag)=> {
+        if(state.images){
+            state.images.map((imag)=> {
                 bodyFormData.append('image', imag);
             })
-        }                 
-        axios({
-            method: 'post',
-            url: 'http://localhost:3001/products',
-            data: bodyFormData,
-            config: { headers: {'Content-Type': 'multipart/form-data' }}
-            })
-            .then(function (response) {
-                //handle success
-                return(response)
-                
+        }
+        dispatch(postProduct(bodyFormData))
+        
+    }
 
+    const handleEdit = (e) => {
+        let id = state.id
+        let bodyFormData = new FormData();
+        bodyFormData.set('name',state.name);
+        bodyFormData.set('price',state.price);
+        bodyFormData.set('description',state.description);
+        bodyFormData.set('stock',state.stock);
+        bodyFormData.set('imagenes',state.imagenes) 
+        if(state.images){
+            state.images.map((imag)=> {
+                bodyFormData.append('image', imag);
             })
-            .then((response) => {
-                console.log(response)
-                return axios.get(`http://localhost:3001/products/${response.data.id}`)                   
-            })
-            .then(res => {
-                setState(res.data.producto)
-                alert('se creo el producto')
-            })
-            .catch(function (response) {
-                //handle error
-                alert('upss,completa todos los campos obligatorios')
-            });
+        } 
+        dispatch(editProduct (bodyFormData,id))
         
     }
     const handleChange = (e, { value }) => {
@@ -86,57 +82,33 @@ function Formulario ({producto,categorias}) {
         })
     }
     const handleCategory = (id,check) => {       
-        console.log(id)
-        console.log(check)
+        
         if(check === 'delete'){
-            axios
-            .delete(`http://localhost:3001/products/${state.id}/category/${id}`)
-            .then(function (response) {
-                //handle success
-                alert('se elimino el producto de la categoria')
-            })
-            .catch(function (response) {
-                //handle error
-                alert('ups,intenta de nuevo')
-            });        
+            dispatch(deleteProductCategory(state.id,id))     
         }
         if(check === 'add'){
-            axios
-            .post(`http://localhost:3001/products/${state.id}/category/${id}`)
-            .then(function (response) {
-                //handle success
-                alert('se agrego el producto a la categoria')
-            })
-            .catch(function (response) {
-                //handle error
-                alert('Agrega el producto y luego agrega sus categorias')
-            }); 
+            dispatch(addProductCategory(state.id,id))
         }
 
     } 
     
     const handleFiles = (e) => {
-        // console.log("este es el nombre de la url de la foto" ,e.target.files[0].name)
         let array = []
-        console.log(e.target.files)
         for (let i = 0; i < e.target.files.length; i++) {
             array.push(e.target.files[i])   
-        }
+        } 
         setState({
-            ...state,
-            image:array
-        })  
-          
+                ...state,
+                images:array
+        })
         
-        }
+          
+    }
 
     const handleDelete = (e) => {
-            
-
         setState ({
             ...state,
-            imagenes:state.imagenes.filter(imag => imag !== e.target.value)
-            /* imagenes: e.target.value */
+            imagenes:state.imagenes.filter(imag => imag !== e.target.value)           
         })
         
     }
@@ -177,8 +149,8 @@ function Formulario ({producto,categorias}) {
             </Form.Group>
             <Form.Field>
                 <ul >
-                    {categorias.map((categoria) => 
-                        <li key = {categoria.id}>
+                    {producto.id && categorias.map((categoria,index) => 
+                        <li key = {index}>
                             {categoria.name}
                             <button  onClick = {() => handleCategory(categoria.id,handleCheck(categoria))}>{handleCheck(categoria)}</button>
                         </li>                        
@@ -192,13 +164,12 @@ function Formulario ({producto,categorias}) {
             placeholder= {producto.description}
             name = 'description'
             onChange={handleChange}
-
             />
             {state.imagenes && <Form.Field>
                     <label>imagenes</label>
                     <ul >
-                    {state.imagenes.map((image) => 
-                        <li key = {state.id}>
+                    {state.imagenes.map((image,index) => 
+                        <li key = {index}>
                             {image}
                             <button value = {image} onClick = {handleDelete}>x</button>
                         </li>
@@ -211,8 +182,9 @@ function Formulario ({producto,categorias}) {
                 <label>Agregar imagenes</label>
                 <input  className = 'form-imagen' type='file' multiple={true} name='imagen'  accept="image/*" onChange = {handleFiles}></input>
             </Form.Field>
-            <Form.Field control={Button} onClick = {handleSubmit}>{'AGREGAR'}</Form.Field>
-            {/* <Form.Field control={Button} type="submit">{'AGREGAR'}</Form.Field> */}
+            {!producto.id && <Form.Field control={Button} onClick = {handleSubmit}>{'AGREGAR'}</Form.Field>}
+            {producto.id && <Form.Field control={Button} onClick = {handleEdit}>{'EDITAR'}</Form.Field>}
+    
             
             </Form>
             

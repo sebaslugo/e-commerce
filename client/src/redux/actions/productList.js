@@ -1,5 +1,10 @@
 import axios from 'axios';
+<<<<<<< HEAD
 import { GET_PRODUCTS,  DELETE_PRODUCT, EDIT_PRODUCT,GET_PRODUCT_CATEGORY } from '../consts/actionTypes';
+=======
+
+import { GET_PRODUCT, GET_CATEGORY, DELETE_PRODUCT, EDIT_PRODUCT,GET_PRODUCT_CATEGORY } from '../consts/actionTypes';
+>>>>>>> master
 
 
 
@@ -12,30 +17,18 @@ export function getProducts(request) {
     return function(dispatch) {
         return axios.get("http://localhost:3001/products")
           .then(response =>{
+<<<<<<< HEAD
             dispatch({ type: GET_PRODUCTS, payload: response.data });
+=======
+            dispatch({ type: GET_PRODUCT_CATEGORY, payload: response.data });
+>>>>>>> master
           })
           
     };
-    /* return {
-        type: GET_PRODUCT,
-        categories: request
-    } */
+
+   
 }
 
-/* export function axiosProducts() {
- 
-    return dispatch => {
-        dispatch(getProducts())
-        axios.get("http://localhost:3001/products")
-            .then(res => {  
-                dispatch({
-                    type: GET_PRODUCT,
-                    payload: res.data
-                })
-            }
-            );
-    };
-} */
 
 
 /// tods los productos de una categoria
@@ -48,26 +41,24 @@ export function getProductCategory(name){
           })
           
     };
-    /* return {
-        type: GET_PRODUCT_CATEGORY,
-        categories: request
-    } */
+  
 }
 
 
+<<<<<<< HEAD
+=======
+
+/*--------------------------------------------------------------------------------------- */
+/*GET CATEGORIES */
+/*--------------------------------------------------------------------------------------- */
+
+
+>>>>>>> master
 /*--------------------------------------------------------------------------------------- */
 /*DELETE PRODUCTS */
 /*--------------------------------------------------------------------------------------- */
-export function deleteProducts(request) {
-    return {
-        type: DELETE_PRODUCT,
-        categories: request
-    }
-}
-
-export function axiosDeleteProducts(oldData) {
-    return dispatch => {
-        dispatch(deleteProducts())
+export function deleteProducts(oldData) {
+    return function(dispatch) {
         axios.delete(`http://localhost:3001/products/${oldData.id}`)
             .then(res => {
                 console.log('ESTOY EN EL .THEN DELETE', res)
@@ -77,23 +68,17 @@ export function axiosDeleteProducts(oldData) {
                 })
             }
             );
+          
     };
+    
 }
+
 /*--------------------------------------------------------------------------------------- */
 /*EDIT PRODUCTS */
 /*--------------------------------------------------------------------------------------- */
-export function editProducts(request) {
-    return {
-        type: EDIT_PRODUCT,
-        categories: request
-    }
-}
-
-export function axiosEditProducts(newData) {
-    return dispatch => {
-        console.log(newData)
-        dispatch(editProducts())
-        axios({
+export function editProducts(newData) {
+    return function(dispatch) {
+        return axios({
             method: 'PUT',
             url: `http://localhost:3001/products/${newData.id}`,
 
@@ -114,5 +99,7 @@ export function axiosEditProducts(newData) {
                 })
             }
             );
+          
     };
 }
+
