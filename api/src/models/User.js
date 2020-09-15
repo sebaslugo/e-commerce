@@ -26,6 +26,11 @@ module.exports = sequelize => {
                 }
             }
         },
+        rol: {
+            type: DataTypes.ENUM,
+            values: ['user', 'admin'],
+            defaultValue: 'user',
+        },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
