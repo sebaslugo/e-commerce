@@ -1,5 +1,5 @@
 const server = require('express').Router();
-const { Product, Category, prodcat, Review } = require('../db.js');
+const { Product, Category, prodcat, Review,User } = require('../db.js');
 const path = require('path');
 const multer = require('multer');
 
@@ -274,20 +274,17 @@ server.delete('/:id', (req, res, next) => {
 /* ------------------------------------------------------------------------------- */
 server.post("/:id/review", (req, res) => {
 	const { id } = req.params;
-	const { description, rating, likes} = req.body;
+	const { description, rating, likes,userId} = req.body;
 	console.log(req.body)
-	if(!description || !rating){
-		return res.status(400).json(req.body);
-	}
 	Review.create({
 			description: description,
 			rating: rating,
 			likes: likes,
 			productId: id,
-			// userId: 1
+			userId:userId
 	})
-		.then(() => res.status(201).json({ message: 'el comentario ha sido enviado exitosamente.' }))
-		.catch(() => res.status(400).send("el comentario no se pudo enviar...revisa bien tus datos!"))
+	.then(() => res.status(201).json({ message: 'el comentario ha sido enviado exitosamente.' }))
+	.catch(() => res.status(400).send("el comentario no se pudo enviar...revisa bien tus datos!"))
 })
 
 /* ------------------------------------------------------------------------------- */
@@ -297,9 +294,10 @@ server.get("/:id/review", (req, res) => {
 	const { id } = req.params;
 	Review.findAll({
 		where: {
-			productId: id,
-			// userId: 1
-		}
+			productId: id,	
+		},
+		include:{model:User},
+		order:[['id','DESC']]
 	})
 	.then(reviews => res.status(200).json(reviews))
 	.catch(err => res.status(400).json(err.message))
@@ -311,14 +309,15 @@ server.get("/:id/review", (req, res) => {
 server.put("/:id/review/:idReview", (req, res) => {
 	const { id, idReview } = req.params;
 	console.log(req.params)
-	const { description, rating, likes} = req.body;
-	!description && (description = "sin descripcion")
+	const { description,rating,likes,userId} = req.body;
 	Review.update(
 		{ description: description, rating: rating, likes: likes },
-		{ where: { productId: id, id: idReview} },
+		{ where: { productId: id, id: idReview,userId:userId} },
 	)
 	.then(() => res.status(200).send("el comentario ha sido actualizado exitosamente!"))
 	.catch(err => res.status(400).json(err.message))
+
+	
 })
 
 /* ------------------------------------------------------------------------------- */
