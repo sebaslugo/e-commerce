@@ -8,4 +8,16 @@ server.post('/login', passport.authenticate('local', {
     failureFlash: true
 }));
 
+server.post("/promote/:id", (req, res) => {
+    const { id } = req.params;
+    User.update(
+        {rol: "admin"},
+        {where: {id: id}}
+    )
+    .then(() => {
+        res.status(200).json({message: "se pudo promover al usuario a admin"})
+    })
+    .catch(err => res.status(404).json(err))
+})
+
 module.exports  = server;
