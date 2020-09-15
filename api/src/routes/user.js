@@ -122,12 +122,15 @@ server
                 return order.setUser(userId)
             })
             .then((order) => {
+                
                 return OrderList.create({
                     price,
                     quantity,
                     orderId: order.id,
                     productId: productId
                 })
+               
+                
             })
             .then((order) => {
                 res.status(200).json(order)

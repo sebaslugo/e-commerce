@@ -60,7 +60,13 @@ module.exports = sequelize => {
             }
         },
         password: {
-            type: DataTypes.STRING,            
-        }
+            type: DataTypes.STRING,
+        },
+        fullName:{
+            type:DataTypes.VIRTUAL,
+            get(){
+              return this.name + ' ' + this.lastName;
+            }
+          }
     })
 }
