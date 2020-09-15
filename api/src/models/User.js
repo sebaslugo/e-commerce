@@ -56,18 +56,12 @@ module.exports = sequelize => {
         },
         password: {
             type: DataTypes.STRING,
-
-            validate:{
-
-                notEmpty: {
-                    args: true,
-                    msg: 'Password must be joined!'
-                },
-                len: {
-                    args: [8, 30],
-                    msg: 'Password must be within the parameters'
-                }
+        },
+        fullName:{
+            type:DataTypes.VIRTUAL,
+            get(){
+              return this.name + ' ' + this.lastName;
             }
-        }
+          }
     })
 }

@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { GET_PRODUCT, GET_CATEGORY, DELETE_PRODUCT, EDIT_PRODUCT,GET_PRODUCT_CATEGORY } from '../consts/actionTypes';
 
 
@@ -12,11 +13,11 @@ export function getProducts(request) {
     return function(dispatch) {
         return axios.get("http://localhost:3001/products")
           .then(response =>{
-            console.log(response);
             dispatch({ type: GET_PRODUCT_CATEGORY, payload: response.data });
           })
           
     };
+
    
 }
 
@@ -28,7 +29,6 @@ export function getProductCategory(name){
     return function(dispatch) {
         return axios.get(`http://localhost:3001/products/category/${name}`)
           .then(response =>{
-            console.log(response);
             dispatch({ type: GET_PRODUCT_CATEGORY, payload: response.data });
           })
           

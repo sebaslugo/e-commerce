@@ -5,9 +5,9 @@ import Form from './Form'
 import './ProductList.css'
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import {getCategories} from '../redux/actions/category';
-import {  getProducts, deleteProducts } from '../redux/actions/productList'
-import store from '../redux/store/index';
+import {getCategories} from '../../redux/actions/category';
+import {  getProducts, deleteProducts } from '../../redux/actions/productList'
+import store from '../../redux/store/index';
 
 export default function ProudctList() {
 

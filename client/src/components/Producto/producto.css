@@ -2,9 +2,13 @@
   padding: 60px;
   color: black;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;    
   text-align: center;
+  justify-content: center;
+}
+
+.producto_title{
+  padding-top: 34px;
 }
 
 .head {
@@ -26,6 +30,19 @@ input {
   color: rgba(0, 0, 0, 0.87);
   transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   background-color: #fff;
-  width: 500px;
+ 
 }
+.producto_card {
+  margin-right: 100px;
+}
+
+.makeStyles-root-1 {
+  
+  margin-right: 120px;
+}
+
+.makeStyles-media-2 {
+  height: 51px;
+}
+
 

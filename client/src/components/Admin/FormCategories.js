@@ -2,14 +2,13 @@ import React from "react";
 import MaterialTable from "material-table";
 import "@material-ui/icons";
 import "@material-ui/core/styles";
-
-import "./FormCategories.css";
+import { Container } from 'semantic-ui-react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getCategories, deleteCategory, postCategories, putCategories } from '../redux/actions/category.js';
-import "./FormCategories.css";
-import store from '../redux/store/index';
+import { getCategories, deleteCategory, postCategories, putCategories } from '../../redux/actions/category.js';
+
+import store from '../../redux/store/index';
 
 export default function MaterialTableDemo() {
   const dispatch = useDispatch();
@@ -62,26 +61,27 @@ export default function MaterialTableDemo() {
   }
 
   return (
-    <div className="FormCategories">
-      <MaterialTable
-        title="Categories List"
-        columns={column.columns}
-        data={data}
-        editable={{
-          onRowAdd: (newData) =>
-            new Promise((resolve) => {
-              handleRowAdd(newData, resolve)
-            }),
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve) => {
-              handleRowUpdate(newData, oldData, resolve);
-            }),            
-          onRowDelete: (oldData) =>
-            new Promise((resolve) => {
-              handleRowDelete(oldData, resolve);
-            }),
-        }}
-      />
-    </div>
+    <Container style={{marginTop: '1.5rem'}}>
+      <h2>Categories List</h2>
+        <MaterialTable
+          title=""
+          columns={column.columns}
+          data={data}
+          editable={{
+            onRowAdd: (newData) =>
+              new Promise((resolve) => {
+                handleRowAdd(newData, resolve)
+              }),
+            onRowUpdate: (newData, oldData) =>
+              new Promise((resolve) => {
+                handleRowUpdate(newData, oldData, resolve);
+              }),            
+            onRowDelete: (oldData) =>
+              new Promise((resolve) => {
+                handleRowDelete(oldData, resolve);
+              }),
+          }}
+        />
+    </Container>
   );
 }

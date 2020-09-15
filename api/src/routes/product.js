@@ -1,5 +1,5 @@
 const server = require('express').Router();
-const { Product, Category, prodcat } = require('../db.js');
+const { Product, Category, prodcat, Review,User } = require('../db.js');
 const path = require('path');
 const multer = require('multer');
 
@@ -86,15 +86,14 @@ server.delete('/category/:id', (req, res, next) => {
 			id: id
 		}
 	})
-
 	.then(producto => {
 		if (producto > 0) {
-			return res.status(200).json({message: 'La categoría ID: ' + id + ', ha sido eliminada correctamente.'});
+			return res.status(200).json({ message: 'La categoría ID: ' + id + ', ha sido eliminada correctamente.' });
 		} else {
-			return res.json({message: 'El ID: ' + id + ', no corresponde a ninguna categoría en existencia.'});
+			return res.json({ message: 'El ID: ' + id + ', no corresponde a ninguna categoría en existencia.' });
 		}
 	})
-	.catch(err => res.status(400).json(err.message));	
+	.catch(err => res.status(400).json(err.message));
 
 });
 
@@ -223,7 +222,7 @@ server.post('/', upload.array('image', 5), (req, res) => {
 server.put('/:id', upload.array('image', 5), (req, res, next) => {
 	const { id } = req.params;
 	const { name, description, price, stock,imagenes } = req.body;
-	let images = '';
+	let images='';
 	if (req.files) {
 		if (req.files.length > 0) {
 			images = req.files.map(image => {
@@ -233,7 +232,13 @@ server.put('/:id', upload.array('image', 5), (req, res, next) => {
 	}
 	console.log(imagenes)
 	if(imagenes){
-		images=images + ',' + imagenes
+		if(images){
+			images=images + ',' + imagenes
+		}
+		else{
+			images=imagenes
+		}
+		
 	}
 	Product.update(
 		{ name, description, price, stock, image: images },
@@ -263,5 +268,77 @@ server.delete('/:id', (req, res, next) => {
 		})
 		.catch(err => res.send(400).json(err.message));
 });
+
+/* ------------------------------------------------------------------------------- */
+/* S54 : Crear ruta para crear/agregar Review */
+/* ------------------------------------------------------------------------------- */
+server.post("/:id/review", (req, res) => {
+	const { id } = req.params;
+	const { description, rating, likes,userId} = req.body;
+	console.log(req.body)
+	Review.create({
+			description: description,
+			rating: rating,
+			likes: likes,
+			productId: id,
+			userId:userId
+	})
+	.then(() => res.status(201).json({ message: 'el comentario ha sido enviado exitosamente.' }))
+	.catch(() => res.status(400).send("el comentario no se pudo enviar...revisa bien tus datos!"))
+})
+
+/* ------------------------------------------------------------------------------- */
+/* S57 : Crear Ruta para obtener todas las reviews de un producto. */
+/* ------------------------------------------------------------------------------- */
+server.get("/:id/review", (req, res) => {
+	const { id } = req.params;
+	Review.findAll({
+		where: {
+			productId: id,	
+		},
+		include:{model:User},
+		order:[['id','DESC']]
+	})
+	.then(reviews => res.status(200).json(reviews))
+	.catch(err => res.status(400).json(err.message))
+})
+
+/* ------------------------------------------------------------------------------- */
+/* S55 : Crear ruta para Modificar Review */
+/* ------------------------------------------------------------------------------- */
+server.put("/:id/review/:idReview", (req, res) => {
+	const { id, idReview } = req.params;
+	console.log(req.params)
+	const { description,rating,likes,userId} = req.body;
+	Review.update(
+		{ description: description, rating: rating, likes: likes },
+		{ where: { productId: id, id: idReview,userId:userId} },
+	)
+	.then(() => res.status(200).send("el comentario ha sido actualizado exitosamente!"))
+	.catch(err => res.status(400).json(err.message))
+
+	
+})
+
+/* ------------------------------------------------------------------------------- */
+/* S56 : Crear Ruta para eliminar Review */
+/* ------------------------------------------------------------------------------- */
+server.delete("/:id/review/:idReview", (req, res) => {
+	const { id, idReview } = req.params;
+	Review.destroy({
+		where: {
+			productId: id,
+			id: idReview
+		}
+	})
+	.then(rev => {
+		if (rev > 0) {
+			return res.status(200).json({ message: 'Tu comentario fue eliminado exitosamente!' });
+		} else {
+			return res.json({ message: 'El comentario que quieres borrar no se ha encontrado, verifica que exista de antemano' });
+		}
+	})
+	.catch(err => res.status(400).json(err.message))
+})
 
 module.exports = server;

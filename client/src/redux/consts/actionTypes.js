@@ -9,10 +9,12 @@ export const EDIT_CATEGORY = 'EDIT_CATEGORY';
 export const DELETE_CATEGORY = 'DELETE_CATEGORY';
 export const GET_CATEGORY = 'GET_CATEGORY';
 
+
 /* ------------------------------------------------------------------------------- */
 /* ACTIONS TYPE PRODUCTO CATEGORY */
 /* ------------------------------------------------------------------------------- */
 export const GET_PRODUCT_CATEGORY = 'GET_PRODUCT_CATEGORY';
+
 
 /* ------------------------------------------------------------------------------- */
 /* SEARCH */
@@ -34,7 +36,28 @@ export const CREATE_USER = 'CREATE_USER'
 
 // VARIABLES DE ACTION ORDEN
 
-export const  GET_ORDEN = 'GET_ORDEN';
+
+
+
+/* ------------------------------------------------------------------------------- */
+/* SHOPPING CART */
+/* ------------------------------------------------------------------------------- */
+export const GET_CART = 'GET_CART'
+export const ADD_CART = 'ADD_CART'
+export const EMPTY_CART = 'EMPTY_CART'
+
+
+export const GET_ORDEN = 'GET_ORDEN';
 export const GET_ORDERS = 'GET_ORDERS';
+
+/* ------------------------------------------------------------------------------- */
+/* AGREGAR_AL_CARRITO */
+/* ------------------------------------------------------------------------------- */
+export const AGREGAR_AL_CARRITO = 'AGREGAR_AL_CARRITO';
+
+/* ------------------------------------------------------------------------------------
+REVIEWS
+------------------------------------------------------------------------------------- */
+export const GET_REVIEW = 'GET_REVIEW';
 
 

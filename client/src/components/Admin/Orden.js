@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import { Button, Container, Table } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 
-import { getOrden } from '../redux/actions/orden';
-import store from '../redux/store/index';
+import { getOrden } from '../../redux/actions/orden';
+import store from '../../redux/store/index';
 
 function Orden () {
     const dispatch = useDispatch();
@@ -47,17 +47,17 @@ function Orden () {
                     <Table.Cell>
                     <ul>
                     {ordenes.items && ordenes.items.map((producto, index)=>(
-                        <li key={index}>{producto.price}</li>
-                    ))}
-                    </ul>
-                    </Table.Cell>  
-                    <Table.Cell>
-                    <ul>
-                    {ordenes.items && ordenes.items.map((producto, index)=>(
                         <li key={index}>{producto.quantity}</li>
                     ))}
                     </ul>
-                    </Table.Cell>               
+                    </Table.Cell> 
+                    <Table.Cell>
+                    <ul>
+                    {ordenes.items && ordenes.items.map((producto, index)=>(
+                        <li key={index}>$ {producto.price}</li>
+                    ))}
+                    </ul>
+                    </Table.Cell>                                  
                 </Table.Row>
                 </Table.Body>
                 <Table.Footer fullWidth>
