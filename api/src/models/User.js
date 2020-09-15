@@ -26,6 +26,11 @@ module.exports = sequelize => {
                 }
             }
         },
+        rol: {
+            type: DataTypes.ENUM,
+            values: ['user', 'admin'],
+            defaultValue: 'user',
+        },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -56,18 +61,6 @@ module.exports = sequelize => {
         },
         password: {
             type: DataTypes.STRING,
-
-            validate:{
-
-                notEmpty: {
-                    args: true,
-                    msg: 'Password must be joined!'
-                },
-                len: {
-                    args: [8, 30],
-                    msg: 'Password must be within the parameters'
-                }
-            }
         },
         fullName:{
             type:DataTypes.VIRTUAL,
