@@ -8,4 +8,9 @@ server.post('/login', passport.authenticate('local', {
     failureFlash: true
 }));
 
-module.exports  = server;
+server.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('http://google.com');
+});
+
+module.exports = server;
