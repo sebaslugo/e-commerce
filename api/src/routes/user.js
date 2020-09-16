@@ -13,7 +13,7 @@ server.post('/', async (req, res) => {
     const salt = bcrypt.genSaltSync(10);
     let hashedPassword = bcrypt.hashSync(password, salt);
     if (name && email && password && lastName) {
-        hashedPassword = await bcrypt.hash(password, 10);
+        let hashedPassword = await bcrypt.hash(password, 10);
         console.log(hashedPassword);
         User.create({
             name: name,
