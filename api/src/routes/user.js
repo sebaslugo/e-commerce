@@ -255,5 +255,22 @@ server
                     // res.redirect('/forgot');
                 });
     })
+server.post('/reset/:token', async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+    let hashedPassword = await bcrypt.hash(password, 10);
+    User.findOne({
+        where: { passwordToken: token }
+
+    }).then((user) => {
+        user.password = hashedPassword;
+        user.passwordToken = null;
+        user.save()
+        return user
+    })
+        .then(user => {
+            return res.status(201).json(user)
+        })
+})
 
 module.exports = server;
