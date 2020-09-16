@@ -14,7 +14,7 @@ exports.use = () => {
 
     let strategy = new JwtStrategy(jwtOptions, (jwt_payload, next) => {
         console.log('payload: ', jwt_payload);
-        let user = User.findOne({
+        User.findOne({
             where: {
                 id: jwt_payload.id
             }

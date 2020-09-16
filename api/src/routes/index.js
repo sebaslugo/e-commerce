@@ -8,6 +8,7 @@ const path = require('path');
 const order = require("./order");
 const authRouter = require('./auth');
 
+
 const router = Router();
 router.use(express.static('images'));
 // load each router on a route

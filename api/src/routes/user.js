@@ -4,12 +4,14 @@ const { json } = require('body-parser');
 const Op = require('sequelize').Op;
 const bcrypt = require('bcrypt');
 
+
 /* ------------------------------------------------------------------------------- */
 /* S34 : Crear Ruta para creación de Usuario */
 /* ------------------------------------------------------------------------------- */
 server.post('/', async (req, res) => {
     const { name, lastName, email, password } = req.body;
-    console.log(req.body)
+    const salt = bcrypt.genSaltSync(10);
+    let hashedPassword = bcrypt.hashSync(password, salt);
     if (name && email && password && lastName) {
         let hashedPassword = await bcrypt.hash(password, 10);
         console.log(hashedPassword);
@@ -18,6 +20,7 @@ server.post('/', async (req, res) => {
             lastName: lastName,
             email: email,
             password: hashedPassword
+
         })
             .then(user => {
                 console.log(User)
@@ -28,6 +31,8 @@ server.post('/', async (req, res) => {
                 return res.status(400).send(error)
             })
     }
+
+
 })
 /* ------------------------------------------------------------------------------- */
 /* S35 : Crear Ruta para modificar Usuario */
@@ -185,6 +190,7 @@ server
     .get((req, res) => {
         const id = req.params.userId;
         Order.findOne(
+
             {
                 where: { userId: id, status: 'carrito' },
                 include: [{ model: Product, as: 'products' }, { model: User, as: 'user' }]
@@ -198,6 +204,7 @@ server
                 }
             })
             .catch(err => res.status(400).json(err))
+
     })
 
 module.exports = server;
