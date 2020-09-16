@@ -6,7 +6,9 @@ const searchRouter = require('./search.js')
 const userRouter = require('./user.js')
 const path = require('path');
 const order = require("./order");
-const auth = require("./auth")
+const authRouter = require('./auth');
+
+
 const router = Router();
 router.use(express.static('images'));
 // load each router on a route
@@ -16,7 +18,7 @@ router.use('/products', productRouter);
 router.use('/search', searchRouter);
 router.use('/orders',order);
 router.use('/users', userRouter);
-router.use('/auth',auth);
+router.use('/auth', authRouter);
 router.use(express.static('images'));
 
 

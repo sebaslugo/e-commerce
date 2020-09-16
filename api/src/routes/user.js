@@ -1,23 +1,26 @@
 const server = require('express').Router();
 const { User, Product, Order, OrderList } = require('../db.js');
 const { json } = require('body-parser');
-const Op = require('sequelize').Op
+const Op = require('sequelize').Op;
 const bcrypt = require('bcrypt');
 
 
 /* ------------------------------------------------------------------------------- */
 /* S34 : Crear Ruta para creación de Usuario */
 /* ------------------------------------------------------------------------------- */
-server.post('/', (req, res) => {
+server.post('/', async (req, res) => {
     const { name, lastName, email, password } = req.body;
     const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(password, salt);
+    let hashedPassword = bcrypt.hashSync(password, salt);
     if (name && email && password && lastName) {
+        hashedPassword = await bcrypt.hash(password, 10);
+        console.log(hashedPassword);
         User.create({
             name: name,
             lastName: lastName,
             email: email,
-            password: hashedPassword,
+            password: hashedPassword
+
         })
             .then(user => {
                 console.log(User)

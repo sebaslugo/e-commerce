@@ -1,16 +1,22 @@
-const express = require("express");
-const router = express.Router();
 
+const server = require('express').Router();
 const { User } = require('../db.js');
+const passport = require('passport');
+
+server.post('/login', passport.authenticate('local', {
+    successRedirect: 'https://twitter.com',
+    failureRedirect: 'https://facebook.com',
+    failureFlash: true
+}));
+
+/* server.post('/login', 
+  passport.authenticate('local', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/');
+  }); */
+
+ 
 
 
+module.exports  = server;
 
-router
-    .route("/login")
-    .get( (req, res) => {
-        console.log(req.body)
-        User.findAll()
-            .then(users => {
-                res.status(200).json(users)
-            })
-    })
