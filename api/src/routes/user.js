@@ -3,6 +3,9 @@ const { User, Product, Order, OrderList } = require('../db.js');
 const { json } = require('body-parser');
 const Op = require('sequelize').Op;
 const bcrypt = require('bcrypt');
+const authentication = require('../jwt');
+const nodemailer = require ('nodemailer')
+const async = require('async')
 
 
 /* ------------------------------------------------------------------------------- */
@@ -204,5 +207,48 @@ server
             .catch(err => res.status(400).json(err))
 
     })
+
+server
+    .route("/forgot")
+    .post((req,res) => {
+        const {email} = req.body
+        User.findOne({
+            where:{email:email}
+
+        }).then((user) => {
+            
+            let payload = {id:user.id}
+            let token = authentication.jwt.sign(payload, authentication.jwtOptions.secretOrKey, { expiresIn: 300 })
+            return (token)
+
+        }).then((token) => {
+            
+            var smtpTransport = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'ecomerce0410@gmail.com',
+                    pass: "henry1234."
+                }
+            });
+            var mailOptions = {
+                to: email,
+                from: 'ecomerce0410@gmail.com',
+                subject: 'Node.js Password Reset',
+                text: 'Recibio esto porque usted u otra persona ha solicitado el restablecimiento de contraseña de su cuenta, para restablecer, dirigase al siguiente link :\n\n' +
+                    'http://' + "localhost:3000" + '/reset/' + token + '\n\n' +
+                    'Si usted no solicito un cambio de contraseña, haga caso omiso a este mensaje.\n'
+            };
+            smtpTransport.sendMail(mailOptions, function (err) {                
+                /* req.flash('success', 'An e-mail has been sent to ' + email + ' with further instructions.'); */
+                done(err, 'done');                
+            });
+            return res.send('Email enviado')
+
+        },
+        function (err) {
+            if (err) return next(err);
+            // res.redirect('/forgot');
+        });            
+    }) 
 
 module.exports = server;
