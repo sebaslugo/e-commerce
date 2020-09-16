@@ -24,7 +24,7 @@ server.post('/login', async (req, res) => {
             }
             if (isMatch) {
               let payload = { id: user.id };
-              let token = authentication.jwt.sign(payload, authentication.jwtOptions.secretOrKey)
+              let token = authentication.jwt.sign(payload, authentication.jwtOptions.secretOrKey, { expiresIn: 300 })
               return res.json({message: 'ok', token: token})
             } else {
               //password is incorrect
