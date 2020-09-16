@@ -67,6 +67,11 @@ module.exports = sequelize => {
         password: {
             type: DataTypes.STRING,
         },
+        passwordToken:{
+            type: DataTypes.STRING,
+            
+        },
+        resetPasswordExpires: { type: DataTypes.DATE },
         fullName:{
             type:DataTypes.VIRTUAL,
             get(){
