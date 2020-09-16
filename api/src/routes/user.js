@@ -11,7 +11,7 @@ server.post('/', async (req, res) => {
     const { name, lastName, email, password } = req.body;
     console.log(req.body)
     if (name && email && password && lastName) {
-        hashedPassword = await bcrypt.hash(password, 10);
+        let hashedPassword = await bcrypt.hash(password, 10);
         console.log(hashedPassword);
         User.create({
             name: name,
