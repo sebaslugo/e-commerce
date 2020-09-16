@@ -14,6 +14,10 @@ exports.use = () => {
 
     let strategy = new JwtStrategy(jwtOptions, (jwt_payload, next) => {
         console.log('payload: ', jwt_payload);
+        var expirationDate = new Date(jwt_payload.exp * 1000)
+        if(expirationDate < new Date()) {
+            return done(null, false);
+        }
         User.findOne({
             where: {
                 id: jwt_payload.id
