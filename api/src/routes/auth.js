@@ -35,7 +35,6 @@ server.post('/login', async (req, res) => {
 })
 
 server.get('/me',authentication.passport.authenticate('jwt',{session:false}),(req,res)=>{
-  console.log(req)
   res.json({message:"Usted está autorizado correctamente!",user:req.user});
 });
 
