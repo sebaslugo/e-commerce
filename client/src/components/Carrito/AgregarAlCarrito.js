@@ -6,21 +6,45 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react'
 import agregarAlCarrito from '../../redux/actions/agregarAlCarrito'
 
+let id;
+
 export default function AgregarAlCarrito({ producto, precio, cantidad }) {
     const dispatch = useDispatch();
     // const content = useSelector(state => state)
+    console.log(producto)
     
     const enviarDatos = (event) => {
+        let carrito = []
         
-        let product = {
-            productId:producto.id,
-            price:parseInt(precio),
-            quantity:parseInt(cantidad)
+        if(id){  
+            let product = {
+                productId:producto.id,
+                price:parseInt(precio),
+                quantity:parseInt(cantidad)
+            }          
+            dispatch(agregarAlCarrito(product))
         }
-        dispatch(agregarAlCarrito(product))
-        
-
-
+        /* else{
+            
+            localStorage.removeItem('carrito');
+        } */
+        else{
+            let product= producto;
+            let local =  JSON.parse(localStorage.getItem("carrito"));  
+            console.log(local)          
+            if(local){
+                local.push(product)
+                console.log(local)
+            } 
+            else{
+                local=[product]          
+            } 
+            console.log(local)
+            
+            const serializedState = JSON.stringify(local);
+            localStorage.setItem("carrito", serializedState);        
+                
+        }             
     }
     return (
         <div >
