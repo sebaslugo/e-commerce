@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,6 +15,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles, } from '@material-ui/core/styles';
 import { yellow, purple, grey } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core/styles';
+import {postLogin} from "../../redux/actions/user"
+import {useDispatch} from 'react-redux';
+import store from '../../redux/store/index';
 
 const ColorButton = withStyles((theme) => ({
     root: {
@@ -75,8 +78,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UserLogin() {
+    const dispatch = useDispatch();
     const classes = useStyles();
+    const [datos,setDatos] = useState();
+    const [token,setToken] = useState (0);
+    
+    useEffect (() => {
+        store.subscribe(() =>{
+            setToken(() => store.getState().user.data)
+          })  
+    },[])
 
+    const handleChange = (e) => {
+        setDatos({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleSubmit = () => {
+        dispatch(postLogin(datos))
+
+    }
+    if (token) {
+
+    }
+    console.log(token)
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline />
@@ -100,6 +126,7 @@ export default function UserLogin() {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            onChange={handleChange}
                         />
                         <TextField
                             variant="outlined"
@@ -111,6 +138,7 @@ export default function UserLogin() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            onChange={handleChange}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
@@ -122,9 +150,10 @@ export default function UserLogin() {
                             variant="contained"
                             // color="primary"
                             className={classes.submit}
+                            onClick = {handleSubmit}
                         >
                             Sign In
-            </ColorButton>
+                         </ColorButton>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">

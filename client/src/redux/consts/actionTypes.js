@@ -60,4 +60,6 @@ REVIEWS
 ------------------------------------------------------------------------------------- */
 export const GET_REVIEW = 'GET_REVIEW';
 
+export const USER_LOGIN = 'USER_LOGIN';
+
 
