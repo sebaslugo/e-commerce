@@ -15,7 +15,8 @@ module.exports = sequelize => {
                     args: true,
                     msg: 'Name must be joined!'
                 }
-            }
+            },
+            allowNull: false
         },
         lastName: {
             type: DataTypes.STRING,
@@ -24,7 +25,8 @@ module.exports = sequelize => {
                     args: true,
                     msg: 'last name must be joined!'
                 }
-            }
+            },
+            allowNull: false
         },
         status:{
             type:DataTypes.ENUM,
@@ -66,12 +68,13 @@ module.exports = sequelize => {
         },
         password: {
             type: DataTypes.STRING,
+            allowNull: false
         },
         fullName:{
             type:DataTypes.VIRTUAL,
             get(){
-              return this.name + ' ' + this.lastName;
+                return this.name + ' ' + this.lastName;
             }
-          }
+        }
     })
 }
