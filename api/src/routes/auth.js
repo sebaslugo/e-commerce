@@ -2,6 +2,7 @@ const server = require('express').Router();
 const { User } = require('../db.js');
 const bcrypt = require('bcrypt');
 const authentication = require('../jwt');
+const isAdmin = require('../middlewares/isAdmin');
 
 server.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -20,7 +21,7 @@ server.post('/login', async (req, res) => {
             }
             if (isMatch) {
               let payload = { id: user.id };
-              let token = authentication.jwt.sign(payload, authentication.jwtOptions.secretOrKey, { expiresIn: 300 })
+              let token = authentication.jwt.sign(payload, authentication.jwtOptions.secretOrKey, { expiresIn: 9000 })
               return res.json({message: 'ok', token: token})
             } else {
               //password is incorrect
@@ -39,7 +40,7 @@ server.get('/logout', (req, res) => {
     res.redirect('http://google.com');
 });
 
-server.post("/promote/:id", (req, res) => {
+server.post("/promote/:id", authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res) => {
     const { id } = req.params;
     User.update(
         {rol: "admin"},

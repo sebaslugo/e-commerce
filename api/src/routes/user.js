@@ -4,8 +4,8 @@ const { json } = require('body-parser');
 const Op = require('sequelize').Op;
 const bcrypt = require('bcrypt');
 const authentication = require('../jwt');
-const nodemailer = require('nodemailer')
-const async = require('async')
+const nodemailer = require('nodemailer');
+const isAdmin = require('../middlewares/isAdmin');
 
 
 /* ------------------------------------------------------------------------------- */
@@ -61,7 +61,7 @@ server.post('/', async (req, res) => {
 /* ------------------------------------------------------------------------------- */
 /* S35 : Crear Ruta para modificar Usuario */
 /* ------------------------------------------------------------------------------- */
-server.put('/:id', (req, res) => {
+server.put('/:id', authentication.passport.authenticate('jwt',{session:false}), (req, res) => {
     const { id } = req.params;
     const { name, lastName, email, password } = req.body;
     User.update(
@@ -81,7 +81,7 @@ server.put('/:id', (req, res) => {
 /* ------------------------------------------------------------------------------- */
 /* S36 : Crear Ruta para traer usuarios */
 /* ------------------------------------------------------------------------------- */
-server.get('/', (req, res) => {
+server.get('/', authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res) => {
     console.log(req.body)
     User.findAll()
         .then(users => {
@@ -92,7 +92,7 @@ server.get('/', (req, res) => {
 /* ------------------------------------------------------------------------------- */
 /* S37 : Crear Ruta para eliminar usuario */
 /* ------------------------------------------------------------------------------- */
-server.delete('/:id', (req, res) => {
+server.delete('/:id', authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res) => {
     const { id } = req.params;
     User.destroy({
         where: {
@@ -116,7 +116,7 @@ server
     // S45 : Crear Ruta que retorne todas las Ordenes de los usuarios
     /* ------------------------------------------------------------------------------- */
     .route('/:id/orders')
-    .get((req, res) => {
+    .get(authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res) => {
         const { id } = req.params
         Order.findAll({
             where: { userId: id },
