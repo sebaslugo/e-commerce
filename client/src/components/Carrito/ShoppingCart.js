@@ -71,7 +71,7 @@ const ShoppingCart = () => {
             try {
                 const serializedState = localStorage.getItem("carrito");
                 if (serializedState === null) return undefined;
-                setCart((JSON.parse(serializedState)));
+                setCart((JSON.parse(serializedState.producto)));
               } catch (e) {
                 console.log(e);
             }
@@ -143,7 +143,7 @@ const ShoppingCart = () => {
                                 <h3>Cantidad</h3>
                             </Typography>
                             <Typography variant="body2" color="textSecondary">
-                                <input type='number' value={cart}></input>
+                                <input type='number' name={cart.id} value={cart}></input>
                             </Typography>
                         </Grid>
                         
