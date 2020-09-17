@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 function initialize(passport) {
   console.log("inicializando");
   const authenticateUser = (email, password, done) => {
-    console.log(email, password);
     User.findOne({ where: { email: email } })
         .then(user => {
             if (!user) {
@@ -18,12 +17,14 @@ function initialize(passport) {
                   console.log(err);
                 }
                 if (isMatch) {
+                  
                   return done(null, user);
                 } else {
                   //password is incorrect
                   return done(null, false, { message: "Password is incorrect" });
                 }
             });
+            
         })
         .catch(err => {
             if (err) {

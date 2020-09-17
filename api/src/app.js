@@ -7,6 +7,7 @@ const passport = require('passport');
 const initializePassport = require('./passportConfig');
 const session = require('express-session');
 const flash = require('express-flash');
+const authentication = require('./jwt');
 
 require('./db.js');
 
@@ -14,7 +15,9 @@ const server = express();
 
 server.name = 'API';
 
-initializePassport(passport);
+authentication.use();
+
+// initializePassport(passport);
 
 server.use(session({
   // Key we want to keep secret which will encrypt all of our information
@@ -26,7 +29,7 @@ server.use(session({
 }));
 
 // Funtion inside passport which initializes passport
-server.use(passport.initialize());
+server.use(authentication.passport.initialize());
 // Store our variables to be persisted across the whole session. Works with server.use(Session) above
 server.use(passport.session());
 server.use(flash());

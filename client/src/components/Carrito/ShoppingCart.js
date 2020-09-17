@@ -51,18 +51,32 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+let id;
+
 const ShoppingCart = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
     const [cart, setCart] = useState([]);
-    const id = document.URL.split("/").pop()
+    /* const id = document.URL.split("/").pop() */
 
 
 
     useEffect(() => {
-        dispatch(fetchProductsFromCart(id));
-        store.subscribe(() => setCart(() => store.getState().shoppingCart.data.products))
+        if(id){
+            dispatch(fetchProductsFromCart(id));
+            store.subscribe(() => setCart(() => store.getState().shoppingCart.data.products))
+        }
+        else{
+            try {
+                const serializedState = localStorage.getItem("carrito");
+                if (serializedState === null) return undefined;
+                setCart((JSON.parse(serializedState)));
+              } catch (e) {
+                console.log(e);
+            }
+        }
+        
     }, []);
 
 
@@ -89,7 +103,7 @@ const ShoppingCart = () => {
         <div className={classes.root}>
             <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                 OPCIONES
-      </Button>
+            </Button>
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
@@ -121,7 +135,7 @@ const ShoppingCart = () => {
                                     <p style={{ fontWeight: "bold" }}>{cart.price}</p>
                                 </Typography>
                             </Grid>
-                            {/* <Grid item>
+                            <Grid item>
                                 <ColorButton
                                     variant="contained"
                                     className={classes.button}
@@ -130,7 +144,7 @@ const ShoppingCart = () => {
                                     BORRAR
                                  </ColorButton>
 
-                            </Grid> */}
+                            </Grid>
                         </Grid>
                         <Grid item>
                             <Typography variant="subtitle1">X</Typography>
