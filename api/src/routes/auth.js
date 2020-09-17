@@ -1,11 +1,7 @@
-
 const server = require('express').Router();
 const { User } = require('../db.js');
 const bcrypt = require('bcrypt');
 const authentication = require('../jwt');
-
-
-
 
 server.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -34,8 +30,8 @@ server.post('/login', async (req, res) => {
     }
 })
 
-server.get('/me',authentication.passport.authenticate('jwt',{session:false}),(req,res)=>{
-  res.json({message:"Usted está autorizado correctamente!",user:req.user});
+server.get('/me', authentication.passport.authenticate('jwt',{session:false}), (req,res)=>{
+  res.json({message:"Usted está autorizado correctamente!", user: req.user});
 });
 
 server.get('/logout', (req, res) => {
