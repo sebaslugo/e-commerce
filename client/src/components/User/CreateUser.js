@@ -78,7 +78,13 @@ export default function CreateUser() {
 
     const enviarDatos = (event) => {
         console.log(datos)
-        dispatch(postCreateUser(datos))
+        if(datos.firstName && datos.lastName && datos.email && datos.password){
+            dispatch(postCreateUser(datos))
+        }
+        else{
+            alert('completa todos los campos')
+        }
+        
     }
 
     return (

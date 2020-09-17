@@ -29,7 +29,7 @@ export default function AgregarAlCarrito({ producto, precio, cantidad }) {
             localStorage.removeItem('carrito');
         } */
         else{
-            let product= producto;
+            let product= {producto,price:parseInt(precio),quantity:parseInt(cantidad)};
             let local =  JSON.parse(localStorage.getItem("carrito"));  
             console.log(local)          
             if(local){
