@@ -1,14 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const { Product, Order, OrderList,User } = require('../db.js');
-
+const authentication = require('../jwt');
+const isAdmin = require('../middlewares/isAdmin');
 
 router
 
 // S44 : Crear ruta que retorne todas las ordenes
 
     .route('/')
-    .get((req,res)=>{
+    .get(authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req,res)=>{
         Order.findAll({include:{model:User,as:'user'}})
         .then((orders) => {
             res.json(orders)
@@ -18,12 +19,13 @@ router
         })
         
     })
+
 router
 
 // S46 : Crear Ruta que retorne una orden en particular.
 
     .route('/:id')
-    .get((req,res) => {     
+    .get(authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req,res) => {     
         const {id} = req.params;
         let orden
         Order.findOne({
@@ -46,7 +48,7 @@ router
 
 // S47 : Crear Ruta para modificar una Orden
 
-    .put((req,res)=> {
+    .put(authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req,res)=> {
         const {id} = req.params;
         Order.findOne({where:{id:id}})
         .then((order) => {

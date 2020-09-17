@@ -2,6 +2,8 @@ const server = require('express').Router();
 const { Product, Category, prodcat, Review,User } = require('../db.js');
 const path = require('path');
 const multer = require('multer');
+const authentication = require('../jwt');
+const isAdmin = require('../middlewares/isAdmin');
 
 /* ------------------------------------------------------------------------------- */
 /* Carga de imágenes */
@@ -38,7 +40,7 @@ server.get('/category', (req, res, next) => {
 /* ------------------------------------------------------------------------------- */
 /* S17: Crear ruta para agregar categorias de un producto. */
 /* ------------------------------------------------------------------------------- */
-server.post('/:idProducto/category/:idCategoria', (req, res, next) => {
+server.post('/:idProducto/category/:idCategoria', authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res, next) => {
 	const { idProducto, idCategoria } = req.params;
 	prodcat.create({
 		productId: idProducto, categoryId: idCategoria
@@ -50,7 +52,7 @@ server.post('/:idProducto/category/:idCategoria', (req, res, next) => {
 /* ------------------------------------------------------------------------------- */
 /* S17 BIS: Crear ruta para sacar categorias de un producto. */
 /* ------------------------------------------------------------------------------- */
-server.delete('/:idProducto/category/:idCategoria', (req, res, next) => {
+server.delete('/:idProducto/category/:idCategoria', authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res, next) => {
 	const { idProducto, idCategoria } = req.params;
 	prodcat.destroy({
 		where: {
@@ -64,7 +66,7 @@ server.delete('/:idProducto/category/:idCategoria', (req, res, next) => {
 /* ------------------------------------------------------------------------------- */
 /* S18: Crear ruta para crear/agregar Categoria */
 /* ------------------------------------------------------------------------------- */
-server.post('/category', (req, res, next) => {
+server.post('/category', authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res, next) => {
 	const { name, description } = req.body;
 	Category.findOrCreate({ // lo que hace es buscar o crear la categoría
 		where: {
@@ -79,7 +81,7 @@ server.post('/category', (req, res, next) => {
 /* ------------------------------------------------------------------------------- */
 /* S19: Crear Ruta para eliminar Categoria */
 /* ------------------------------------------------------------------------------- */
-server.delete('/category/:id', (req, res, next) => {
+server.delete('/category/:id', authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res, next) => {
 	const { id } = req.params;
 	Category.destroy({
 		where: {
@@ -100,7 +102,7 @@ server.delete('/category/:id', (req, res, next) => {
 /* ------------------------------------------------------------------------------- */
 /* S20: Crear ruta para Modificar Categoria */
 /* ------------------------------------------------------------------------------- */
-server.put("/category/:id", (req, res, next) => {
+server.put("/category/:id", authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res, next) => {
 	const { id } = req.params;
 	let { name, description } = req.body;
 	if (description == '') description = 'Sin descripción';
@@ -189,7 +191,7 @@ server.get('/:id', async (req, res, next) => {
 /* ------------------------------------------------------------------------------- */
 /* S25: Crear ruta para crear/agregar Producto */
 /* ------------------------------------------------------------------------------- */
-server.post('/', upload.array('image', 5), (req, res) => {
+server.post('/', authentication.passport.authenticate('jwt',{session:false}), isAdmin, upload.array('image', 5), (req, res) => {
 	const { name, description, price, stock } = req.body
 	console.log(req.body);
 	if (name && description && price && stock) {
@@ -219,7 +221,7 @@ server.post('/', upload.array('image', 5), (req, res) => {
 /* ------------------------------------------------------------------------------- */
 /* S26: Crear ruta para Modificar Producto */
 /* ------------------------------------------------------------------------------- */
-server.put('/:id', upload.array('image', 5), (req, res, next) => {
+server.put('/:id', authentication.passport.authenticate('jwt',{session:false}), isAdmin, upload.array('image', 5), (req, res, next) => {
 	const { id } = req.params;
 	const { name, description, price, stock,imagenes } = req.body;
 	let images='';
@@ -252,7 +254,7 @@ server.put('/:id', upload.array('image', 5), (req, res, next) => {
 /* ------------------------------------------------------------------------------- */
 /* S27: Crear Ruta para eliminar Producto */
 /* ------------------------------------------------------------------------------- */
-server.delete('/:id', (req, res, next) => {
+server.delete('/:id', authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res, next) => {
 	const { id } = req.params;
 	Product.destroy({
 		where: {
@@ -272,7 +274,7 @@ server.delete('/:id', (req, res, next) => {
 /* ------------------------------------------------------------------------------- */
 /* S54 : Crear ruta para crear/agregar Review */
 /* ------------------------------------------------------------------------------- */
-server.post("/:id/review", (req, res) => {
+server.post("/:id/review", authentication.passport.authenticate('jwt',{session:false}), (req, res) => {
 	const { id } = req.params;
 	const { description, rating, likes,userId} = req.body;
 	console.log(req.body)
@@ -306,7 +308,7 @@ server.get("/:id/review", (req, res) => {
 /* ------------------------------------------------------------------------------- */
 /* S55 : Crear ruta para Modificar Review */
 /* ------------------------------------------------------------------------------- */
-server.put("/:id/review/:idReview", (req, res) => {
+server.put("/:id/review/:idReview", authentication.passport.authenticate('jwt',{session:false}), (req, res) => {
 	const { id, idReview } = req.params;
 	console.log(req.params)
 	const { description,rating,likes,userId} = req.body;
@@ -323,7 +325,7 @@ server.put("/:id/review/:idReview", (req, res) => {
 /* ------------------------------------------------------------------------------- */
 /* S56 : Crear Ruta para eliminar Review */
 /* ------------------------------------------------------------------------------- */
-server.delete("/:id/review/:idReview", (req, res) => {
+server.delete("/:id/review/:idReview", authentication.passport.authenticate('jwt',{session:false}), (req, res) => {
 	const { id, idReview } = req.params;
 	Review.destroy({
 		where: {
