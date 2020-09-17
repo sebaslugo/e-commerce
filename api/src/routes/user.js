@@ -36,7 +36,8 @@ server.post('/', async (req, res) => {
                     to: email,
                     from: 'ecomerce0410@gmail.com',
                     subject: `Hola ${user.name}`,
-                    text: 'Usted se ha registrado correctamente en Henry Store!'
+                    text: 'Usted se ha registrado correctamente en Henry Store!\n\n' +
+                        'http://' + "localhost:3000" + '\n\n'
                 };
                 smtpTransport.sendMail(mailOptions, function (err) {
                     /* req.flash('success', 'An e-mail has been sent to ' + email + ' with further instructions.'); */
