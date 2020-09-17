@@ -16,7 +16,7 @@ module.exports = sequelize => {
                     msg: 'Name must be joined!'
                 }
             },
-            allowNull:false
+            allowNull: false
         },
         lastName: {
             type: DataTypes.STRING,
@@ -26,6 +26,12 @@ module.exports = sequelize => {
                     msg: 'last name must be joined!'
                 }
             },
+            allowNull: false
+        },
+        status:{
+            type:DataTypes.ENUM,
+            values:['login','log out'],
+            defaultValue:'log out'
             allowNull:false
         },
         rol: {
@@ -64,18 +70,17 @@ module.exports = sequelize => {
         },
         password: {
             type: DataTypes.STRING,
-            allowNull:false
+            allowNull: false
         },
         passwordToken:{
             type: DataTypes.STRING,
-            
         },
         resetPasswordExpires: { type: DataTypes.DATE },
         fullName:{
             type:DataTypes.VIRTUAL,
             get(){
-              return this.name + ' ' + this.lastName;
+                return this.name + ' ' + this.lastName;
             }
-          }
+        }
     })
 }
