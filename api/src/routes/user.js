@@ -12,7 +12,7 @@ const async = require('async')
 /* S34 : Crear Ruta para creación de Usuario */
 /* ------------------------------------------------------------------------------- */
 server.post('/', async (req, res) => {
-    const { name, lastName, email, password } = req.body;
+    const { name, lastName, email, password, rol } = req.body;
     if (name && email && password && lastName) {
         let hashedPassword = await bcrypt.hash(password, 10);
         console.log(hashedPassword);
@@ -20,8 +20,8 @@ server.post('/', async (req, res) => {
             name: name,
             lastName: lastName,
             email: email,
-            password: hashedPassword
-
+            password: hashedPassword,
+            rol: rol || 'user'
         })
             .then(user => {
                 console.log(User)
