@@ -23,6 +23,29 @@ server.post('/', async (req, res) => {
             password: hashedPassword,
             rol: rol || 'user'
         })
+            .then((user) => {
+
+                var smtpTransport = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'ecomerce0410@gmail.com',
+                        pass: "henry1234."
+                    }
+                });
+                var mailOptions = {
+                    to: email,
+                    from: 'ecomerce0410@gmail.com',
+                    subject: `Hola ${user.name}`,
+                    text: 'Usted se ha registrado correctamente en Henry Store!\n\n' +
+                        'http://' + "localhost:3000" + '\n\n'
+                };
+                smtpTransport.sendMail(mailOptions, function (err) {
+                    /* req.flash('success', 'An e-mail has been sent to ' + email + ' with further instructions.'); */
+                    done(err, 'done');
+                });
+                return (user)
+
+            })
             .then(user => {
                 console.log(User)
                 return res.status(201).json(user)
