@@ -20,8 +20,9 @@ export function postCreateUser(newData) {
                     type: CREATE_USER,
                     payload: res.data
                 }),
-                alert('se creo el usuario')
-            );
+                
+            ).then(res => alert('se creo el usuario'))
+            .catch(e => alert('este email ya tiene una cuenta creada'))
     };
     
 }

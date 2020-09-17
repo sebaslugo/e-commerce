@@ -15,7 +15,8 @@ module.exports = sequelize => {
                     args: true,
                     msg: 'Name must be joined!'
                 }
-            }
+            },
+            allowNull:false
         },
         lastName: {
             type: DataTypes.STRING,
@@ -24,12 +25,8 @@ module.exports = sequelize => {
                     args: true,
                     msg: 'last name must be joined!'
                 }
-            }
-        },
-        status:{
-            type:DataTypes.ENUM,
-            values:['login','log out'],
-            defaultValue:'log out'
+            },
+            allowNull:false
         },
         rol: {
             type: DataTypes.ENUM,
@@ -62,10 +59,12 @@ module.exports = sequelize => {
                             next(error);
                         })
                 }
-            }
+            },
+            allowNull:false
         },
         password: {
             type: DataTypes.STRING,
+            allowNull:false
         },
         passwordToken:{
             type: DataTypes.STRING,

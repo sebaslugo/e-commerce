@@ -214,21 +214,29 @@ server
     /* ------------------------------------------------------------------------------- */
     .get((req, res) => {
         const id = req.params.userId;
+        let carrito
         Order.findOne(
-
             {
                 where: { userId: id, status: 'carrito' },
                 include: [{ model: Product, as: 'products' }, { model: User, as: 'user' }]
-            })
-            .then((carrito) => {
-                if (carrito) {
-                    return res.status(200).json(carrito)
-                }
-                else {
-                    return res.status(200).json([])
-                }
-            })
-            .catch(err => res.status(400).json(err))
+        })
+        .then((cart) => {
+            if (cart) {
+                carrito = cart
+                return OrderList.findAll({
+                    where:{orderId:carrito.id},
+                })
+            }
+            else {
+                return res.status(200).json([])
+            }
+        })
+        .then((orderList) => {
+            console.log(carrito)
+            let obj = {carrito,orderList}
+            return res.status(200).send(obj)
+        })
+        .catch(err => res.status(400).json(err))
 
     })
 
