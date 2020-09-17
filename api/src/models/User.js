@@ -32,6 +32,7 @@ module.exports = sequelize => {
             type:DataTypes.ENUM,
             values:['login','log out'],
             defaultValue:'log out'
+            allowNull:false
         },
         rol: {
             type: DataTypes.ENUM,
@@ -64,12 +65,17 @@ module.exports = sequelize => {
                             next(error);
                         })
                 }
-            }
+            },
+            allowNull:false
         },
         password: {
             type: DataTypes.STRING,
             allowNull: false
         },
+        passwordToken:{
+            type: DataTypes.STRING,
+        },
+        resetPasswordExpires: { type: DataTypes.DATE },
         fullName:{
             type:DataTypes.VIRTUAL,
             get(){

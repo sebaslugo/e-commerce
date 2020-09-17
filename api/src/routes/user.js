@@ -3,13 +3,16 @@ const { User, Product, Order, OrderList } = require('../db.js');
 const { json } = require('body-parser');
 const Op = require('sequelize').Op;
 const bcrypt = require('bcrypt');
+const authentication = require('../jwt');
+const nodemailer = require('nodemailer');
+const isAdmin = require('../middlewares/isAdmin');
 
 
 /* ------------------------------------------------------------------------------- */
 /* S34 : Crear Ruta para creación de Usuario */
 /* ------------------------------------------------------------------------------- */
 server.post('/', async (req, res) => {
-    const { name, lastName, email, password } = req.body;
+    const { name, lastName, email, password, rol } = req.body;
     if (name && email && password && lastName) {
         let hashedPassword = await bcrypt.hash(password, 10);
         console.log(hashedPassword);
@@ -17,9 +20,32 @@ server.post('/', async (req, res) => {
             name: name,
             lastName: lastName,
             email: email,
-            password: hashedPassword
-
+            password: hashedPassword,
+            rol: rol || 'user'
         })
+            .then((user) => {
+
+                var smtpTransport = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'ecomerce0410@gmail.com',
+                        pass: "henry1234."
+                    }
+                });
+                var mailOptions = {
+                    to: email,
+                    from: 'ecomerce0410@gmail.com',
+                    subject: `Hola ${user.name}`,
+                    text: 'Usted se ha registrado correctamente en Henry Store!\n\n' +
+                        'http://' + "localhost:3000" + '\n\n'
+                };
+                smtpTransport.sendMail(mailOptions, function (err) {
+                    /* req.flash('success', 'An e-mail has been sent to ' + email + ' with further instructions.'); */
+                    done(err, 'done');
+                });
+                return (user)
+
+            })
             .then(user => {
                 console.log(User)
                 return res.status(201).json(user)
@@ -35,7 +61,7 @@ server.post('/', async (req, res) => {
 /* ------------------------------------------------------------------------------- */
 /* S35 : Crear Ruta para modificar Usuario */
 /* ------------------------------------------------------------------------------- */
-server.put('/:id', (req, res) => {
+server.put('/:id', authentication.passport.authenticate('jwt',{session:false}), (req, res) => {
     const { id } = req.params;
     const { name, lastName, email, password } = req.body;
     User.update(
@@ -55,7 +81,7 @@ server.put('/:id', (req, res) => {
 /* ------------------------------------------------------------------------------- */
 /* S36 : Crear Ruta para traer usuarios */
 /* ------------------------------------------------------------------------------- */
-server.get('/', (req, res) => {
+server.get('/', authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res) => {
     console.log(req.body)
     User.findAll()
         .then(users => {
@@ -66,7 +92,7 @@ server.get('/', (req, res) => {
 /* ------------------------------------------------------------------------------- */
 /* S37 : Crear Ruta para eliminar usuario */
 /* ------------------------------------------------------------------------------- */
-server.delete('/:id', (req, res) => {
+server.delete('/:id', authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res) => {
     const { id } = req.params;
     User.destroy({
         where: {
@@ -90,7 +116,7 @@ server
     // S45 : Crear Ruta que retorne todas las Ordenes de los usuarios
     /* ------------------------------------------------------------------------------- */
     .route('/:id/orders')
-    .get((req, res) => {
+    .get(authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res) => {
         const { id } = req.params
         Order.findAll({
             where: { userId: id },
@@ -125,15 +151,15 @@ server
                 return order.setUser(userId)
             })
             .then((order) => {
-                
+
                 return OrderList.create({
                     price,
                     quantity,
                     orderId: order.id,
                     productId: productId
                 })
-               
-                
+
+
             })
             .then((order) => {
                 res.status(200).json(order)
@@ -143,32 +169,33 @@ server
             })
     })
 
-    
+
 
     // modificar cantidad de producto en el carrito
 
-    .put ((req,res) => {
+    .put((req, res) => {
         const id = req.params.userId
-        const {productId,quantity} = req.body
+        const { productId, quantity } = req.body
         Order.findOne(
-            {where:{userId:id,status:'carrito'}
-        })
-        .then((carrito)=>{
-            return OrderList.findOne({
-                where:{orderId:carrito.id,productId:productId}
-            })            
-        })
-        .then((producto) => {
-            producto.quantity = quantity;
-            return producto.save();
-        })
-        .then((cambio)=>{
-            res.json(cambio)
-        })
+            {
+                where: { userId: id, status: 'carrito' }
+            })
+            .then((carrito) => {
+                return OrderList.findOne({
+                    where: { orderId: carrito.id, productId: productId }
+                })
+            })
+            .then((producto) => {
+                producto.quantity = quantity;
+                return producto.save();
+            })
+            .then((cambio) => {
+                res.json(cambio)
+            })
     })
-/* ------------------------------------------------------------------------------- */
-//S40:Crear Ruta para vaciar el carrito
-/* ------------------------------------------------------------------------------- */
+    /* ------------------------------------------------------------------------------- */
+    //S40:Crear Ruta para vaciar el carrito
+    /* ------------------------------------------------------------------------------- */
 
     .delete((req, res) => {
         const id = req.params.userId;
@@ -187,22 +214,94 @@ server
     /* ------------------------------------------------------------------------------- */
     .get((req, res) => {
         const id = req.params.userId;
+        let carrito
         Order.findOne(
-
             {
                 where: { userId: id, status: 'carrito' },
                 include: [{ model: Product, as: 'products' }, { model: User, as: 'user' }]
-            })
-            .then((carrito) => {
-                if (carrito) {
-                    return res.status(200).json(carrito)
-                }
-                else {
-                    return res.status(200).json([])
-                }
-            })
-            .catch(err => res.status(400).json(err))
+        })
+        .then((cart) => {
+            if (cart) {
+                carrito = cart
+                return OrderList.findAll({
+                    where:{orderId:carrito.id},
+                })
+            }
+            else {
+                return res.status(200).json([])
+            }
+        })
+        .then((orderList) => {
+            console.log(carrito)
+            let obj = {carrito,orderList}
+            return res.status(200).send(obj)
+        })
+        .catch(err => res.status(400).json(err))
 
     })
+
+server
+    .route("/forgot")
+    .post((req, res, next) => {
+        const { email } = req.body
+        User.findOne({
+            where: { email: email }
+
+        }).then((user) => {
+
+            let payload = { id: user.id }
+            let token = authentication.jwt.sign(payload, authentication.jwtOptions.secretOrKey)
+            user.passwordToken = token;
+            user.resetPasswordExpires = Date.now() + 3600000;
+            user.save()
+            return (token)
+
+        })
+            .then((token) => {
+
+                var smtpTransport = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'ecomerce0410@gmail.com',
+                        pass: "henry1234."
+                    }
+                });
+                var mailOptions = {
+                    to: email,
+                    from: 'ecomerce0410@gmail.com',
+                    subject: 'Node.js Password Reset',
+                    text: 'Recibio esto porque usted u otra persona ha solicitado el restablecimiento de contraseña de su cuenta, para restablecer, dirigase al siguiente link :\n\n' +
+                        'http://' + "localhost:3000" + '/reset/' + token + '\n\n' +
+                        'Si usted no solicito un cambio de contraseña, haga caso omiso a este mensaje.\n'
+                };
+                smtpTransport.sendMail(mailOptions, function (err) {
+                    /* req.flash('success', 'An e-mail has been sent to ' + email + ' with further instructions.'); */
+                    done(err, 'done');
+                });
+                return res.send('Email enviado')
+
+            },
+                function (err) {
+                    if (err) return next(err);
+                    // res.redirect('/forgot');
+                });
+    })
+server.post('/reset/:token', async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+    let hashedPassword = await bcrypt.hash(password, 10);
+    User.findOne({
+        where: { passwordToken: token }
+
+    }).then((user) => {
+        user.password = hashedPassword;
+        user.passwordToken = null;
+        user.save()
+        return user
+    })
+        .then(user => {
+            return res.status(201).json(user)
+        })
+})
 
 module.exports = server;
