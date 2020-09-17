@@ -1,11 +1,7 @@
-
 const server = require('express').Router();
 const { User } = require('../db.js');
 const bcrypt = require('bcrypt');
 const authentication = require('../jwt');
-
-
-
 
 server.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -34,8 +30,8 @@ server.post('/login', async (req, res) => {
     }
 })
 
-server.get('/me',authentication.passport.authenticate('jwt',{session:false}),(req,res)=>{
-  res.json({message:"Usted está autorizado correctamente!",user:req.user});
+server.get('/me', authentication.passport.authenticate('jwt',{session:false}), (req,res)=>{
+  res.json({message:"Usted está autorizado correctamente!", user: req.user});
 });
 
 server.get('/logout', (req, res) => {
@@ -43,5 +39,16 @@ server.get('/logout', (req, res) => {
     res.redirect('http://google.com');
 });
 
-module.exports = server;
+server.post("/promote/:id", (req, res) => {
+    const { id } = req.params;
+    User.update(
+        {rol: "admin"},
+        {where: {id: id}}
+    )
+    .then(() => {
+        res.status(200).json({message: "se pudo promover al usuario a admin"})
+    })
+    .catch(err => res.status(404).json(err))
+})
 
+module.exports  = server;

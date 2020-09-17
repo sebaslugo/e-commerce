@@ -4,7 +4,7 @@ const { json } = require('body-parser');
 const Op = require('sequelize').Op;
 const bcrypt = require('bcrypt');
 const authentication = require('../jwt');
-const nodemailer = require ('nodemailer')
+const nodemailer = require('nodemailer')
 const async = require('async')
 
 
@@ -12,7 +12,7 @@ const async = require('async')
 /* S34 : Crear Ruta para creación de Usuario */
 /* ------------------------------------------------------------------------------- */
 server.post('/', async (req, res) => {
-    const { name, lastName, email, password } = req.body;
+    const { name, lastName, email, password, rol } = req.body;
     if (name && email && password && lastName) {
         let hashedPassword = await bcrypt.hash(password, 10);
         console.log(hashedPassword);
@@ -20,9 +20,32 @@ server.post('/', async (req, res) => {
             name: name,
             lastName: lastName,
             email: email,
-            password: hashedPassword
-
+            password: hashedPassword,
+            rol: rol || 'user'
         })
+            .then((user) => {
+
+                var smtpTransport = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'ecomerce0410@gmail.com',
+                        pass: "henry1234."
+                    }
+                });
+                var mailOptions = {
+                    to: email,
+                    from: 'ecomerce0410@gmail.com',
+                    subject: `Hola ${user.name}`,
+                    text: 'Usted se ha registrado correctamente en Henry Store!\n\n' +
+                        'http://' + "localhost:3000" + '\n\n'
+                };
+                smtpTransport.sendMail(mailOptions, function (err) {
+                    /* req.flash('success', 'An e-mail has been sent to ' + email + ' with further instructions.'); */
+                    done(err, 'done');
+                });
+                return (user)
+
+            })
             .then(user => {
                 console.log(User)
                 return res.status(201).json(user)
@@ -128,15 +151,15 @@ server
                 return order.setUser(userId)
             })
             .then((order) => {
-                
+
                 return OrderList.create({
                     price,
                     quantity,
                     orderId: order.id,
                     productId: productId
                 })
-               
-                
+
+
             })
             .then((order) => {
                 res.status(200).json(order)
@@ -146,32 +169,33 @@ server
             })
     })
 
-    
+
 
     // modificar cantidad de producto en el carrito
 
-    .put ((req,res) => {
+    .put((req, res) => {
         const id = req.params.userId
-        const {productId,quantity} = req.body
+        const { productId, quantity } = req.body
         Order.findOne(
-            {where:{userId:id,status:'carrito'}
-        })
-        .then((carrito)=>{
-            return OrderList.findOne({
-                where:{orderId:carrito.id,productId:productId}
-            })            
-        })
-        .then((producto) => {
-            producto.quantity = quantity;
-            return producto.save();
-        })
-        .then((cambio)=>{
-            res.json(cambio)
-        })
+            {
+                where: { userId: id, status: 'carrito' }
+            })
+            .then((carrito) => {
+                return OrderList.findOne({
+                    where: { orderId: carrito.id, productId: productId }
+                })
+            })
+            .then((producto) => {
+                producto.quantity = quantity;
+                return producto.save();
+            })
+            .then((cambio) => {
+                res.json(cambio)
+            })
     })
-/* ------------------------------------------------------------------------------- */
-//S40:Crear Ruta para vaciar el carrito
-/* ------------------------------------------------------------------------------- */
+    /* ------------------------------------------------------------------------------- */
+    //S40:Crear Ruta para vaciar el carrito
+    /* ------------------------------------------------------------------------------- */
 
     .delete((req, res) => {
         const id = req.params.userId;
@@ -210,45 +234,66 @@ server
 
 server
     .route("/forgot")
-    .post((req,res) => {
-        const {email} = req.body
+    .post((req, res, next) => {
+        const { email } = req.body
         User.findOne({
-            where:{email:email}
+            where: { email: email }
 
         }).then((user) => {
-            
-            let payload = {id:user.id}
-            let token = authentication.jwt.sign(payload, authentication.jwtOptions.secretOrKey, { expiresIn: 300 })
+
+            let payload = { id: user.id }
+            let token = authentication.jwt.sign(payload, authentication.jwtOptions.secretOrKey)
+            user.passwordToken = token;
+            user.resetPasswordExpires = Date.now() + 3600000;
+            user.save()
             return (token)
 
-        }).then((token) => {
-            
-            var smtpTransport = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                    user: 'ecomerce0410@gmail.com',
-                    pass: "henry1234."
-                }
-            });
-            var mailOptions = {
-                to: email,
-                from: 'ecomerce0410@gmail.com',
-                subject: 'Node.js Password Reset',
-                text: 'Recibio esto porque usted u otra persona ha solicitado el restablecimiento de contraseña de su cuenta, para restablecer, dirigase al siguiente link :\n\n' +
-                    'http://' + "localhost:3000" + '/reset/' + token + '\n\n' +
-                    'Si usted no solicito un cambio de contraseña, haga caso omiso a este mensaje.\n'
-            };
-            smtpTransport.sendMail(mailOptions, function (err) {                
-                /* req.flash('success', 'An e-mail has been sent to ' + email + ' with further instructions.'); */
-                done(err, 'done');                
-            });
-            return res.send('Email enviado')
+        })
+            .then((token) => {
 
-        },
-        function (err) {
-            if (err) return next(err);
-            // res.redirect('/forgot');
-        });            
-    }) 
+                var smtpTransport = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'ecomerce0410@gmail.com',
+                        pass: "henry1234."
+                    }
+                });
+                var mailOptions = {
+                    to: email,
+                    from: 'ecomerce0410@gmail.com',
+                    subject: 'Node.js Password Reset',
+                    text: 'Recibio esto porque usted u otra persona ha solicitado el restablecimiento de contraseña de su cuenta, para restablecer, dirigase al siguiente link :\n\n' +
+                        'http://' + "localhost:3000" + '/reset/' + token + '\n\n' +
+                        'Si usted no solicito un cambio de contraseña, haga caso omiso a este mensaje.\n'
+                };
+                smtpTransport.sendMail(mailOptions, function (err) {
+                    /* req.flash('success', 'An e-mail has been sent to ' + email + ' with further instructions.'); */
+                    done(err, 'done');
+                });
+                return res.send('Email enviado')
+
+            },
+                function (err) {
+                    if (err) return next(err);
+                    // res.redirect('/forgot');
+                });
+    })
+server.post('/reset/:token', async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+    let hashedPassword = await bcrypt.hash(password, 10);
+    User.findOne({
+        where: { passwordToken: token }
+
+    }).then((user) => {
+        user.password = hashedPassword;
+        user.passwordToken = null;
+        user.save()
+        return user
+    })
+        .then(user => {
+            return res.status(201).json(user)
+        })
+})
 
 module.exports = server;

@@ -4,10 +4,8 @@ const express = require('express')
 const productRouter = require('./product.js');
 const searchRouter = require('./search.js')
 const userRouter = require('./user.js')
-const path = require('path');
 const order = require("./order");
 const authRouter = require('./auth');
-
 
 const router = Router();
 router.use(express.static('images'));
@@ -16,11 +14,9 @@ router.use(express.static('images'));
 // router.use('/auth', authRouter--);
 router.use('/products', productRouter);
 router.use('/search', searchRouter);
-router.use('/orders',order);
+router.use('/orders', order);
 router.use('/users', userRouter);
 router.use('/auth', authRouter);
 router.use(express.static('images'));
-
-
 
 module.exports = router;
