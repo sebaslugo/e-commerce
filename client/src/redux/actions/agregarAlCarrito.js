@@ -7,7 +7,7 @@ export default function agregarAlCarrito(newData,id) {
         console.log(newData)
         return axios({
             method: 'POST',
-            url: 'http://localhost:3001/users/${id}/cart',//cambiarle el id del user en caso de ser necesario
+            url: `http://localhost:3001/users/${id}/cart`,//cambiarle el id del user en caso de ser necesario
             data: {
                 product: newData
             }

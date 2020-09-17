@@ -22,28 +22,38 @@ export default function AgregarAlCarrito({ producto, precio, cantidad }) {
                 price:parseInt(precio),
                 quantity:parseInt(cantidad)
             }          
-            dispatch(agregarAlCarrito(product))
+            dispatch(agregarAlCarrito(product,id))
         }
-        /* else{
-            
-            localStorage.removeItem('carrito');
-        } */
         else{
-            let product= {producto,price:parseInt(precio),quantity:parseInt(cantidad)};
+            let product= {producto:[producto],orderList:[{price:parseInt(precio),quantity:parseInt(cantidad)}]};
             let local =  JSON.parse(localStorage.getItem("carrito"));  
-            console.log(local)          
+            
             if(local){
-                local.push(product)
-                console.log(local)
+                local.producto.map((producto)=>{
+                    if(producto.id == product.producto[0].id){
+                        console.log('aqui toy')
+                        product = false;
+                        return alert('producto ya esta en el carrito')
+                    }
+                }) 
+                if(product){
+                    local = {
+                        ['producto']:local.producto.concat(product.producto),
+                        ['orderList']:local.orderList.concat(product.orderList)
+                    }
+                    alert('producto agregado al carrito')
+                }
+                
             } 
             else{
-                local=[product]          
+                local=product
+                alert('producto agregado al carrito')          
             } 
-            console.log(local)
             
             const serializedState = JSON.stringify(local);
-            localStorage.setItem("carrito", serializedState);        
-                
+            localStorage.setItem("carrito", serializedState);   
+
+                        
         }             
     }
     return (

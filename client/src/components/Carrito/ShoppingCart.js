@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-let id;
+let id = 1 ;
 
 const ShoppingCart = () => {
     const classes = useStyles();
@@ -65,7 +65,7 @@ const ShoppingCart = () => {
     useEffect(() => {
         if(id){
             dispatch(fetchProductsFromCart(id));
-            store.subscribe(() => setCart(() => store.getState().shoppingCart.data.products))
+            store.subscribe(() => setCart(() => store.getState().shoppingCart.data.carrito.products))
         }
         else{
             try {
@@ -115,13 +115,13 @@ const ShoppingCart = () => {
                 <MenuItem onClick={emptyCarrito}>VACIAR CARRITO</MenuItem>
             </Menu>
             {cart && cart.length > 0 && cart.map(cart => (<Paper className={classes.paper}>
-                <Grid container spacing={2}>
-                    <Grid item>
+                <Grid container spacing={3}>
+                    <Grid item xs container direction="column" spacing={2}>
                         <ButtonBase className={classes.image}>
                             <img className={classes.img} alt="complex" src={`http://localhost:3001/${cart.imagenes[0]}`} />
                         </ButtonBase>
                     </Grid>
-                    <Grid item xs={12} sm container>
+                    <Grid item xs={10} sm container>
                         <Grid item xs container direction="column" spacing={2}>
                             <Grid item xs>
                                 <Typography gutterBottom variant="subtitle1">
@@ -135,19 +135,27 @@ const ShoppingCart = () => {
                                     <p style={{ fontWeight: "bold" }}>{cart.price}</p>
                                 </Typography>
                             </Grid>
-                            <Grid item>
-                                <ColorButton
-                                    variant="contained"
-                                    className={classes.button}
-                                    startIcon={<DeleteIcon />}
-                                >
-                                    BORRAR
-                                 </ColorButton>
-
-                            </Grid>
                         </Grid>
+                    </Grid>
+                    <Grid item xs container direction="column" spacing={2}>
+                        <Grid item xs>
+                            <Typography gutterBottom variant="subtitle1">
+                                <h3>Cantidad</h3>
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">
+                                <input type='number' value={cart}></input>
+                            </Typography>
+                        </Grid>
+                        
                         <Grid item>
-                            <Typography variant="subtitle1">X</Typography>
+                            <ColorButton
+                                variant="contained"
+                                className={classes.button}
+                                startIcon={<DeleteIcon />}
+                            >
+                                BORRAR
+                                </ColorButton>
+
                         </Grid>
                     </Grid>
                 </Grid>

@@ -66,15 +66,15 @@ function Producto(props) {
     }
     else if(quantity <= producto.stock){
       setPrecio(quantity * producto.price);
-      setCantidad(quantity < cantidad ? (cantidad-1) : (cantidad+1))     
+      setCantidad(quantity < cantidad ? (cantidad-1) : (cantidad+1))
     }
     else{
       alert('No hay suficientes unidades del producto')
       setCantidad(producto.stock)
     }
-    
-  };
 
+  };
+  console.log(cantidad)
   return (
     <Container>
       <h1 className = "producto_title">{producto.name}</h1>  
