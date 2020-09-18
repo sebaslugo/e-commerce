@@ -28,7 +28,6 @@ module.exports = sequelize => {
             },
             allowNull: false
         },
-        
         rol: {
             type: DataTypes.ENUM,
             values: ['user', 'admin'],
@@ -61,19 +60,19 @@ module.exports = sequelize => {
                         })
                 }
             },
-            allowNull:false
+            allowNull: false
         },
         password: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        passwordToken:{
+        passwordToken: {
             type: DataTypes.STRING,
         },
         resetPasswordExpires: { type: DataTypes.DATE },
-        fullName:{
-            type:DataTypes.VIRTUAL,
-            get(){
+        fullName: {
+            type: DataTypes.VIRTUAL,
+            get() {
                 return this.name + ' ' + this.lastName;
             }
         }
