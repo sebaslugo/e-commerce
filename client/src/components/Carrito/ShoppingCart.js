@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: "100%",
   },
 }));
+
 function getSum(total, num) {
   return total + num;
 }
@@ -200,6 +201,7 @@ const ShoppingCart = () => {
                       onChange={(e) => onChange(e, product)}
                     ></input>
                   </Typography>
+
                 </Grid>
 
                 <Grid item>

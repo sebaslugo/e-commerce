@@ -8,10 +8,11 @@ import { getCategories } from '../../redux/actions/category';
 import { getProducts, getProductCategory } from '../../redux/actions/productList';
 import { useDispatch, useSelector } from 'react-redux';
 import store from '../../redux/store/index';
-import AgregarAlCarrito from '../Carrito/AgregarAlCarrito'
 import { getUser } from '../../redux/actions/menuLogIn'
-import axios from 'axios'
-// axios.defaults.headers.common = { 'Authorization': `bearer ${localStorage.getItem('token')}` }
+import agregarAlCarrito from '../../redux/actions/agregarAlCarrito'
+
+let id = localStorage.getItem('idUser');
+let cart =  JSON.parse(localStorage.getItem("carrito")); 
 
 function Home() {
 
@@ -19,36 +20,37 @@ function Home() {
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);
   const [activeItem, setActiveItem] = useState("Todos Los Productos");
-  const [productos, setProductos] = useState([])
+  const [productos, setProductos] = useState()
   const paginas = productos && Math.ceil(productos.length / 6);
   const [productPage, setProductPage] = useState([]);
   const categorias = useSelector(state => state.categorias.data)
+  
 
 
   useEffect(() => {
     let page = [];
-    dispatch(getCategories());
-    dispatch(getProducts());
-    // dispatch(getUser())
-    store.subscribe(() => {
-      setProductos(() => store.getState().productList.data)
-    })
-    // axios({
-    //   method: 'GET',
-    //   url: `http://localhost:3001/auth/me`,
 
-    //   // config: {
-    //   //   headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    //   // }
-    // }
-    // )
+    if(!productos) {
+      dispatch(getCategories());
+      dispatch(getProducts());
+      // dispatch(getUser())
+      console.log(localStorage.getItem('token'))
+      store.subscribe(() => {
+        setProductos(() => store.getState().productList.data)
+      })
 
-    //   .then((res) => {
-    //     console.log(res)
-    //   })
-    //   .catch(err => err)
+    }
+    
+    if(id && cart){
+      cart.orderList.map((order) => {
+        dispatch(agregarAlCarrito(order,id))
+      })
+      localStorage.removeItem('carrito');
 
-  }, [])
+    }
+    
+
+  })
 
   const handleItemClick = (e, { name }) => {
 
