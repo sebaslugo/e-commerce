@@ -17,7 +17,7 @@ import Results from './components/ProductSearch/ResultsSearch';
 import ShoppingCart from './components/Carrito/ShoppingCart';
 import Admin from './components/Admin/Admin';
 
-
+let id = 1;
 
 function App() {
   
@@ -37,7 +37,7 @@ function App() {
         <Route exact path="/Admin/orderlist" component={OrderList} />
         <Route exact path="/Login/loginuser" component={UserLogin} />
         <Route exact path="/Login/createuser" component={CreateUser} />
-        <Route exact path="/user/cart/:id" component={ShoppingCart} />
+        <Route exact path={`/user/cart/${id}`}  component={ShoppingCart} />
       </div>
     </Router>
   );

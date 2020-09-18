@@ -233,7 +233,7 @@ server
         })
         .then((orderList) => {
             console.log(carrito)
-            let obj = {carrito,orderList}
+            let obj = {products:carrito.products,orderList}
             return res.status(200).send(obj)
         })
         .catch(err => res.status(400).json(err))
