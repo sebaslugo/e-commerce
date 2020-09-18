@@ -28,12 +28,7 @@ module.exports = sequelize => {
             },
             allowNull: false
         },
-        status:{
-            type:DataTypes.ENUM,
-            values:['login','log out'],
-            defaultValue:'log out'
-            allowNull:false
-        },
+        
         rol: {
             type: DataTypes.ENUM,
             values: ['user', 'admin'],
