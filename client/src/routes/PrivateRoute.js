@@ -4,6 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 
 export const PrivateRoute = ({
     isAuthenticated,
+    isAdmin,
     component: Component,
     ...rest
 }) => {
@@ -12,17 +13,19 @@ export const PrivateRoute = ({
 
     return (
         <Route {...rest}
-            component={(props) => (
-                (isAuthenticated)
-                    ? (<Component {...props} />)
-                    : (<Redirect to="/" />)
-            )} 
-
+            component={(props) => {
+                if (isAuthenticated == 'Usted está autorizado correctamente!' && isAdmin == 'admin') {
+                    return (<Component {...props} />)
+                } else {
+                    return (<Redirect to="/login/loginuser" />)
+                }
+            }}
         />
     )
 }
 
 PrivateRoute.propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired,
+    isAuthenticated: PropTypes.any.isRequired,
+    isAdmin: PropTypes.string.isRequired,
     component: PropTypes.func.isRequired
 }
