@@ -2,9 +2,9 @@ import { LOGIN_USER } from '../consts/actionTypes.js';
 import axios from 'axios'
 import store from '../store/index'
 
-export function loginUser(loginData){
+export function loginUser(loginData) {
     // console.log("esta es la data que llega al actions", loginData)
-    return function(dispatch) {
+    return function (dispatch) {
         axios({
             method: 'POST',
             url: `http://localhost:3001/auth/login`,
@@ -13,14 +13,18 @@ export function loginUser(loginData){
                 password: loginData.password,
             }
         })
-        .then(res => {
-            dispatch({
-                type: LOGIN_USER,
-                payload: res.data
+            .then(res => {
+                dispatch({
+                    type: LOGIN_USER,
+                    payload: res.data
+                })
+                return res;
             })
-            return res;
-        })
-        .then(res => localStorage.setItem('token', res.data.token))
-        .catch(() => alert("Los datos del Usuario no concuerdan con un usuario existente...vuelva a intentarlo"))
+            // .then(res => localStorage.setItem('token', res.data.token))
+            .then(res => {
+                localStorage.setItem('token', res.data.token)
+                window.location.assign("http://localhost:3000/%22")
+            })
+            .catch(() => alert("Los datos del Usuario no concuerdan con un usuario existente...vuelva a intentarlo"))
     }
 }

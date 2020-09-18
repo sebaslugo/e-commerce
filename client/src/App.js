@@ -1,6 +1,6 @@
 import React from "react";
 import 'semantic-ui-css/semantic.min.css';
-import  '@material-ui/core/styles';
+import '@material-ui/core/styles';
 import { Route, BrowserRouter as Router } from "react-router-dom";
 
 import "./App.css";
@@ -17,12 +17,14 @@ import Results from './components/ProductSearch/ResultsSearch';
 import ShoppingCart from './components/Carrito/ShoppingCart';
 import Admin from './components/Admin/Admin';
 
-let id = 1;
+import axios from 'axios'
+axios.defaults.headers.common = { 'Authorization': `bearer ${localStorage.getItem('token')}` }
+
 
 function App() {
-  
+
   return (
-    
+
     <Router>
       <div className="App">
         <Header />
@@ -30,7 +32,7 @@ function App() {
         <Route exact path="/:category" component={Home}></Route>
         <Route exact path="/Producto/:id" component={Producto} />
         <Route exact path="/search/results" component={Results} />
-        <Route exact path="/Admin/panel" component={Admin} />   
+        <Route exact path="/Admin/panel" component={Admin} />
         <Route exact path="/Admin/products" component={ProducList} />
         <Route exact path="/Admin/categories" component={FormCategories} />
         <Route exact path="/Admin/order/:id" component={Orden} />
