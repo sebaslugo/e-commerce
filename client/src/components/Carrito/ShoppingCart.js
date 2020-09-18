@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-let id=1 ;
+let id = localStorage.getItem('idUser');
 
 const ShoppingCart = () => {
     const classes = useStyles();

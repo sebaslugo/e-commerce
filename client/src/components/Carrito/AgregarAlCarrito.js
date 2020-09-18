@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react'
 import agregarAlCarrito from '../../redux/actions/agregarAlCarrito'
 
-let id=1;
+let id = localStorage.getItem('idUser');
 
 export default function AgregarAlCarrito({ producto, precio, cantidad }) {
     const dispatch = useDispatch();
