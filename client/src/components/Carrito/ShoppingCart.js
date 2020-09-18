@@ -51,21 +51,94 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+let id=1 ;
+
 const ShoppingCart = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
-    const [cart, setCart] = useState([]);
-    const id = document.URL.split("/").pop()
+    const [cart, setCart] = useState({products:[]});
+    const [quantities,setQuantity] = useState();
+    const [prices,setPrices] = useState();
+    const [active,setActive] = useState(true)
+
 
 
 
     useEffect(() => {
-        dispatch(fetchProductsFromCart(id));
-        store.subscribe(() => setCart(() => store.getState().shoppingCart.data.products))
-    }, []);
+        let precios = {};
+        let cantidades = {};
+        if(id && active){
+            dispatch(fetchProductsFromCart(id));
+            store.subscribe(() => setCart(() => store.getState().shoppingCart.data))
+            setActive(false);
+        }
+        else if(!id && active){
+            try {
+                const serializedState = JSON.parse(localStorage.getItem("carrito"));
+                if (serializedState === null) console.log(undefined) ;
+                setCart(serializedState);
+                setActive(false)
+                
+              } catch (e) {
+                console.log(e);
+            }
+        }
+        if(!prices && !quantities && cart.orderList){
+            
+            console.log(cart.orderList);
+            cart.orderList.map((order) => {
+                precios={
+                    ...precios,
+                    [order.productId]:order.price
+                }
+                cantidades={
+                    ...cantidades,
+                    [order.productId]:order.quantity
+                }                 
+            })
+            setQuantity(cantidades)
+            setPrices(precios)
 
+        }
+        
+    });
+    //quantities = {1:2,2:4}
+    // prices = {1:10.000,2:20.000}
 
+    const onChange = (event,product) => {
+        event.preventDefault();
+        let quantity = event.target.value;
+        let cant = quantities[product.id];
+        console.log(quantity)
+        if(quantity < 1){
+            setQuantity({
+              ...quantities,
+              [product.id]:1
+
+            })
+        }
+        else if(quantity <= product.stock){
+            setPrices({
+              ...prices,
+              [product.id]:quantity * product.price});
+              setQuantity({
+                ...quantities,
+                [product.id]:quantity < cant ? (cant-1) : (cant+1)
+  
+            })
+            
+        } 
+        else{
+          alert('No hay suficientes unidades del producto')
+          setQuantity({
+            ...quantities,
+            [product.id]:product.stock
+
+          })
+        } 
+    
+    };
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -81,7 +154,7 @@ const ShoppingCart = () => {
     }
 
 
-
+   
 
 
     return (
@@ -89,7 +162,7 @@ const ShoppingCart = () => {
         <div className={classes.root}>
             <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                 OPCIONES
-      </Button>
+            </Button>
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
@@ -100,40 +173,59 @@ const ShoppingCart = () => {
                 <MenuItem onClick={handleClose}>INICIO</MenuItem>
                 <MenuItem onClick={emptyCarrito}>VACIAR CARRITO</MenuItem>
             </Menu>
-            {cart && cart.length > 0 && cart.map(cart => (<Paper className={classes.paper}>
-                <Grid container spacing={2}>
-                    <Grid item>
+            {cart.products && cart.products.length > 0 && cart.products.map((product,index) => (
+            <Paper key = {index} className={classes.paper}>
+                <Grid container spacing={3}>
+                    <Grid item xs container direction="column" spacing={2}>
                         <ButtonBase className={classes.image}>
-                            <img className={classes.img} alt="complex" src={`http://localhost:3001/${cart.imagenes[0]}`} />
+                            <img className={classes.img} alt="complex" src={`http://localhost:3001/${product.imagenes[0]}`} />
                         </ButtonBase>
                     </Grid>
-                    <Grid item xs={12} sm container>
+                    <Grid item xs={10} sm container>
                         <Grid item xs container direction="column" spacing={2}>
                             <Grid item xs>
                                 <Typography gutterBottom variant="subtitle1">
-                                    <h1>{cart.name}</h1>
+                                    <h1>{product.name}</h1>
                                 </Typography>
 
                                 <Typography variant="body2" gutterBottom>
-                                    <h6>{cart.description}</h6>
+                                    <h6>{product.description}</h6>
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary">
-                                    <p style={{ fontWeight: "bold" }}>{cart.price}</p>
+                                    <p style={{ fontWeight: "bold" }}>{product.price}</p>
                                 </Typography>
                             </Grid>
-                            {/* <Grid item>
-                                <ColorButton
-                                    variant="contained"
-                                    className={classes.button}
-                                    startIcon={<DeleteIcon />}
-                                >
-                                    BORRAR
-                                 </ColorButton>
-
-                            </Grid> */}
                         </Grid>
+                    </Grid>
+                    <Grid item xs container direction="column" spacing={2}>
+                        <Grid item xs>
+                            <Typography gutterBottom variant="subtitle1">
+                                <h3>Cantidad</h3>
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">
+                                <input type='number'  name = {product.id} value={quantities && quantities[product.id]} onChange={(e) => onChange(e,product)}></input>
+                            </Typography>
+                        </Grid>
+                        
                         <Grid item>
-                            <Typography variant="subtitle1">X</Typography>
+                            <ColorButton
+                                variant="contained"
+                                className={classes.button}
+                                startIcon={<DeleteIcon />}
+                            >
+                                BORRAR
+                                </ColorButton>
+
+                        </Grid>
+                    </Grid>
+                    <Grid item xs container direction="column" spacing={2}>
+                        <Grid item xs>
+                            <Typography gutterBottom variant="subtitle1">
+                                <h3>Price</h3>
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">
+                                <label>{prices && prices[product.id]}</label>
+                            </Typography>
                         </Grid>
                     </Grid>
                 </Grid>

@@ -8,12 +8,10 @@ module.exports = (sequelize) => {
   sequelize.define("review", {
     description: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     rating: {
-      type: DataTypes.ENUM("1", "2", "3", "4", "5"),
-      allowNull: false,
-      defaultValue: "5",
+      type: DataTypes.INTEGER,
+      defaultValue: 5,
     },
     likes: {
       type: DataTypes.INTEGER,

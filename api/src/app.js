@@ -3,13 +3,36 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./routes/index.js');
-
+const passport = require('passport');
+const initializePassport = require('./passportConfig');
+const session = require('express-session');
+const flash = require('express-flash');
+const authentication = require('./jwt');
 
 require('./db.js');
 
 const server = express();
 
 server.name = 'API';
+
+authentication.use();
+
+// initializePassport(passport);
+
+server.use(session({
+  // Key we want to keep secret which will encrypt all of our information
+  secret: 'secret',
+  // Should we resave our session variables if nothing has changes which we dont
+  resave: false,
+  // Save empty value if there is no vaue which we do not want to do
+  saveUninitialized: false
+}));
+
+// Funtion inside passport which initializes passport
+server.use(authentication.passport.initialize());
+// Store our variables to be persisted across the whole session. Works with server.use(Session) above
+server.use(passport.session());
+server.use(flash());
 
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 server.use(bodyParser.json({ limit: '50mb' }));

@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import AgregarAlCarrito from '../Carrito/AgregarAlCarrito'
 
 
+
 import Reviews from './reviews'
 
 const useStyles = makeStyles({
@@ -24,8 +25,8 @@ const useStyles = makeStyles({
 
 function Producto(props) {
   const dispatch = useDispatch();
-  const [precio, setPrecio] = useState(0);
-  const [cantidad, setCantidad] = useState(0);
+  const [precio, setPrecio] = useState();
+  const [cantidad, setCantidad] = useState(1);
   const [producto, setProducto] = useState({
     imagenes: []
   })
@@ -48,7 +49,10 @@ function Producto(props) {
   useEffect(() => {
     dispatch(getProducts(id));
 
-    store.subscribe(() => setProducto(() => store.getState().productos.data.producto))
+    store.subscribe(() => {
+      setProducto(() => store.getState().productos.data.producto)
+      setPrecio(() => store.getState().productos.data.producto.price )
+    })
 
 
   }, []);
@@ -56,50 +60,66 @@ function Producto(props) {
 
   const onChange = (event) => {
     event.preventDefault();
-    setPrecio(event.target.value * producto.price);
-    setCantidad(cantidad + 1)
-  };
+    let quantity = event.target.value;
+    if(quantity <= 1){
+      setCantidad(1)
+    }
+    else if(quantity <= producto.stock){
+      setPrecio(quantity * producto.price);
+      setCantidad(quantity < cantidad ? (cantidad-1) : (cantidad+1))
+    }
+    else{
+      alert('No hay suficientes unidades del producto')
+      setCantidad(producto.stock)
+    }
 
+  };
+  console.log(cantidad)
   return (
     <Container>
       <h1 className = "producto_title">{producto.name}</h1>  
       <hr/>
-      < div className="producto_product" >              
-        <Card className={classes.root}>
-          <CardContent>
-            <Carousel>
-              {producto.imagenes.map((img, id) =>
-                <Carousel.Item key={id}>
-                  <img key={id} src={`http://localhost:3001/${img}`} ></img>
-                </Carousel.Item>
-              )}
-            </Carousel>
+      < div className="producto_product" >
+        <div className = 'producto_card'>
+          <Card className={classes.root}>
             <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {producto.name}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {producto.description}
-              </Typography>
+              <Carousel>
+                {producto.imagenes.map((img, id) =>
+                  <Carousel.Item key={id}>
+                    <img key={id} src={`http://localhost:3001/${img}`} ></img>
+                  </Carousel.Item>
+                )}
+              </Carousel>
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  {producto.name}
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {producto.description}
+                </Typography>
+                <Typography gutterBottom variant="h6" component="h6">                  
+                  {'stock: ' + producto.stock}
+                </Typography>               
+              </CardContent>
+              <CardContent>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  Cantidad
+                </Typography>
+                {producto.stock>1 && <input type="number"  value = {cantidad} onChange={(e) => onChange(e)} />}
+                <hr />
+                <Typography variant="body2" color="textSecondary" component="p">
+                  Precio = $
+              <span>{precio}</span>
+                </Typography>
+              </CardContent>
             </CardContent>
-            <CardContent>
-              <Typography variant="body2" color="textSecondary" component="p">
-                Cantidad
-            <input type="number" onChange={(e) => onChange(e)} />
-              </Typography>
-              <hr />
-              <Typography variant="body2" color="textSecondary" component="p">
-                Precio = $
-            <span>{precio}</span>
-              </Typography>
-            </CardContent>
-          </CardContent>
-          <CardActions>
-            {buyButton()}
-            <AgregarAlCarrito producto={producto} precio={precio} cantidad={cantidad} />
-          </CardActions>
-        </Card>
-        <Reviews/>
+            <CardActions>
+              {producto.stock > 1 ? <Button size="small" color="primary">Comprar</Button> : <p style={{ color: "red" }}>NO HAY STOCK!</p>}
+              {producto.stock> 1 && <AgregarAlCarrito producto={producto} precio={precio} cantidad={cantidad} />}
+            </CardActions>
+          </Card>
+        </div>           
+        <Reviews productoId = {producto.id}/>
       </div >
     </Container>
 
