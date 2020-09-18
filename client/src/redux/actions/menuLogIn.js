@@ -1,6 +1,6 @@
 import { GET_USER, LOGOUT } from '../consts/actionTypes';
 import axios from 'axios';
-// axios.defaults.headers.common = { 'Authorization': `bearer ${localStorage.getItem('token')}` }
+
 
 export function getUser() {
     return function (dispatch) {
@@ -38,7 +38,7 @@ export function logOut() {
         })
 
             .then((res) => {
-                // console.log(res)
+
                 localStorage.clear()
                 return res
             })
