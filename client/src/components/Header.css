@@ -32,61 +32,28 @@
 }
 .header__searchInput{
     display: flex;
-    height: 10px;
     padding: 5px;
     border: none;
-    width: 400px;
-    /* margin-left: 300px; */
+    width: 500px;
+     margin-left: 100px; 
 }
 
-.header__searchButton {
-    padding: 0px!important;
-    background-color: #ff0!important;
-    height: 25px!important;
-    
-}
+/* 
 
-.header__searchIcon{
-    margin-top:1px;
-    color: black;
-}
 .header__nav{
     display: flex;
    justify-content: space-between;
-}
-.header__link{
-    color: white;
-    text-decoration: none;
-    margin-right: 25px; 
-    
-}
-.header__login{
-    display: flex;
-    flex-direction: column;
-    margin-left: 10px;
-    margin-right: 20px;
-}
+} */
 
-.header__login:hover {
-    color: yellow
-}
-.header__loginLineOne{
-    font-size: 13px;
-    
-
-}
-
-.header__loginLineTwo{
-    font-size: 17px;
-    font-weight: 800;
-}
 
 .header__optionBasket{
     display: flex;
     align-items: center;
-    margin-top: 5px;
+    margin-top: 4px;
     margin-right: 100px;
 }
-.header__optionBasket:hover{
-    color: yellow
+
+.carritoSignIn {
+    display: flex;
+    align-items: center;
 }

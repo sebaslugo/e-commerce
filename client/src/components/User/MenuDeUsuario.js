@@ -7,14 +7,13 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
-import { yellow, purple, grey } from '@material-ui/core/colors';
+import { grey } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ComputerIcon from '@material-ui/icons/Computer';
-import FreeBreakfastIcon from '@material-ui/icons/FreeBreakfast';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUser, logOut } from '../../redux/actions/menuLogIn';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../redux/actions/menuLogIn';
+
 
 
 
@@ -22,18 +21,18 @@ const greyHenry = grey[900]
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
+        alignItems: "center",
     },
     paper: {
         marginRight: theme.spacing(2),
     },
     button: {
-        color: { greyHenry },
-        backgroundColor: "#FFFF01",
-        '&:hover': {
-            color: { greyHenry },
-            backgroundColor: "#CCCF04"
-
-        }
+        color: "yellow",
+        backgroundColor: "black",
+        height: 50,
+        marginBottom: 0,
+        marginTop: 7,
+        textDecoration: "none",
 
     }
 }));
@@ -67,6 +66,8 @@ export default function MenuListComposition() {
         }
     }
 
+    const name = localStorage.getItem("name")
+
     // return focus to the button when we transitioned from !open -> open
     const prevOpen = React.useRef(open);
     useEffect(() => {
@@ -83,14 +84,14 @@ export default function MenuListComposition() {
             <div>
 
                 <Button
+
                     className={classes.button}
                     ref={anchorRef}
                     aria-controls={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true"
+                    style={{ outline: "none" }}
                     onClick={handleToggle}
                 >
-                    {/* <AccountCircleIcon /> */}
-                    {/* <FreeBreakfastIcon /> */}
                     <ComputerIcon />
 
                     &nbsp;

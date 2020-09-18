@@ -29,6 +29,7 @@ function Home() {
 
   useEffect(() => {
     let page = [];
+
     if(!productos) {
       dispatch(getCategories());
       dispatch(getProducts());

@@ -1,6 +1,6 @@
 import { GET_USER, LOGOUT } from '../consts/actionTypes';
 import axios from 'axios';
-// axios.defaults.headers.common = { 'Authorization': `bearer ${localStorage.getItem('token')}` }
+
 
 export function getUser() {
     return function (dispatch) {
@@ -10,12 +10,13 @@ export function getUser() {
         })
 
             .then((res) => {
-                console.log(res)
+                console.log(res.data.message)
                 localStorage.setItem('idUser', res.data.user.id)
                 localStorage.setItem('name', res.data.user.name)
                 localStorage.setItem('lastName', res.data.user.lastName)
                 localStorage.setItem('fullName', res.data.user.fullName)
                 localStorage.setItem('rol', res.data.user.rol)
+                localStorage.setItem('statusToken', res.data.message)
             })
             .then((res) => {
                 dispatch({
@@ -38,7 +39,7 @@ export function logOut() {
         })
 
             .then((res) => {
-                // console.log(res)
+
                 localStorage.clear()
                 return res
             })
