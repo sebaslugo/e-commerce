@@ -48,7 +48,8 @@ export function logOut() {
                     payload: res.data
                 })
                 return res;
-            })
+            }).then(() =>
+                window.location.assign("http://localhost:3000/"))
             .catch(err => alert(err))
     }
 }
