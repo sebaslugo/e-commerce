@@ -19,7 +19,7 @@ import Admin from './components/Admin/Admin';
 
 import axios from 'axios'
 axios.defaults.headers.common = { 'Authorization': `bearer ${localStorage.getItem('token')}` }
-
+let id = localStorage.getItem('idUser');
 
 function App() {
 
@@ -39,7 +39,7 @@ function App() {
         <Route exact path="/Admin/orderlist" component={OrderList} />
         <Route exact path="/Login/loginuser" component={UserLogin} />
         <Route exact path="/Login/createuser" component={CreateUser} />
-        <Route exact path={`/user/cart/${id}`}  component={ShoppingCart} />
+        <Route exact path={`/user/cart/${id}`} component={ShoppingCart} />
       </div>
     </Router>
   );
