@@ -7,7 +7,7 @@ import axios from 'axios';
 import {getCategories} from '../../redux/actions/category';
 import {  getProducts, deleteProducts } from '../../redux/actions/productList'
 import store from '../../redux/store/index';
-
+import { useDispatch, useSelector } from 'react-redux'
 
 export default function ProudctList() {
 

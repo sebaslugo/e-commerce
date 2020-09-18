@@ -175,7 +175,7 @@ server
 
     .put((req, res) => {
         const id = req.params.userId
-        const { productId, quantity } = req.body
+        const { productId, quantity,price } = req.body
         Order.findOne(
             {
                 where: { userId: id, status: 'carrito' }
@@ -187,6 +187,7 @@ server
             })
             .then((producto) => {
                 producto.quantity = quantity;
+                producto.price=price;
                 return producto.save();
             })
             .then((cambio) => {
