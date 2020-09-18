@@ -16,8 +16,8 @@ import {getCategories} from '../redux/actions/category';
 import {getProducts,getProductCategory} from '../redux/actions/productList';
 import store from '../redux/store/index';
 import { useDispatch,useSelector} from 'react-redux';
-let page = []; 
-let key = 0;
+
+let id = localStorage.getItem('idUser');
 function Home() {
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);  

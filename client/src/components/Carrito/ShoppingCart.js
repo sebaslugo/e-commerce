@@ -134,16 +134,27 @@ const ShoppingCart = () => {
 
           })
         } 
+        let data = {
+            "productId":product.id,
+            "price":prices[product.id],
+            quantity:parseInt(quantity),
+        };
         if(id){
-            let data = {
-                "productId":product.id,
-                "price":prices[product.id],
-                quantity:parseInt(quantity),
-
-            }
             dispatch(editCantidad(id,data))
         }
-    
+        else{
+            setCart({
+                ...cart,
+                orderList:cart.orderList.map((order)=> {
+                    if(order.productId === product.id){
+                        return order=data;
+                    }
+                    else{
+                        return order
+                    }
+                })
+            })
+        }
     };
 
     const handleClick = (event) => {
@@ -160,7 +171,7 @@ const ShoppingCart = () => {
     }
 
 
-   
+   console.log(cart)
 
 
     return (
