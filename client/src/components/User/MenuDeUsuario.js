@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { yellow, purple, grey } from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ComputerIcon from '@material-ui/icons/Computer';
 import FreeBreakfastIcon from '@material-ui/icons/FreeBreakfast';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -87,13 +88,13 @@ export default function MenuListComposition() {
                     aria-controls={open ? 'menu-list-grow' : undefined}
                     aria-haspopup="true"
                     onClick={handleToggle}
-
                 >
                     {/* <AccountCircleIcon /> */}
-                    <FreeBreakfastIcon />
+                    {/* <FreeBreakfastIcon /> */}
+                    <ComputerIcon />
 
                     &nbsp;
-                    {localStorage.getItem('fullName')}
+                    {localStorage.getItem("name") && localStorage.getItem("name")}
                     <ExpandMoreIcon />
                 </Button>
                 <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
