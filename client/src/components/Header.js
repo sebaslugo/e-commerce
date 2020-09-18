@@ -12,6 +12,8 @@ import MenuListComposition from './User/MenuDeUsuario'
 
 import "./Header.css";
 
+let id = 1;
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -73,15 +75,17 @@ class Header extends Component {
             </div>
           </Link>
 
-          {/* Basket */}
-          <Link className="header__link" to="/user/cart/1">
-            <div className="header__optionBasket">
-              <ShoppingBasketIcon />
-              <span className="header__basket"></span>
-            </div>
-          </Link>
-        </div>
-      </nav>
+
+        {/* Basket */}
+        <Link className="header__link" to={`/user/cart/${id}`}>
+          <div className="header__optionBasket">
+            <ShoppingBasketIcon />
+            <span className="header__basket"></span>
+          </div>
+        </Link>
+      </div>
+    </nav>
+
     );
   }
 }

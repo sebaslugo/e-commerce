@@ -219,24 +219,25 @@ server
             {
                 where: { userId: id, status: 'carrito' },
                 include: [{ model: Product, as: 'products' }, { model: User, as: 'user' }]
-            })
-            .then((cart) => {
-                if (cart) {
-                    carrito = cart
-                    return OrderList.findAll({
-                        where: { orderId: carrito.id },
-                    })
-                }
-                else {
-                    return res.status(200).json([])
-                }
-            })
-            .then((orderList) => {
-                console.log(carrito)
-                let obj = { carrito, orderList }
-                return res.status(200).send(obj)
-            })
-            .catch(err => res.status(400).json(err))
+        })
+        .then((cart) => {
+            if (cart) {
+                carrito = cart
+                return OrderList.findAll({
+                    where:{orderId:carrito.id},
+                })
+            }
+            else {
+                return res.status(200).json([])
+            }
+        })
+        .then((orderList) => {
+            console.log(carrito)
+            let obj = {products:carrito.products,orderList}
+            return res.status(200).send(obj)
+        })
+        .catch(err => res.status(400).json(err))
+
 
     })
 
