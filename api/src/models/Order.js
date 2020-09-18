@@ -8,7 +8,7 @@ module.exports = (sequelize) => {
     
     sequelize.define('order', {
         status: {
-            type: DataTypes.ENUM('creada', 'procesando', 'cancelada', 'completa','carrito'),
+            type: DataTypes.ENUM('creada',  'cancelada', 'completa','carrito'),
             defaultValue: 'carrito',
         },
 

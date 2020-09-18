@@ -11,7 +11,7 @@ let id=1;
 export default function AgregarAlCarrito({ producto, precio, cantidad }) {
     const dispatch = useDispatch();
     // const content = useSelector(state => state)
-    console.log(producto)
+    
     
     const enviarDatos = (event) => {
         let carrito = []

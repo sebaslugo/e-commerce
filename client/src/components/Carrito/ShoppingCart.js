@@ -8,7 +8,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import { grey, red, yellow } from '@material-ui/core/colors/';
 import store from '../../redux/store/index'
-import { fetchProductsFromCart, EmptyCart } from '../../redux/actions/shoppingCart';
+import { fetchProductsFromCart, EmptyCart,editCantidad } from '../../redux/actions/shoppingCart';
 import { useDispatch } from 'react-redux'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -76,7 +76,7 @@ const ShoppingCart = () => {
         else if(!id && active){
             try {
                 const serializedState = JSON.parse(localStorage.getItem("carrito"));
-                if (serializedState === null) console.log(undefined) ;
+                if (serializedState === null) return undefined ;
                 setCart(serializedState);
                 setActive(false)
                 
@@ -85,8 +85,6 @@ const ShoppingCart = () => {
             }
         }
         if(!prices && !quantities && cart.orderList){
-            
-            console.log(cart.orderList);
             cart.orderList.map((order) => {
                 precios={
                     ...precios,
@@ -110,7 +108,6 @@ const ShoppingCart = () => {
         event.preventDefault();
         let quantity = event.target.value;
         let cant = quantities[product.id];
-        console.log(quantity)
         if(quantity < 1){
             setQuantity({
               ...quantities,
@@ -137,6 +134,15 @@ const ShoppingCart = () => {
 
           })
         } 
+        if(id){
+            let data = {
+                "productId":product.id,
+                "price":prices[product.id],
+                quantity:parseInt(quantity),
+
+            }
+            dispatch(editCantidad(id,data))
+        }
     
     };
 
