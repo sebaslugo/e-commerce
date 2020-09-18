@@ -28,11 +28,11 @@ module.exports = sequelize => {
             },
             allowNull: false
         },
-        status:{
-            type:DataTypes.ENUM,
-            values:['login','log out'],
-            defaultValue:'log out'
-            allowNull:false
+        status: {
+            type: DataTypes.ENUM,
+            values: ['login', 'log out'],
+            defaultValue: 'log out',
+            allowNull: false
         },
         rol: {
             type: DataTypes.ENUM,
@@ -66,19 +66,19 @@ module.exports = sequelize => {
                         })
                 }
             },
-            allowNull:false
+            allowNull: false
         },
         password: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        passwordToken:{
+        passwordToken: {
             type: DataTypes.STRING,
         },
         resetPasswordExpires: { type: DataTypes.DATE },
-        fullName:{
-            type:DataTypes.VIRTUAL,
-            get(){
+        fullName: {
+            type: DataTypes.VIRTUAL,
+            get() {
                 return this.name + ' ' + this.lastName;
             }
         }
