@@ -51,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+function getSum (total, num) {  return total + num } 
+
 let id = localStorage.getItem('idUser');
 
 const ShoppingCart = () => {
@@ -61,6 +63,7 @@ const ShoppingCart = () => {
     const [quantities,setQuantity] = useState();
     const [prices,setPrices] = useState();
     const [active,setActive] = useState(true)
+    const [subtotal,setSubTotal] = useState(0)
 
 
 
@@ -99,10 +102,18 @@ const ShoppingCart = () => {
             setPrices(precios)
 
         }
+        if(prices){
+            let precio=Object.values(prices)
+            setSubTotal(precio.reduce(getSum,0))
+        }
         
     });
-    //quantities = {1:2,2:4}
-    // prices = {1:10.000,2:20.000}
+
+    
+
+    console.log(subtotal)
+    
+  
 
     const onChange = (event,product) => {
         event.preventDefault();

@@ -49,7 +49,7 @@ export function logOut() {
                 })
                 return res;
             }).then(() =>
-                window.location.assign("http://localhost:3000/"))
+                window.location.assign('http://localhost:3000'))
             .catch(err => alert(err))
     }
 }

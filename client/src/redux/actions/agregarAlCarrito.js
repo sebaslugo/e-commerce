@@ -15,7 +15,6 @@ export default function agregarAlCarrito(newData,id) {
             dispatch({ type: AGREGAR_AL_CARRITO, payload: response.data })
         })
             .then((res) => {
-                alert('Se añadio el producto al carrito')
             })
             .catch((err) => {
                 alert('El producto ya esta agregado en el carrito')
