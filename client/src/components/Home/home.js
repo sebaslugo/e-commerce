@@ -30,7 +30,6 @@ function Home() {
     dispatch(getCategories());
     dispatch(getProducts());
     // dispatch(getUser())
-    console.log(localStorage.getItem('token'))
     store.subscribe(() => {
       setProductos(() => store.getState().productList.data)
     })
