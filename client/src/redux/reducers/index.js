@@ -9,6 +9,7 @@ import agregarAlCarrito from './agregarAlCarrito'
 import reviews from './reviews'
 import createUser from './createUser'
 import loginUser from './loginUser'
+import menuLogin from './menuLogin'
 
 const rootReducer = combineReducers({
   categorias,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   agregarAlCarrito,
   reviews,
   createUser,
-  loginUser
+  loginUser,
+  menuLogin
 });
 
 export default rootReducer;
