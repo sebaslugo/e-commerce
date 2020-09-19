@@ -12,7 +12,6 @@ export function getProductsFromCart(request) {
 export function fetchProductsFromCart(userId) {
     return dispatch => {
         dispatch(getProductsFromCart())
-        // console.log(id)
         axios.get(`http://localhost:3001/users/${userId}/cart`)
             .then(res => {
                 dispatch({
@@ -76,7 +75,36 @@ export function PostCart(newData) {
                 })
             }
             )
-            .catch(err => console.error(err.message));
+            .catch(err => console.log(err.message));
     };
 }
 
+export function editCantidad (id,data) {
+
+    return function(dispatch) {    
+        return axios({
+            method: 'PUT',
+            url: `http://localhost:3001/users/${id}/cart`,
+            data: data
+        })
+        .catch(err => alert(err))
+          
+    };
+    
+
+}
+
+export function editOrden (id,data) {
+
+    return function(dispatch) {    
+        return axios({
+            method: 'PUT',
+            url: `localhost:3001/orders/${id}`,
+            data: data
+        })
+        .catch(err => alert(err))
+          
+    };
+    
+
+}

@@ -221,16 +221,21 @@ server.post('/', authentication.passport.authenticate('jwt',{session:false}), is
 /* ------------------------------------------------------------------------------- */
 /* S26: Crear ruta para Modificar Producto */
 /* ------------------------------------------------------------------------------- */
+
 server.put('/:id', authentication.passport.authenticate('jwt',{session:false}), isAdmin, upload.array('image', 5), (req, res, next) => {
+
 	const { id } = req.params;
+
 	const { name, description, price, stock,imagenes } = req.body;
 	let images='';
+
 	if (req.files) {
 		if (req.files.length > 0) {
 			images = req.files.map(image => {
 				return image.filename;
 			}).join();
 		}
+
 	}
 	console.log(imagenes)
 	if(imagenes){
@@ -243,7 +248,7 @@ server.put('/:id', authentication.passport.authenticate('jwt',{session:false}), 
 		
 	}
 	Product.update(
-		{ name, description, price, stock, image: images },
+		{ name, description, price, stock, image },
 		{ returning: true, where: { id: id } }
 	)
 		// .then(product => res.status(200).json(product))

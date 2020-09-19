@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react'
 import agregarAlCarrito from '../../redux/actions/agregarAlCarrito'
 
-let id;
+let id = localStorage.getItem('idUser');
 
 export default function AgregarAlCarrito({ producto, precio, cantidad }) {
     const dispatch = useDispatch();
     // const content = useSelector(state => state)
-    console.log(producto)
+    
     
     const enviarDatos = (event) => {
         let carrito = []
@@ -23,14 +23,17 @@ export default function AgregarAlCarrito({ producto, precio, cantidad }) {
                 quantity:parseInt(cantidad)
             }          
             dispatch(agregarAlCarrito(product,id))
+            alert('producto agregado al carrito')
+            
         }
         else{
-            let product= {producto:[producto],orderList:[{price:parseInt(precio),quantity:parseInt(cantidad)}]};
+            let product= {products:[producto],orderList:[{productId:producto.id,price:parseInt(precio),quantity:parseInt(cantidad)}]};
             let local =  JSON.parse(localStorage.getItem("carrito"));  
             
+            
             if(local){
-                local.producto.map((producto)=>{
-                    if(producto.id == product.producto[0].id){
+                local.products.map((producto)=>{
+                    if(producto.id == product.products[0].id){
                         console.log('aqui toy')
                         product = false;
                         return alert('producto ya esta en el carrito')
@@ -38,7 +41,7 @@ export default function AgregarAlCarrito({ producto, precio, cantidad }) {
                 }) 
                 if(product){
                     local = {
-                        ['producto']:local.producto.concat(product.producto),
+                        ['products']:local.products.concat(product.products),
                         ['orderList']:local.orderList.concat(product.orderList)
                     }
                     alert('producto agregado al carrito')

@@ -12,35 +12,11 @@ export default function agregarAlCarrito(newData,id) {
                 product: newData
             }
         }).then((response) => {
-            console.log('response');
             dispatch({ type: AGREGAR_AL_CARRITO, payload: response.data })
+        })           
+        .catch((err) => {
+            console.log(err)
         })
-            .then((res) => {
-                alert('Se añadio el producto al carrito')
-            })
-            .catch((err) => {
-                alert('El producto ya esta agregado en el carrito')
-            })
     }
-    // return dispatch => {
-    //     dispatch(postCreateUser())
-    //     axios({
-    //         method: 'POST',
-    //         url: `http://localhost:3001/users`,
-
-    //         data: {
-    //             name: newData.firstName,
-    //             lastName: newData.lastName,
-    //             email: newData.email,
-    //             password: newData.password,
-    //         }
-
-    //     })
-    //         .then(res =>
-    //             dispatch({
-    //                 type: CREATE_USER,
-    //                 payload: res.data
-    //             })
-    //         );
-    // };
 }
+

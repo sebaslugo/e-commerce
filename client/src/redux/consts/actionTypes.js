@@ -27,12 +27,19 @@ export const SEARCH_PRODUCT = 'SEARCH_PRODUCT';
 export const GET_PRODUCT = 'GET_PRODUCT'
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const EDIT_PRODUCT = 'EDIT_PRODUCT';
+export const GET_PRODUCTS = 'GET_PRODUCTS';
 export const POST_PRODUCT = 'POST_PRODUCT';
 
 /* ------------------------------------------------------------------------------- */
 /* REGISTER */
 /* ------------------------------------------------------------------------------- */
 export const CREATE_USER = 'CREATE_USER'
+
+
+/* ------------------------------------------------------------------------------- */
+/* REGISTER */
+/* ------------------------------------------------------------------------------- */
+export const LOGIN_USER = 'LOGIN_USER'
 
 // VARIABLES DE ACTION ORDEN
 
@@ -59,7 +66,8 @@ export const AGREGAR_AL_CARRITO = 'AGREGAR_AL_CARRITO';
 REVIEWS
 ------------------------------------------------------------------------------------- */
 export const GET_REVIEW = 'GET_REVIEW';
+export const GET_USER = 'GET_USER'
+export const LOGOUT = 'LOGOUT'
 
-export const USER_LOGIN = 'USER_LOGIN';
 
 

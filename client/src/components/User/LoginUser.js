@@ -1,5 +1,6 @@
 
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,14 +11,12 @@ import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, } from '@material-ui/core/styles';
 import { yellow, purple, grey } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core/styles';
-import {postLogin} from "../../redux/actions/user"
-import {useDispatch} from 'react-redux';
-import store from '../../redux/store/index';
+import { loginUser } from '../../redux/actions/loginUser.js'
+
 
 const ColorButton = withStyles((theme) => ({
     root: {
@@ -27,7 +26,7 @@ const ColorButton = withStyles((theme) => ({
             color: grey[900],
             backgroundColor: yellow[500],
         },
-        
+
     },
 }))(Button);
 
@@ -48,7 +47,7 @@ const greyHenry = grey[900]
 const useStyles = makeStyles((theme) => ({
     root: {
         height: '100vh',
-        
+
     },
     image: {
         backgroundImage: 'url(https://source.unsplash.com/collection/1203900)',
@@ -80,98 +79,107 @@ const useStyles = makeStyles((theme) => ({
 export default function UserLogin() {
     const dispatch = useDispatch();
     const classes = useStyles();
-    const [datos,setDatos] = useState();
-    const [token,setToken] = useState (0);
-    
-    useEffect (() => {
-        store.subscribe(() =>{
-            setToken(() => store.getState().user.data)
-          })  
-    },[])
 
-    const handleChange = (e) => {
-        setDatos({
+    const [state, setState] = useState({
+        email: "",
+        password: ""
+    })
+
+    
+    
+    const handleInputChange = (e) => {
+        setState({
+            ...state,
             [e.target.name]: e.target.value
         })
+        console.log(state)
+        
     }
-
-    const handleSubmit = () => {
-        dispatch(postLogin(datos))
-
+    const dataStore = useSelector(data => {
+        data.loginUser = {
+            token: state.password
+        }
+        console.log(data.loginUser)
+    })
+    // console.log("este es el dataStore del loginUser ", dataStore)
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(e)
+        if (state.email && state.password) {
+            console.log(state)
+            dispatch(loginUser(state))
+        } else {
+            alert("Debes completar todos los campos")
+        }
     }
-    if (token) {
-
-    }
-    console.log(token)
     return (
-        <Grid container component="main" className={classes.root}>
-            <CssBaseline />
-            <Grid item xs={false} sm={4} md={7} className={classes.image} />
-            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        {/* <LockOutlinedIcon /> */}
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-          </Typography>
-                    <form className={classes.form} noValidate>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                            onChange={handleChange}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            onChange={handleChange}
-                        />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
-                        <ColorButton
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            // color="primary"
-                            className={classes.submit}
-                            onClick = {handleSubmit}
-                        >
-                            Sign In
-                         </ColorButton>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                </Link>
+        <form onSubmit={handleSubmit} >
+            <Grid container component="main" className={classes.root}>
+                <CssBaseline />
+                <Grid item xs={false} sm={4} md={7} className={classes.image} />
+                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                    <div className={classes.paper}>
+                        <Avatar className={classes.avatar}>
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
+                        <form className={classes.form} noValidate>
+                            <TextField
+                                onChange={handleInputChange}
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                            />
+                            <TextField
+                                onChange={handleInputChange}
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                            />
+                            <FormControlLabel
+                                control={<Checkbox value="remember" color="primary" />}
+                                label="Remember me"
+                            />
+                            <ColorButton
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                className={classes.submit}
+                            >
+                                Sign In
+                            </ColorButton>
+                            <Grid container>
+                                <Grid item xs>
+                                    <Link href="#" variant="body2">
+                                        Olvidaste tu contraseña?
+                                    </Link>
+                                </Grid>
+                                <Grid item>
+                                    <Link href="/Login/createuser" variant="body2">
+                                        {"No tienes cuenta? registrate"}
+                                    </Link>
+                                </Grid>
                             </Grid>
-                            <Grid item>
-                                <Link href="/Login/createuser" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
-                        <Box mt={5}>
-                            <Copyright />
-                        </Box>
-                    </form>
-                </div>
+                            <Box mt={5}>
+                                <Copyright />
+                            </Box>
+                        </form>
+                    </div>
+                </Grid>
             </Grid>
-        </Grid>
+        </form>
     );
 }

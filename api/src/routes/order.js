@@ -48,7 +48,7 @@ router
 
 // S47 : Crear Ruta para modificar una Orden
 
-    .put(authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req,res)=> {
+    .put(authentication.passport.authenticate('jwt',{session:false}),(req,res)=> {
         const {id} = req.params;
         Order.findOne({where:{id:id}})
         .then((order) => {

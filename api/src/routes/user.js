@@ -61,7 +61,7 @@ server.post('/', async (req, res) => {
 /* ------------------------------------------------------------------------------- */
 /* S35 : Crear Ruta para modificar Usuario */
 /* ------------------------------------------------------------------------------- */
-server.put('/:id', authentication.passport.authenticate('jwt',{session:false}), (req, res) => {
+server.put('/:id', authentication.passport.authenticate('jwt', { session: false }), (req, res) => {
     const { id } = req.params;
     const { name, lastName, email, password } = req.body;
     User.update(
@@ -81,7 +81,7 @@ server.put('/:id', authentication.passport.authenticate('jwt',{session:false}), 
 /* ------------------------------------------------------------------------------- */
 /* S36 : Crear Ruta para traer usuarios */
 /* ------------------------------------------------------------------------------- */
-server.get('/', authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res) => {
+server.get('/', authentication.passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
     console.log(req.body)
     User.findAll()
         .then(users => {
@@ -92,7 +92,7 @@ server.get('/', authentication.passport.authenticate('jwt',{session:false}), isA
 /* ------------------------------------------------------------------------------- */
 /* S37 : Crear Ruta para eliminar usuario */
 /* ------------------------------------------------------------------------------- */
-server.delete('/:id', authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res) => {
+server.delete('/:id', authentication.passport.authenticate('jwt', { session: false }), (req, res) => {
     const { id } = req.params;
     User.destroy({
         where: {
@@ -116,7 +116,7 @@ server
     // S45 : Crear Ruta que retorne todas las Ordenes de los usuarios
     /* ------------------------------------------------------------------------------- */
     .route('/:id/orders')
-    .get(authentication.passport.authenticate('jwt',{session:false}), isAdmin, (req, res) => {
+    .get(authentication.passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
         const { id } = req.params
         Order.findAll({
             where: { userId: id },
@@ -134,7 +134,7 @@ server
     /* ------------------------------------------------------------------------------- */
     //S38:Crear Ruta para agregar Item al Carrito
     /* ------------------------------------------------------------------------------- */
-    .post((req, res) => {
+    .post(authentication.passport.authenticate('jwt', { session: false }),(req, res) => {
         const { productId, price, quantity } = req.body.product;
         const { userId } = req.params
         let id
@@ -173,9 +173,9 @@ server
 
     // modificar cantidad de producto en el carrito
 
-    .put((req, res) => {
+    .put(authentication.passport.authenticate('jwt', { session: false }),(req, res) => {
         const id = req.params.userId
-        const { productId, quantity } = req.body
+        const { productId, quantity,price } = req.body
         Order.findOne(
             {
                 where: { userId: id, status: 'carrito' }
@@ -187,6 +187,7 @@ server
             })
             .then((producto) => {
                 producto.quantity = quantity;
+                producto.price=price;
                 return producto.save();
             })
             .then((cambio) => {
@@ -197,7 +198,7 @@ server
     //S40:Crear Ruta para vaciar el carrito
     /* ------------------------------------------------------------------------------- */
 
-    .delete((req, res) => {
+    .delete(authentication.passport.authenticate('jwt', { session: false }),(req, res) => {
         const id = req.params.userId;
 
 
@@ -212,7 +213,7 @@ server
     /* ------------------------------------------------------------------------------- */
     // S39 : Crear Ruta que retorne todos los items del Carrito
     /* ------------------------------------------------------------------------------- */
-    .get((req, res) => {
+    .get(authentication.passport.authenticate('jwt', { session: false }),(req, res) => {
         const id = req.params.userId;
         let carrito
         Order.findOne(
@@ -233,10 +234,15 @@ server
         })
         .then((orderList) => {
             console.log(carrito)
-            let obj = {carrito,orderList}
+            let obj = {
+                ordenId:carrito.id,
+                products:carrito.products,
+                orderList
+            }
             return res.status(200).send(obj)
         })
         .catch(err => res.status(400).json(err))
+
 
     })
 

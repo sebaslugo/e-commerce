@@ -4,10 +4,10 @@ import { Button, Grid, Header, Segment, Portal } from 'semantic-ui-react'
 import Form from './Form'
 import './ProductList.css'
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
 import {getCategories} from '../../redux/actions/category';
 import {  getProducts, deleteProducts } from '../../redux/actions/productList'
 import store from '../../redux/store/index';
+import { useDispatch, useSelector } from 'react-redux'
 
 export default function ProudctList() {
 
@@ -33,6 +33,7 @@ export default function ProudctList() {
   const handleClose = () => {
     dispatch( getProducts());
     setOpen(false)
+    dispatch( getProducts());
   }
   const handleOpen = (event, rowData) => {
 
