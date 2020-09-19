@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./home.css";
 import { Link } from "react-router-dom";
-import { Grid, Menu, Segment, Image, Pagination, Button } from "semantic-ui-react";
+import { Grid, Menu, Segment, Image, Pagination, Button,Icon } from "semantic-ui-react";
 import portada from "../../imagenes/portada.jpg";
 import ProductHome from './ProductHome';
 import { getCategories } from '../../redux/actions/category';
@@ -21,26 +21,27 @@ function Home() {
   const [active, setActive] = useState(1);
   const [activeItem, setActiveItem] = useState("Todos Los Productos");
   const [productos, setProductos] = useState()
-  const paginas = productos && Math.ceil(productos.length / 6);
-  const [productPage, setProductPage] = useState([]);
+  const [validate,setValidate] = useState(true)
+  const paginas = productos && Math.ceil(productos.length / 6)
   const categorias = useSelector(state => state.categorias.data)
   
 
 
   useEffect(() => {
-    let page = [];
-
-    if(!productos) {
+    
+    if(!productos && validate) {
       dispatch(getCategories());
       dispatch(getProducts());
       // dispatch(getUser())
-      console.log(localStorage.getItem('token'))
+      console.log('hola')
       store.subscribe(() => {
         setProductos(() => store.getState().productList.data)
       })
+      setValidate(false)
 
     }
     
+        
     if(id && cart){
       cart.orderList.map((order) => {
         dispatch(agregarAlCarrito(order,id))
@@ -54,7 +55,7 @@ function Home() {
 
   const handleItemClick = (e, { name }) => {
 
-    let page = [];
+    
     setActiveItem(name);
     if (name === 'Todos Los Productos') {
       dispatch(getProducts());
@@ -62,14 +63,10 @@ function Home() {
       dispatch(getProductCategory(name));
       setActive(1)
     }
-    /* if(productos){
-      for (let i = 0; i < productos.length; i += 6) {
-        let seccion = productos.slice(i, i + 6);
-        page.push(seccion)
-      }
-      setProductPage(page) 
-
-    } */
+    setValidate(true)
+    setProductos([])
+    
+    
 
   };
   const handleClick = (e, { activePage }) => {
@@ -102,9 +99,9 @@ function Home() {
         <Grid.Column stretched width={12}>
           <Segment>
             <div className="home-content">
-              <ProductHome productPage={productPage} productos={productos} active={active} />
+              <ProductHome productos={productos} active={active} validate={validate} />
               <div className="home-paginacion">
-                <Pagination
+                {paginas && <Pagination
                   defaultActivePage={active}
                   onPageChange={handleClick}
                   firstItem={null}
@@ -112,7 +109,7 @@ function Home() {
                   pointing
                   secondary
                   totalPages={paginas}
-                />
+                />}
               </div>
             </div>
           </Segment>

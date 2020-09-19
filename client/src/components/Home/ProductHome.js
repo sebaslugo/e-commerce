@@ -2,23 +2,37 @@ import React,{useEffect,useState} from "react";
 import {Card,Image,Button} from "semantic-ui-react";
 import AgregarAlCarrito from '../Carrito/AgregarAlCarrito';
 import { Link } from "react-router-dom";
-import {getProducts,getProductCategory} from '../../redux/actions/productList';
-import { useDispatch,useSelector } from 'react-redux';
+import './ProductHome.css'
 
-function ProductHome ({active,activeItem,productos}) {
+function ProductHome ({active,activeItem,productos,validate}) {
+
+    const [productPage, setProductPage] = useState();
+    const [product,setProduct] = useState();
+    
+    
     
     
     useEffect(() => {
         
+        let page=[]
+        if(productos !== product){
+            for (let i = 0; i < productos.length; i += 6) {
+                let seccion = productos.slice(i, i + 6);
+                page.push(seccion)
+            }
+            setProductPage(page)
+            setProduct(productos)
+        }
         
-    },[])
-    console.log(productos)
+        
+          
+    })
+
     return (
         <div className="home-productos">
             <Card.Group>
                 
-                {/* {productPage.length > 0 && productPage[active - 1].map((producto, index) => (  */} 
-                {productos && productos.length>0 && productos.map((producto,index) => (             
+                {productPage && productPage.length > 0 && productPage[active - 1].map((producto, index) => (         
                 <Card key = {index}>
                     <Card.Content>
                     {producto.imagenes && producto.imagenes.length > 0 && <Image size="small" src={`http://localhost:3001/${producto.imagenes[0]}`} />}

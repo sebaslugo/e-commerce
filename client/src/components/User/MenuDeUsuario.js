@@ -13,9 +13,10 @@ import ComputerIcon from '@material-ui/icons/Computer';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { logOut } from '../../redux/actions/menuLogIn';
+import { Link } from "react-router-dom";
 
 
-
+let rol = localStorage.getItem('rol');
 
 const greyHenry = grey[900]
 const useStyles = makeStyles((theme) => ({
@@ -107,7 +108,7 @@ export default function MenuListComposition() {
                             <Paper>
                                 <ClickAwayListener onClickAway={handleClose}>
                                     <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                                        <MenuItem onClick={handleClose}>Perfil</MenuItem>
+                                        <MenuItem onClick={handleClose}>Perfil</MenuItem>                                     
                                         <MenuItem onClick={handleLogOut}>Logout</MenuItem>
                                     </MenuList>
                                 </ClickAwayListener>

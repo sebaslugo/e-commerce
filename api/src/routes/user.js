@@ -134,7 +134,7 @@ server
     /* ------------------------------------------------------------------------------- */
     //S38:Crear Ruta para agregar Item al Carrito
     /* ------------------------------------------------------------------------------- */
-    .post((req, res) => {
+    .post(authentication.passport.authenticate('jwt', { session: false }),(req, res) => {
         const { productId, price, quantity } = req.body.product;
         const { userId } = req.params
         let id
@@ -173,7 +173,7 @@ server
 
     // modificar cantidad de producto en el carrito
 
-    .put((req, res) => {
+    .put(authentication.passport.authenticate('jwt', { session: false }),(req, res) => {
         const id = req.params.userId
         const { productId, quantity,price } = req.body
         Order.findOne(
@@ -198,7 +198,7 @@ server
     //S40:Crear Ruta para vaciar el carrito
     /* ------------------------------------------------------------------------------- */
 
-    .delete((req, res) => {
+    .delete(authentication.passport.authenticate('jwt', { session: false }),(req, res) => {
         const id = req.params.userId;
 
 
@@ -213,7 +213,7 @@ server
     /* ------------------------------------------------------------------------------- */
     // S39 : Crear Ruta que retorne todos los items del Carrito
     /* ------------------------------------------------------------------------------- */
-    .get((req, res) => {
+    .get(authentication.passport.authenticate('jwt', { session: false }),(req, res) => {
         const id = req.params.userId;
         let carrito
         Order.findOne(
@@ -234,7 +234,11 @@ server
         })
         .then((orderList) => {
             console.log(carrito)
-            let obj = {products:carrito.products,orderList}
+            let obj = {
+                ordenId:carrito.id,
+                products:carrito.products,
+                orderList
+            }
             return res.status(200).send(obj)
         })
         .catch(err => res.status(400).json(err))

@@ -23,6 +23,8 @@ export default function AgregarAlCarrito({ producto, precio, cantidad }) {
                 quantity:parseInt(cantidad)
             }          
             dispatch(agregarAlCarrito(product,id))
+            alert('producto agregado al carrito')
+            
         }
         else{
             let product= {products:[producto],orderList:[{productId:producto.id,price:parseInt(precio),quantity:parseInt(cantidad)}]};

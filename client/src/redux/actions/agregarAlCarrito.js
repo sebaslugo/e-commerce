@@ -13,12 +13,10 @@ export default function agregarAlCarrito(newData,id) {
             }
         }).then((response) => {
             dispatch({ type: AGREGAR_AL_CARRITO, payload: response.data })
+        })           
+        .catch((err) => {
+            console.log(err)
         })
-            .then((res) => {
-            })
-            .catch((err) => {
-                alert('El producto ya esta agregado en el carrito')
-            })
     }
 }
 

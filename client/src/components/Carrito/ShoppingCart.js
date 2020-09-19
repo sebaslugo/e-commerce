@@ -8,11 +8,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import { grey, yellow } from "@material-ui/core/colors/";
 import store from "../../redux/store/index";
-import {
-  fetchProductsFromCart,
-  EmptyCart,
-  editCantidad,
-} from "../../redux/actions/shoppingCart";
+import {fetchProductsFromCart,EmptyCart,editCantidad,editOrden} from "../../redux/actions/shoppingCart";
 import { useDispatch } from "react-redux";
 import "./ShoppingCart.css";
 
@@ -50,9 +46,10 @@ const useStyles = makeStyles((theme) => ({
 function getSum(total, num) {
   return total + num;
 }
-let id = 1;
+let id = localStorage.getItem('idUser');
 
 const ShoppingCart = () => {
+
   const classes = useStyles();
   const dispatch = useDispatch();
   const [cart, setCart] = useState({ products: [] });
@@ -99,8 +96,7 @@ const ShoppingCart = () => {
     }
   });
 
-  //quantities = {1:2,2:4}
-  // prices = {1:10.000,2:20.000}
+
 
   const onChange = (event, product) => {
     event.preventDefault();
@@ -140,20 +136,40 @@ const ShoppingCart = () => {
   const emptyCarrito = () => {
     setPrices(null);
     setSubTotal(0);
-    dispatch(EmptyCart(id));
+    if(id){
+      dispatch(EmptyCart(id));
+    }
+    else{      
+      localStorage.removeItem('carrito');
+      setCart([])
+    }
+    
   };
 
-  console.log(subtotal);
+  const handleBuy= () => {
+    if(id){
+      let data = {
+        'status':'creada'
+      }
+      dispatch(editOrden(cart.ordenId,data))
+    }
+    else {
+      window.location.assign("http://localhost:3000/login/createuser")
+    }
+
+  }
+
+  
 
   return (
     <div className={classes.root}>
-      <div className="subtotal">
+      <div className="shopping_subtotal">
         <div>
           <p>
             Subtotal<strong> ${subtotal} </strong>
           </p>
         </div>
-        <button>COMPRAR</button>
+        <button onClick = {handleBuy}>COMPRAR</button>
       </div>
       {cart.products &&
         cart.products.length > 0 &&
@@ -231,15 +247,19 @@ const ShoppingCart = () => {
           </Paper>
         ))}
 
-      <Grid item>
-        <ColorButton
-          variant="contained"
-          className={classes.button}
-          startIcon={<DeleteIcon />}
-          onClick={emptyCarrito}
-        >
-          VACIAR CARRITO
-        </ColorButton>
+      <Grid item >
+        <div className = 'shopping_vaciar'>
+          {cart.orderList && <ColorButton
+            variant="contained"
+            className={classes.button}
+            startIcon={<DeleteIcon />}
+            onClick={emptyCarrito}
+          >
+            VACIAR CARRITO
+          </ColorButton>}
+
+        </div>
+        
       </Grid>
     </div>
   );

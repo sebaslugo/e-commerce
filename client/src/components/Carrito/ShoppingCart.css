@@ -1,5 +1,5 @@
 
-.subtotal{
+.shopping_subtotal{
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -12,9 +12,10 @@
     margin-left: 876px;
     position: sticky;
     top: 70px;
+    
 
 }
-.subtotal > button{
+.shopping_subtotal > button{
     background: #ff0;
     border: 1px solid;
     border-radius: 7px;
@@ -25,4 +26,10 @@
     color: #111;
 
 
+}
+
+.shopping_vaciar {
+    width: 165px;
+    margin-left: auto;
+    margin-right: auto;
 }

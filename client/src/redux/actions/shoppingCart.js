@@ -94,3 +94,17 @@ export function editCantidad (id,data) {
 
 }
 
+export function editOrden (id,data) {
+
+    return function(dispatch) {    
+        return axios({
+            method: 'PUT',
+            url: `localhost:3001/orders/${id}`,
+            data: data
+        })
+        .catch(err => alert(err))
+          
+    };
+    
+
+}

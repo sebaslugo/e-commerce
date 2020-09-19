@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
@@ -76,12 +77,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UserLogin() {
+    const dispatch = useDispatch();
     const classes = useStyles();
+
     const [state, setState] = useState({
         email: "",
         password: ""
     })
-    const dispatch = useDispatch();
+
     
     
     const handleInputChange = (e) => {
