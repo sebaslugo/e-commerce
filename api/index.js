@@ -22,7 +22,7 @@ const { conn } = require('./src/db.js');
 
 // Syncing all the models at once.
 
-conn.sync({ force: false}).then(() => {//poner en true si es necesario que la base de datos se reinicie
+conn.sync({ force: false }).then(() => {//poner en true si es necesario que la base de datos se reinicie
 
   server.listen(3001, () => {
     console.log('%s listening at 3001'); // eslint-disable-line no-console
