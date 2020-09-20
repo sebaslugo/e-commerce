@@ -161,7 +161,7 @@ export default function UserLogin() {
                             </ColorButton>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2">
+                                    <Link href="/login/forgot" variant="body2">
                                         Olvidaste tu contraseña?
                                     </Link>
                                 </Grid>

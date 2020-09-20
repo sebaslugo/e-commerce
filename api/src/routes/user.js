@@ -289,14 +289,14 @@ server
                     to: email,
                     from: 'ecomerce0410@gmail.com',
                     subject: 'Node.js Password Reset',
-                    text: 'Recibio esto porque usted u otra persona ha solicitado el restablecimiento de contraseña de su cuenta, para restablecer, dirigase al siguiente link :\n\n' +
-                        'http://' + "localhost:3000" + '/reset/' + token + '\n\n' +
+                    text: 'Recibio este correo porque usted u otra persona ha solicitado el restablecimiento de contraseña de su cuenta, para restablecer, dirigase al siguiente link :\n\n' +
+                        "http://localhost:3000/login/changepass/" +  token + '\n\n' +
                         'Si usted no solicito un cambio de contraseña, haga caso omiso a este mensaje.\n'
                 };
                 smtpTransport.sendMail(mailOptions, function (err) {
                     done(err, 'done');
                 });
-                return res.send('Email enviado')
+                return res.status(200).json({"token":token})
 
             },
                 function (err) {
