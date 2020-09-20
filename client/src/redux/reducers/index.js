@@ -10,6 +10,7 @@ import reviews from './reviews'
 import createUser from './createUser'
 import loginUser from './loginUser'
 import menuLogin from './menuLogin'
+import forgotPassword from './forgotPassword';
 
 
 const rootReducer = combineReducers({
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
   reviews,
   createUser,
   loginUser,
-  menuLogin
+  menuLogin,
+  forgotPassword,
 });
 
 export default rootReducer;
