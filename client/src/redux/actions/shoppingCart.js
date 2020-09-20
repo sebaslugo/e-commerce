@@ -46,38 +46,6 @@ export function EmptyCart(userId) {
     }
 }
 
-export function axiosPostCart(request) {
-    try {
-        return {
-            type: ADD_CART,
-
-            categories: request
-        }
-    } catch (err) {
-        console.error(err.message);
-    }
-}
-
-export function PostCart(newData) {
-    return dispatch => {
-        dispatch(axiosPostCart())
-        axios({
-            method: 'POST',
-            url: "http://localhost:3001/products/users/",
-            data: {
-                name: newData.name
-            }
-        })
-            .then(res => {
-                dispatch({
-                    type: ADD_CART,
-                    payload: res.data.name
-                })
-            }
-            )
-            .catch(err => console.log(err.message));
-    };
-}
 
 export function editCantidad (id,data) {
 

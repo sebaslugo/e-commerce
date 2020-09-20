@@ -167,19 +167,16 @@ const ShoppingCart = () => {
     
     if(id){
       dispatch(deleteProduct(id,product.id,cart.ordenId))
-      dispatch(fetchProductsFromCart(id));
+      setActive(true);
     }
     else {
-      setCart({
-        ...cart,
-        products:cart.products.filter(producto => product.id !== producto.id)
-      })
       delete quantities[product.id];
       delete prices[product.id];
       let local = {
         ['products']:cart.products.filter(producto => product.id !== producto.id),
         ['orderList']:cart.orderList.filter(producto => product.id !== producto.id)
       }
+      setCart(local)
       const serializedState = JSON.stringify(local);
       localStorage.setItem("carrito", serializedState);  
     }

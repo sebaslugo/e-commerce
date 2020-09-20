@@ -16,14 +16,14 @@ export function getReviews(productid) {
     
 }
 
-export function postReview(productid,comentario) {
+export function postReview(productid,comentario,userId) {
     return function(dispatch) {    
         return axios({
             method: 'POST',
             url: `http://localhost:3001/products/${productid}/review`,
             data: comentario
         })
-        .catch(err => alert('ups,agrega un comentario'))
+        .catch((err) => alert('inicia sesion'))
           
     };
     

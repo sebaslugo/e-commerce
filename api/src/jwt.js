@@ -111,7 +111,7 @@ exports.use = () => {
                 User.findOrCreate({
                     where: { email: user.emails[0].value },
                     defaults: {
-                        name: user.displayName,
+                        name: user.displayName || user.username,
                         lastName: user.username,
                         email: user.emails[0].value,
                         password: hashedPassword,
