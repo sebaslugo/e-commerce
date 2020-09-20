@@ -159,6 +159,15 @@ export default function UserLogin() {
                             >
                                 Sign In
                             </ColorButton>
+                            <Link href="http://localhost:3001/auth/google" style={{textDecoration: 'none'}}>
+                                <ColorButton                                
+                                    fullWidth
+                                    variant="contained"
+                                    className={classes.submit}
+                                >
+                                    Registrarse con Google
+                                </ColorButton>
+                            </Link>
                             <Grid container>
                                 <Grid item xs>
                                     <Link href="/login/forgot" variant="body2">

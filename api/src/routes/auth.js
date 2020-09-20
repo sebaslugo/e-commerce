@@ -9,7 +9,8 @@ server.post('/login', async (req, res) => {
     if (email && password) {
         let user = await User.findOne({
             where: {
-                email: email
+                email: email,
+                otherAuth: 'no'
             }
         })
         if (!user) {
@@ -51,6 +52,24 @@ server.post("/promote/:id", authentication.passport.authenticate('jwt', { sessio
             res.status(200).json({ message: "se pudo promover al usuario a admin" })
         })
         .catch(err => res.status(404).json(err))
-})
+});
+
+server.get('/google', authentication.passport.authenticate('google', { scope : ['profile', 'email'] }), (req, res) => {
+    if (req.user) {
+        let payload = { id: req.user.id };
+        let token = authentication.jwt.sign(payload, authentication.jwtOptions.secretOrKey, { expiresIn: 9000 });
+        return res.json({user: req.user, token: token });
+    }    
+});
+
+server.get('/google/callback', authentication.passport.authenticate('google'), (req, res) => {
+    if (req.user) {
+        let payload = { id: req.user.id };
+        let token = authentication.jwt.sign(payload, authentication.jwtOptions.secretOrKey, { expiresIn: 9000 });   
+        return res.redirect(`http://localhost:3000/checkuser/auth/${req.user.id}/${token}`);
+    } else {
+        return res.redirect('http://localhost:3000/login/loginuser');
+    }
+});
 
 module.exports = server;

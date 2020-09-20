@@ -25,7 +25,7 @@ server.use(session({
   // Should we resave our session variables if nothing has changes which we dont
   resave: false,
   // Save empty value if there is no vaue which we do not want to do
-  saveUninitialized: false
+  saveUninitialized: true
 }));
 
 // Funtion inside passport which initializes passport

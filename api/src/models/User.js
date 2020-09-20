@@ -33,6 +33,11 @@ module.exports = sequelize => {
             values: ['user', 'admin'],
             defaultValue: 'user',
         },
+        otherAuth: {
+            type: DataTypes.ENUM,
+            values: ['yes', 'no'],
+            defaultValue: 'no'
+        },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
