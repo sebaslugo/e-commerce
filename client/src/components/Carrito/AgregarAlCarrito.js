@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
@@ -6,12 +6,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react'
 import agregarAlCarrito from '../../redux/actions/agregarAlCarrito'
 
-let id = localStorage.getItem('idUser');
+
 
 export default function AgregarAlCarrito({ producto, precio, cantidad }) {
     const dispatch = useDispatch();
+    const [id,setId] = useState()
     // const content = useSelector(state => state)
-    
+    useEffect(()=>{
+        if(!id){
+            setId(localStorage.getItem('idUser'))
+        }
+    })
     
     const enviarDatos = (event) => {
         let carrito = []

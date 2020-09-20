@@ -12,25 +12,25 @@ import MenuDeUsuario from './User/MenuDeUsuario'
 import SearchBar from "material-ui-search-bar";
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Button, Icon } from 'semantic-ui-react'
-
-
-
 import "./Header.css";
 import shoppingCart from "../redux/reducers/shoppingCart";
 
-let id = localStorage.getItem('idUser');
+
+let id = localStorage.getItem('idUser')
 
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: ""
+      title: "",
     };
   }
   componentDidMount() {
-    this.props.getUser()
+    this.props.getUser() 
+    
   }
-
+  
+  
   handleSearchTextChange(event) {
     this.setState({ title: event });
   }
@@ -48,7 +48,7 @@ class Header extends Component {
     return false;
   }
 
-
+  
   static propTypes = {
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
@@ -97,14 +97,14 @@ class Header extends Component {
           {/* Basket */}
 
           <div className="header__optionBasket">
-            <Link className="header__link" to={`/user/cart/${id}`}>
+            {<Link className="header__link" to={`/user/cart/${id}`}>
               <Button style={{ backgroundColor: 'black', borderColor: "black", fontSize: 15 }} animated='vertical'>
                 <Button.Content style={{ color: "yellow" }} hidden>Carrito</Button.Content>
                 <Button.Content visible>
                   <Icon style={{ color: "yellow" }} name='shop' />
                 </Button.Content>
               </Button>
-            </Link>
+            </Link>}
           </div>
         </div>
       </nav>

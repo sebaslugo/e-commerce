@@ -2,7 +2,7 @@ import React, { useState,useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Container, Table } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
-
+import {editOrden} from "../../redux/actions/shoppingCart";
 import { getOrden } from '../../redux/actions/orden';
 import store from '../../redux/store/index';
 
@@ -18,7 +18,14 @@ function Orden () {
         });
 
     },{})
-    console.log(ordenes)
+
+    const handleEdit = (e,value) => {
+        let status = value.children.toLowerCase()
+        let data = {
+            'status':status
+        }
+        dispatch(editOrden(ordenes.orden.id,data))
+    }
     return(
         <Container style={{marginTop: '1.5rem'}}>
             <h2>Order Detail</h2>
@@ -63,8 +70,8 @@ function Orden () {
                 <Table.Footer fullWidth>
                 <Table.Row>                    
                     <Table.HeaderCell colSpan='5'>
-                        {ordenes.orden.status === 'creada' && <Button size='small'>Aprobada</Button>}
-                        {ordenes.orden.status === 'creada' &&<Button size='small'>Cancelada</Button>}
+                        {ordenes.orden.status === 'creada' && <Button size='small' onClick={handleEdit}>Completada</Button>}
+                        {ordenes.orden.status === 'creada' &&<Button size='small' onClick={handleEdit}>Cancelada</Button>}
                     </Table.HeaderCell>
                 </Table.Row>
                 </Table.Footer>
