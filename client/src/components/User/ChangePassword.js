@@ -7,12 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { postCreateUser } from '../../redux/actions/createUser.js'
 import { Select } from 'semantic-ui-react'
 import LockIcon from '@material-ui/icons/Lock';
+import { putPassword } from '../../redux/actions/changePassword.js'
 
-const rolOptions = [
-    { key: 'user', value: 'user', text: 'Usuario' },
-    { key: 'user', value: 'admin', text: 'Administrador' },
-]
-
+const token = document.URL.split("/").pop()
 const ColorButton = withStyles((theme) => ({
     root: {
         color: theme.palette.getContrastText(purple[500]),
@@ -60,16 +57,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CreateUser() {
+export default function ChangePassword() {
     const dispatch = useDispatch();
-    const content = useSelector(state => state)
-
     const classes = useStyles();
     const [datos, setDatos] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: ''
+        contraseña: '',
+        repetirContraseña: '',
     })
 
     const handleInputChange = (event, value) => {
@@ -88,17 +81,15 @@ export default function CreateUser() {
                 [event.target.name]: event.target.value
             })
         }
-
-        // console.log(event)
     }
 
     const enviarDatos = (event) => {
         console.log(datos)
-        if (datos.firstName && datos.lastName && datos.email && datos.password) {
-            dispatch(postCreateUser(datos))
+        if (datos.contraseña === datos.repetirContraseña) {
+            dispatch(putPassword(token, datos.contraseña))
         }
         else {
-            alert('completa todos los campos')
+            alert('Las contraseñas nos son iguales')
         }
 
     }
@@ -128,10 +119,10 @@ export default function CreateUser() {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                name="password"
+                                name="contraseña"
                                 label="Nueva contraseña"
                                 type="password"
-                                id="password"
+                                id="contraseña"
                                 autoComplete="current-password"
                             />
                         </Grid>
@@ -142,20 +133,13 @@ export default function CreateUser() {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                name="password"
+                                name="repetirContraseña"
                                 label="Repite tu contraseña"
                                 type="password"
-                                id="password"
+                                id="repetirContraseña"
                                 autoComplete="current-password"
                             />
                         </Grid>
-
-                        {/* <Grid item xs={12}>
-                            <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                label="I want to receive inspiration, marketing promotions and updates via email."
-                            />
-                        </Grid> */}
                     </Grid>
                     <ColorButton
                         type="submit"

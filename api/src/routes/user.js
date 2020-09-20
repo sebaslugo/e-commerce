@@ -78,6 +78,7 @@ server.put('/:id', authentication.passport.authenticate('jwt', { session: false 
         })
 })
 
+
 /* ------------------------------------------------------------------------------- */
 /* S36 : Crear Ruta para traer usuarios */
 /* ------------------------------------------------------------------------------- */
@@ -134,7 +135,7 @@ server
     /* ------------------------------------------------------------------------------- */
     //S38:Crear Ruta para agregar Item al Carrito
     /* ------------------------------------------------------------------------------- */
-    .post(authentication.passport.authenticate('jwt', { session: false }),(req, res) => {
+    .post(authentication.passport.authenticate('jwt', { session: false }), (req, res) => {
         const { productId, price, quantity } = req.body.product;
         const { userId } = req.params
         let id
@@ -173,9 +174,9 @@ server
 
     // modificar cantidad de producto en el carrito
 
-    .put(authentication.passport.authenticate('jwt', { session: false }),(req, res) => {
+    .put(authentication.passport.authenticate('jwt', { session: false }), (req, res) => {
         const id = req.params.userId
-        const { productId, quantity,price } = req.body
+        const { productId, quantity, price } = req.body
         Order.findOne(
             {
                 where: { userId: id, status: 'carrito' }
@@ -187,7 +188,7 @@ server
             })
             .then((producto) => {
                 producto.quantity = quantity;
-                producto.price=price;
+                producto.price = price;
                 return producto.save();
             })
             .then((cambio) => {
@@ -198,7 +199,7 @@ server
     //S40:Crear Ruta para vaciar el carrito
     /* ------------------------------------------------------------------------------- */
 
-    .delete(authentication.passport.authenticate('jwt', { session: false }),(req, res) => {
+    .delete(authentication.passport.authenticate('jwt', { session: false }), (req, res) => {
         const id = req.params.userId;
 
 
@@ -213,52 +214,52 @@ server
     /* ------------------------------------------------------------------------------- */
     // S39 : Crear Ruta que retorne todos los items del Carrito
     /* ------------------------------------------------------------------------------- */
-    .get(authentication.passport.authenticate('jwt', { session: false }),(req, res) => {
+    .get(authentication.passport.authenticate('jwt', { session: false }), (req, res) => {
         const id = req.params.userId;
         let carrito
         Order.findOne(
             {
                 where: { userId: id, status: 'carrito' },
                 include: [{ model: Product, as: 'products' }, { model: User, as: 'user' }]
-        })
-        .then((cart) => {
-            if (cart) {
-                carrito = cart
-                return OrderList.findAll({
-                    where:{orderId:carrito.id},
-                })
-            }
-            else {
-                return res.status(200).json([])
-            }
-        })
-        .then((orderList) => {
-            console.log(carrito)
-            let obj = {
-                ordenId:carrito.id,
-                products:carrito.products,
-                orderList
-            }
-            return res.status(200).send(obj)
-        })
-        .catch(err => res.status(400).json(err))
+            })
+            .then((cart) => {
+                if (cart) {
+                    carrito = cart
+                    return OrderList.findAll({
+                        where: { orderId: carrito.id },
+                    })
+                }
+                else {
+                    return res.status(200).json([])
+                }
+            })
+            .then((orderList) => {
+                console.log(carrito)
+                let obj = {
+                    ordenId: carrito.id,
+                    products: carrito.products,
+                    orderList
+                }
+                return res.status(200).send(obj)
+            })
+            .catch(err => res.status(400).json(err))
 
     })
 
-    /* ------------------------------------------------------------------------------- */
-    //  Ruta que elimine un producto del carrito
-    /* ------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------- */
+//  Ruta que elimine un producto del carrito
+/* ------------------------------------------------------------------------------- */
 server
     .route("/:userId/cart/:productId")
-    .delete((req,res) => {
-        const {orderId} = req.body;
-        const {productId} = req.params
+    .delete((req, res) => {
+        const { orderId } = req.body;
+        const { productId } = req.params
         OrderList.destroy({
-            where:{orderId:orderId, productId:productId}
-        }).then (respon => res.status(200).json(respon))
-        .catch(err => res.send(err))
+            where: { orderId: orderId, productId: productId }
+        }).then(respon => res.status(200).json(respon))
+            .catch(err => res.send(err))
     })
- 
+
 server
     .route("/forgot")
     .post((req, res, next) => {
@@ -288,21 +289,25 @@ server
                 var mailOptions = {
                     to: email,
                     from: 'ecomerce0410@gmail.com',
-                    subject: 'Node.js Password Reset',
+                    subject: 'Solicitud de cambio de contraseña',
                     text: 'Recibio este correo porque usted u otra persona ha solicitado el restablecimiento de contraseña de su cuenta, para restablecer, dirigase al siguiente link :\n\n' +
-                        "http://localhost:3000/login/changepass/" +  token + '\n\n' +
+                        "http://localhost:3000/login/changepass/" + token + '\n\n' +
                         'Si usted no solicito un cambio de contraseña, haga caso omiso a este mensaje.\n'
                 };
                 smtpTransport.sendMail(mailOptions, function (err) {
                     done(err, 'done');
                 });
-                return res.status(200).json({"token":token})
+                return res.status(200).json({ "token": token })
 
             },
                 function (err) {
                     if (err) return next(err);
                 });
     })
+/* ------------------------------------------------------------------------------- */
+//  Ruta para cmabiar contraseña
+/* ------------------------------------------------------------------------------- */
+
 server.post('/reset/:token', async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;

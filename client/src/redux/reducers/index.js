@@ -11,7 +11,7 @@ import createUser from './createUser'
 import loginUser from './loginUser'
 import menuLogin from './menuLogin'
 import forgotPassword from './forgotPassword';
-
+import putPassword from './changePassword'
 
 const rootReducer = combineReducers({
   categorias,
@@ -26,6 +26,7 @@ const rootReducer = combineReducers({
   loginUser,
   menuLogin,
   forgotPassword,
+  putPassword
 });
 
 export default rootReducer;

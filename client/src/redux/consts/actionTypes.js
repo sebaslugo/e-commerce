@@ -73,5 +73,5 @@ export const LOGOUT = 'LOGOUT'
 RESET PASSWORD
 ------------------------------------------------------------------------------------- */
 export const GET_EMAIL = 'GET_EMAIL';
-
+export const PUT_PASSWORD = 'PUT_PASSWORD'
 
