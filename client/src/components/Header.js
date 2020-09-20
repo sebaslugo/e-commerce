@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import SearchIcon from "@material-ui/icons/Search";
-import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
-// import { Button } from '@material-ui/core';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -10,19 +7,17 @@ import { searchProducts } from "../redux/actions/search";
 import { getUser } from '../redux/actions/menuLogIn'
 import MenuDeUsuario from './User/MenuDeUsuario'
 import SearchBar from "material-ui-search-bar";
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Button, Icon } from 'semantic-ui-react'
 
 
 
 import "./Header.css";
-import shoppingCart from "../redux/reducers/shoppingCart";
 
 let id = localStorage.getItem('idUser');
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       title: ""
     };
@@ -82,7 +77,7 @@ class Header extends Component {
             {/* Si el usuario esta logueado, muestra MenuUser, sino sign in */}
             {this.isLoggedIn() ? <MenuDeUsuario /> :
               <Link to="/Login/loginuser" className="header__link">
-                <Button style={{ backgroundColor: 'black', borderColor: "black", fontSize: 20 }} animated>
+                <Button style={{ backgroundColor: 'black', borderColor: "black", fontSize: 15 }} animated>
                   <Button.Content style={{ color: "yellow" }} visible>Sign In</Button.Content>
                   <Button.Content style={{ color: "yellow" }} hidden>
                     Henry

@@ -39,7 +39,7 @@ server.post('/', async (req, res) => {
                     text: 'Usted se ha registrado correctamente en Henry Store!\n\n' +
                         'http://' + "localhost:3000" + '\n\n'
                 };
-                smtpTransport.sendMail(mailOptions, function (err) {
+                smtpTransport.sendMail(mailOptions, function (err, done) {
                     /* req.flash('success', 'An e-mail has been sent to ' + email + ' with further instructions.'); */
                     done(err, 'done');
                 });
@@ -281,7 +281,6 @@ server
                         'Si usted no solicito un cambio de contraseña, haga caso omiso a este mensaje.\n'
                 };
                 smtpTransport.sendMail(mailOptions, function (err) {
-                    /* req.flash('success', 'An e-mail has been sent to ' + email + ' with further instructions.'); */
                     done(err, 'done');
                 });
                 return res.send('Email enviado')
@@ -289,7 +288,6 @@ server
             },
                 function (err) {
                     if (err) return next(err);
-                    // res.redirect('/forgot');
                 });
     })
 server.post('/reset/:token', async (req, res) => {
