@@ -13,10 +13,8 @@ import ComputerIcon from '@material-ui/icons/Computer';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { logOut } from '../../redux/actions/menuLogIn';
-import { Link } from "react-router-dom";
 
 
-let rol = localStorage.getItem('rol');
 
 const greyHenry = grey[900]
 const useStyles = makeStyles((theme) => ({
@@ -79,6 +77,10 @@ export default function MenuListComposition() {
         prevOpen.current = open;
     }, [open]);
 
+    const handlePanel = () => {
+        window.location.assign("http://localhost:3000/admin/panel")
+    }
+
     return (
         <div className={classes.root}>
 
@@ -95,8 +97,8 @@ export default function MenuListComposition() {
                 >
                     <ComputerIcon />
 
-                    &nbsp;
-                    {localStorage.getItem("name") && localStorage.getItem("name")}
+                    {/* &nbsp; */}
+                    {localStorage.getItem("name")? name: "yo"}
                     <ExpandMoreIcon />
                 </Button>
                 <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
@@ -108,7 +110,7 @@ export default function MenuListComposition() {
                             <Paper>
                                 <ClickAwayListener onClickAway={handleClose}>
                                     <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                                        <MenuItem onClick={handleClose}>Perfil</MenuItem>                                     
+                                        {localStorage.getItem('rol') == "admin"?<MenuItem onClick={handlePanel}>Panel</MenuItem>: null}                                     
                                         <MenuItem onClick={handleLogOut}>Logout</MenuItem>
                                     </MenuList>
                                 </ClickAwayListener>
