@@ -3,6 +3,7 @@ const passport = require('passport');
 const passportJWT = require('passport-jwt');
 const jwt = require('jsonwebtoken');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const GitHubStrategy = require('passport-github2').Strategy;
 const configAuth = require('./configAuth');
 const bcrypt = require('bcrypt');
 
@@ -87,9 +88,44 @@ exports.use = () => {
                     done(null, user);
                 })
                 .catch(err => done(err));
-            })
+            });
         }            
-    ));   
+    ));
+
+    /* ***************************************** */
+    /* GITHUB STRATEGY */
+    /* ***************************************** */
+    passport.use(new GitHubStrategy({
+        clientID: configAuth.githubAuth.clientID,
+        clientSecret: configAuth.githubAuth.clientSecret,
+        callbackURL: configAuth.githubAuth.callbackURL,
+        passReqToCallback: true,
+        scope: ['user:email', 'read:user']
+        },
+        function(accessToken, refreshToken, params, profile, cb) {
+            process.nextTick(async function() {              
+                console.log(params);
+                const user = profile;
+                const password = 'hola1234';
+                let hashedPassword = await bcrypt.hash(password, 10);                  
+                User.findOrCreate({
+                    where: { email: user.emails[0].value },
+                    defaults: {
+                        name: user.displayName,
+                        lastName: user.username,
+                        email: user.emails[0].value,
+                        password: hashedPassword,
+                        otherAuth: 'yes'
+                    }
+                })
+                .then(res => res[0])
+                .then(user => {
+                    cb(null, user);
+                })
+                .catch(err => cb(err));            
+            });
+        }
+    ));
 }
 
 exports.passport = passport;

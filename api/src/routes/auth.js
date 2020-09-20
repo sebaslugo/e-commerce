@@ -54,13 +54,7 @@ server.post("/promote/:id", authentication.passport.authenticate('jwt', { sessio
         .catch(err => res.status(404).json(err))
 });
 
-server.get('/google', authentication.passport.authenticate('google', { scope : ['profile', 'email'] }), (req, res) => {
-    if (req.user) {
-        let payload = { id: req.user.id };
-        let token = authentication.jwt.sign(payload, authentication.jwtOptions.secretOrKey, { expiresIn: 9000 });
-        return res.json({user: req.user, token: token });
-    }    
-});
+server.get('/google', authentication.passport.authenticate('google', { scope : ['profile', 'email'] }));
 
 server.get('/google/callback', authentication.passport.authenticate('google'), (req, res) => {
     if (req.user) {
@@ -70,6 +64,14 @@ server.get('/google/callback', authentication.passport.authenticate('google'), (
     } else {
         return res.redirect('http://localhost:3000/login/loginuser');
     }
+});
+
+server.get('/github', authentication.passport.authenticate('github', { scope: ['user:email', 'read:user']}));
+
+server.get('/github/callback', authentication.passport.authenticate('github', { failureRedirect: 'http://localhost:3000/login/loginuser' }), (req, res) => {
+    let payload = { id: req.user.id };
+    let token = authentication.jwt.sign(payload, authentication.jwtOptions.secretOrKey, { expiresIn: 9000 });   
+    res.redirect(`http://localhost:3000/checkuser/auth/${req.user.id}/${token}`);
 });
 
 module.exports = server;

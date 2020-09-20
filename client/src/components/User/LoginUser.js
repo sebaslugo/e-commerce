@@ -168,6 +168,15 @@ export default function UserLogin() {
                                     Registrarse con Google
                                 </ColorButton>
                             </Link>
+                            <Link href="http://localhost:3001/auth/github" style={{textDecoration: 'none'}}>
+                                <ColorButton                                
+                                    fullWidth
+                                    variant="contained"
+                                    className={classes.submit}
+                                >
+                                    Registrarse con GitHub
+                                </ColorButton>
+                            </Link>
                             <Grid container>
                                 <Grid item xs>
                                     <Link href="/login/forgot" variant="body2">
