@@ -20,7 +20,6 @@ export function loginUser(loginData) {
                 })
                 return res;
             })
-            // .then(res => localStorage.setItem('token', res.data.token))
             .then(res => {
                 localStorage.setItem('token', res.data.token)
                 window.location.assign("http://localhost:3000/")

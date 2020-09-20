@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -99,9 +99,7 @@ export default function UserLogin() {
         data.loginUser = {
             token: state.password
         }
-        console.log(data.loginUser)
     })
-    // console.log("este es el dataStore del loginUser ", dataStore)
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(e)

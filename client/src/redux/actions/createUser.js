@@ -15,14 +15,20 @@ export function postCreateUser(newData) {
             }
 
         })
-            .then(res =>
+            .then(res =>{
                 dispatch({
                     type: CREATE_USER,
                     payload: res.data
-                }),
+                })
+                return res
+            }
                 
-            ).then(res => alert('se creo el usuario'))
-            .catch(e => alert('este email ya tiene una cuenta creada'))
+            ).then((res) => {
+                alert('se creo el usuario')
+                console.log(res)
+                window.location.assign("http://localhost:3000/login/loginuser")
+            })
+            .catch(() => alert('este email ya tiene una cuenta creada'))
     };
     
 }
