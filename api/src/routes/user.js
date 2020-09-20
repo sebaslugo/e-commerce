@@ -243,9 +243,22 @@ server
         })
         .catch(err => res.status(400).json(err))
 
-
     })
 
+    /* ------------------------------------------------------------------------------- */
+    //  Ruta que elimine un producto del carrito
+    /* ------------------------------------------------------------------------------- */
+server
+    .route("/:userId/cart/:productId")
+    .delete((req,res) => {
+        const {orderId} = req.body;
+        const {productId} = req.params
+        OrderList.destroy({
+            where:{orderId:orderId, productId:productId}
+        }).then (respon => res.status(200).json(respon))
+        .catch(err => res.send(err))
+    })
+ 
 server
     .route("/forgot")
     .post((req, res, next) => {

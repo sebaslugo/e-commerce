@@ -23,7 +23,7 @@ export function loginUser(loginData) {
             // .then(res => localStorage.setItem('token', res.data.token))
             .then(res => {
                 localStorage.setItem('token', res.data.token)
-                window.location.assign("http://localhost:3000/%22")
+                window.location.assign("http://localhost:3000/")
             })
             .catch(() => alert("Los datos del Usuario no concuerdan con un usuario existente...vuelva a intentarlo"))
     }

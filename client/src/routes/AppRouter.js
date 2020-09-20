@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -20,17 +20,21 @@ import { getUser } from '../redux/actions/menuLogIn';
 import ForgotPassword from '../components/User/ForgotPassword';
 import ChangePassword from '../components/User/ChangePassword';
 
+const id = localStorage.getItem('idUser')
+
 export const AppRouter = () => {
 
     const dispatch = useDispatch();
 
     const rol = localStorage.getItem('rol');
     const token = localStorage.getItem('statusToken');
-    const id = localStorage.getItem('idUser');
+    
 
-    console.log(rol, token, id);
+    
+    
 
     useEffect(() => {
+        
         dispatch(getUser());
     });
 
