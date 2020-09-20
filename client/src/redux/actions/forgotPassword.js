@@ -12,16 +12,17 @@ export function getEmail(loginData) {
             }
         })
             .then(res => {
-                dispatch({
-                    type: GET_EMAIL,
-                    payload: res.data
-                })
+                const serializedState = JSON.stringify(res.data.token);
+                localStorage.setItem("tokenforgot", serializedState);
                 return res;
             })
             // .then(res => localStorage.setItem('token', res.data.token))
             .then(res => {
-                localStorage.setItem('token', res.data.token)
-                window.location.assign("http://localhost:3000/login/forgot")
+                
+                dispatch({
+                    type: GET_EMAIL,
+                    payload: res.data
+                })
                 alert("Se ha enviado un email con instrucciones");
             })
             .catch(() => alert("Los datos del Usuario no concuerdan con un usuario existente...vuelva a intentarlo"))

@@ -20,14 +20,15 @@ import { getUser } from '../redux/actions/menuLogIn';
 import ForgotPassword from '../components/User/ForgotPassword';
 import ChangePassword from '../components/User/ChangePassword';
 
-const id = localStorage.getItem('idUser')
+
 
 export const AppRouter = () => {
 
     const dispatch = useDispatch();
-
     const rol = localStorage.getItem('rol');
     const token = localStorage.getItem('statusToken');
+    const id = localStorage.getItem('idUser')
+    const tokenforgot = JSON.parse(localStorage.getItem('tokenforgot'))
     
 
     
@@ -56,7 +57,7 @@ export const AppRouter = () => {
                     <PrivateRoute exact path="/admin/order/:id" component={Orden} isAuthenticated={token} isAdmin={rol} />
                     <PrivateRoute exact path="/admin/orderlist" component={OrderList} isAuthenticated={token} isAdmin={rol} />
 
-                    <PublicRoute exact path="/login/changepass" component={ChangePassword} isAuthenticated={token} />
+                    <PublicRoute exact path={`/login/changepass/${tokenforgot}`} component={ChangePassword} isAuthenticated={token}/>
                     <PublicRoute exact path="/login/forgot" component={ForgotPassword} isAuthenticated={token} />
                     <PublicRoute exact path="/login/loginuser" component={UserLogin} isAuthenticated={token} />
                     <PublicRoute exact path="/login/createuser" component={CreateUser} isAuthenticated={token} />
