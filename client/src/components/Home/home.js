@@ -11,11 +11,10 @@ import store from '../../redux/store/index';
 import { getUser } from '../../redux/actions/menuLogIn'
 import agregarAlCarrito from '../../redux/actions/agregarAlCarrito'
 
-let id = localStorage.getItem('idUser');
-let cart =  JSON.parse(localStorage.getItem("carrito")); 
+
+let cart =  JSON.parse(localStorage.getItem("carrito"));
 
 function Home() {
-
 
   const dispatch = useDispatch();
   const [active, setActive] = useState(1);
@@ -24,6 +23,7 @@ function Home() {
   const [validate,setValidate] = useState(true)
   const paginas = productos && Math.ceil(productos.length / 6)
   const categorias = useSelector(state => state.categorias.data)
+  const [id,setId] = useState ()
   
 
 
@@ -48,6 +48,10 @@ function Home() {
       })
       localStorage.removeItem('carrito');
 
+    }
+
+    if(!id){
+      setId(localStorage.getItem('idUser'))
     }
     
 

@@ -28,7 +28,7 @@ const tagOptions = [
     {
       key: 'completa',
       text: 'Completada',
-      value: 'completa',
+      value: 'completada',
       label: { color: 'black', empty: true, circular: true },
     },
     {

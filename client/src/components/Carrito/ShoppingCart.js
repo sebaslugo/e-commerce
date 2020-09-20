@@ -8,7 +8,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import { grey, yellow } from "@material-ui/core/colors/";
 import store from "../../redux/store/index";
-import {fetchProductsFromCart,EmptyCart,editCantidad,editOrden} from "../../redux/actions/shoppingCart";
+import {fetchProductsFromCart,EmptyCart,editCantidad,editOrden,deleteProduct} from "../../redux/actions/shoppingCart";
 import { useDispatch } from "react-redux";
 import "./ShoppingCart.css";
 
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 function getSum(total, num) {
   return total + num;
 }
-let id = localStorage.getItem('idUser');
+
 
 const ShoppingCart = () => {
 
@@ -57,10 +57,13 @@ const ShoppingCart = () => {
   const [prices, setPrices] = useState();
   const [active, setActive] = useState(true);
   const [subtotal, setSubTotal] = useState(0);
-
+  const [id,setId] =useState()
   useEffect(() => {
     let precios = {};
     let cantidades = {};
+    if(!id){
+      setId(localStorage.getItem('idUser'))
+    }
     if (id && active) {
       dispatch(fetchProductsFromCart(id));
       store.subscribe(() => setCart(() => store.getState().shoppingCart.data));
@@ -141,7 +144,7 @@ const ShoppingCart = () => {
     }
     else{      
       localStorage.removeItem('carrito');
-      setCart([])
+      setCart({})
     }
     
   };
@@ -152,11 +155,35 @@ const ShoppingCart = () => {
         'status':'creada'
       }
       dispatch(editOrden(cart.ordenId,data))
+      setCart({})
     }
     else {
       window.location.assign("http://localhost:3000/login/createuser")
     }
 
+  }
+
+  const productDelete = (e,product) => {
+    
+    if(id){
+      dispatch(deleteProduct(id,product.id,cart.ordenId))
+      dispatch(fetchProductsFromCart(id));
+    }
+    else {
+      setCart({
+        ...cart,
+        products:cart.products.filter(producto => product.id !== producto.id)
+      })
+      delete quantities[product.id];
+      delete prices[product.id];
+      let local = {
+        ['products']:cart.products.filter(producto => product.id !== producto.id),
+        ['orderList']:cart.orderList.filter(producto => product.id !== producto.id)
+      }
+      const serializedState = JSON.stringify(local);
+      localStorage.setItem("carrito", serializedState);  
+    }
+    
   }
 
   
@@ -171,7 +198,7 @@ const ShoppingCart = () => {
         </div>
         <button onClick = {handleBuy}>COMPRAR</button>
       </div>
-      {cart.products &&
+      {cart && cart.products &&
         cart.products.length > 0 &&
         cart.products.map((product, index) => (
           <Paper key={index} className={classes.paper}>
@@ -225,6 +252,7 @@ const ShoppingCart = () => {
                     variant="contained"
                     className={classes.button}
                     startIcon={<DeleteIcon />}
+                    onClick={(e) => productDelete(e,product)}
                   >
                     BORRAR
                   </ColorButton>
@@ -249,7 +277,7 @@ const ShoppingCart = () => {
 
       <Grid item >
         <div className = 'shopping_vaciar'>
-          {cart.orderList && <ColorButton
+          {cart && cart.orderList && <ColorButton
             variant="contained"
             className={classes.button}
             startIcon={<DeleteIcon />}
