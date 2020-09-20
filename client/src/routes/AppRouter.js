@@ -27,9 +27,8 @@ export const AppRouter = () => {
     const rol = localStorage.getItem('rol');
     const statusToken = localStorage.getItem('statusToken');
     const id = localStorage.getItem('idUser')
-    const tokenforgot = JSON.parse(localStorage.getItem('tokenforgot'));
 
-    useEffect(() => {        
+    useEffect(() => {
         dispatch(getUser());
     });
 
@@ -51,7 +50,7 @@ export const AppRouter = () => {
                     <PrivateRoute exact path="/admin/order/:id" component={Orden} isAuthenticated={statusToken} isAdmin={rol} />
                     <PrivateRoute exact path="/admin/orderlist" component={OrderList} isAuthenticated={statusToken} isAdmin={rol} />
 
-                    <PublicRoute exact path={`/login/changepass/${tokenforgot}`} component={ChangePassword} isAuthenticated={statusToken}/>
+                    <Route exact path={`/login/changepass/:passwordToken`} component={ChangePassword} isAuthenticated={statusToken} />
                     <PublicRoute exact path="/login/forgot" component={ForgotPassword} isAuthenticated={statusToken} />
                     <PublicRoute exact path="/login/loginuser" component={UserLogin} isAuthenticated={statusToken} />
                     <PublicRoute exact path="/login/createuser" component={CreateUser} isAuthenticated={statusToken} />
