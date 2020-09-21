@@ -58,6 +58,7 @@ function Reviews  ({productoId})  {
         rating:rating
       }
       dispatch(postReview(productoId,comentario,id))
+      
            
     }  
   }
@@ -72,7 +73,10 @@ function Reviews  ({productoId})  {
     }
     
     dispatch(postReview(productoId,comentario))
-    setCall(true); 
+    dispatch(getReviews(productoId))
+    
+
+    
     
     
   }
@@ -88,6 +92,8 @@ function Reviews  ({productoId})  {
     setLikes(likes + 1)
     dispatch(postReview(productoId,comentario,id))
     
+
+    
   }
 
   //// Edita la review
@@ -98,8 +104,9 @@ function Reviews  ({productoId})  {
       description:description,
     }
     dispatch(putReview(productoId,reviewId,comentario,id))
+    dispatch(getReviews(productoId))
     setEditConf(0);
-    setCall(true);
+    
   }
 
   const handleDelete  = (reviewId) => {
