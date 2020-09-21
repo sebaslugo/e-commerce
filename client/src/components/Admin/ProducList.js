@@ -12,9 +12,8 @@ import { useDispatch, useSelector } from 'react-redux'
 export default function ProudctList() {
 
   const dispatch = useDispatch();
-  const content = useSelector(state => state)
 
-  const [productos, setProductos] = useState([])
+  const [productos, setProductos] = useState()
   const categorias = useSelector(state => state.categorias.data) 
   const [table, setTable] = useState({
     columns: [
@@ -33,7 +32,7 @@ export default function ProudctList() {
   const handleClose = () => {
     dispatch( getProducts());
     setOpen(false)
-    dispatch( getProducts());
+    
   }
   const handleOpen = (event, rowData) => {
 
@@ -45,20 +44,23 @@ export default function ProudctList() {
     else {
       setProducto({})
     }
-
+    
 
   } 
 
   useEffect(() => {
-    dispatch( getProducts());
-    dispatch(getCategories());
+    if(!productos){
+      dispatch( getProducts());
+      dispatch(getCategories());
+    }
     store.subscribe(() => setProductos(store.getState().productList.data))
-  }, [])
+    
+    
+  })
 
   return (
     <div className='productlist-table'>
-      {console.log("Estoy en el content", content)}
-
+      
       <MaterialTable
         title="Product List"
         columns={table.columns}

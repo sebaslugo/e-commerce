@@ -6,6 +6,8 @@ import {getReviews,postReview,putReview,deleteReview} from '../../redux/actions/
 import { useDispatch,useSelector } from "react-redux";
 import store from '../../redux/store/index';
 
+let id = JSON.parse(localStorage.getItem("idUser"));  
+
 function Reviews  ({productoId})  {
   const dispatch = useDispatch();
   const [reviews,setReviews] = useState([])
@@ -15,7 +17,7 @@ function Reviews  ({productoId})  {
   const [likes,setLikes] = useState()
   const[ratings,setRatings] = useState()
   const[description,setDescription] = useState()
-  
+   
   
   useEffect(()=> {
       if(productoId && call){
@@ -44,52 +46,58 @@ function Reviews  ({productoId})  {
   //// setea el comentario y sube el ranking si no existe algun comentario
 
   const handleChange = (e,{rating}) => {
-    if(setDescription){
+    
+    if(!rating){
       setDescription(e.target.value)
     }
-    if(rating){
+    if(rating){ 
+      setCall(true);      
       setRatings(rating)
       let comentario={
         userId:1,
         rating:rating
       }
-      dispatch(postReview(productoId,comentario))
-      setCall(true);      
+      dispatch(postReview(productoId,comentario,id))
+           
     }  
   }
 
    /// sube el comentario y actualiza los reviews
 
   const handleSubmit = (e) => {
+    
     let comentario = {
-       userId:1,
+       userId:id,
        description:description,
     }
+    
     dispatch(postReview(productoId,comentario))
-    setCall(true);
+    setCall(true); 
+    
     
   }
 
   //// sube y setea los likes
 
   const handleLike = () => {
+    setCall(true);
     let comentario = {
-      userId:1,
+      userId:id,
       likes:1
     }
     setLikes(likes + 1)
-    dispatch(postReview(productoId,comentario))
-    setCall(true);
+    dispatch(postReview(productoId,comentario,id))
+    
   }
 
   //// Edita la review
 
   const handleEdit = (reviewId) => {
     let comentario = {
-      userId:1,
+      userId:id,
       description:description,
     }
-    dispatch(putReview(productoId,reviewId,comentario))
+    dispatch(putReview(productoId,reviewId,comentario,id))
     setEditConf(0);
     setCall(true);
   }
@@ -98,7 +106,8 @@ function Reviews  ({productoId})  {
     dispatch(deleteReview(productoId,reviewId))
     setCall(true);
   }
-
+  console.log(id)
+  console.log(reviews)
   return (
     <Feed>
       <div>
@@ -123,7 +132,7 @@ function Reviews  ({productoId})  {
       <br/>      
       {ratings ? 
         <label>ranking: 
-          <Rating maxRating={5} defaultRating={ratings} onRate={handleChange} icon='star' size='mini' disabled={true}/> 
+          <Rating maxRating={5} defaultRating={ratings}  icon='star' size='mini' disabled={true}/> 
         </label> : 
         <h1></h1>}
       <hr/>
@@ -137,12 +146,12 @@ function Reviews  ({productoId})  {
             <Feed.Summary className = 'review-summary'>
               <a>{review.user.fullName}</a> 
               <div className='review-button'>
-                <Button icon onClick={() => setEditConf(review.id)}>
+                {review.userId == id && <Button icon onClick={() => setEditConf(review.id)}>
                   <Icon name='edit' size = 'small' />
-                </Button>
-                <Button icon onClick = {() => handleDelete(review.id)}>
+                </Button>}
+                {review.userId == id && <Button icon onClick = {() => handleDelete(review.id)}>
                   <Icon name='delete' size = 'small'/>
-                </Button>
+                </Button>}
               </div>          
             </Feed.Summary>
             {editConf !== review.id ? 
@@ -159,9 +168,9 @@ function Reviews  ({productoId})  {
       
       <hr/>
        <Form onSubmit={handleSubmit}>
-          <TextArea rows={2} placeholder='Dejanos tu opinion acerca del producto' onChange={handleChange}/>
+          <TextArea rows={2} placeholder='Dejanos tu opinion acerca del producto'  onChange={handleChange}/>
           <Button type='submit'>Publicar</Button>
-      </Form>
+        </Form> 
     </Feed>
   ) 
 }

@@ -1,4 +1,4 @@
-import { GET_CART, ADD_CART, EMPTY_CART } from '../consts/actionTypes.js'
+import { GET_CART,EDIT_ORDEN} from '../consts/actionTypes.js'
 
 const initialState = {
     cart: {}
@@ -10,19 +10,16 @@ export default function shoppingCart(state = initialState, action) {
                 ...state,
                 data: action.payload
             }
+        case EDIT_ORDEN:
+            return {
+                ...state,
+                data:{}
+            }
         default:
             return { ...state };
             break;
-        case ADD_CART:
-            return {
-                ...state
-            }
-            break;
-        case EMPTY_CART:
-            return {
-                ...state,
-                data: { products: [] }
-            }
+        
+        
     }
 
 

@@ -152,7 +152,7 @@ server
                 return order.setUser(userId)
             })
             .then((order) => {
-
+                
                 return OrderList.create({
                     price,
                     quantity,
@@ -163,10 +163,10 @@ server
 
             })
             .then((order) => {
-                res.status(200).json(order)
+                return res.status(200).json(order)
             })
             .catch((err) => {
-                res.status(400).json(err)
+                return res.status(400).json(err)
             })
     })
 
@@ -192,7 +192,7 @@ server
                 return producto.save();
             })
             .then((cambio) => {
-                res.json(cambio)
+                return res.json(cambio)
             })
     })
     /* ------------------------------------------------------------------------------- */
@@ -207,7 +207,7 @@ server
             where: { userId: id, status: 'carrito' },
         })
             .then(() => {
-                res.status(200).send("Carrito eliminado");
+                return res.status(200).send("Carrito eliminado");
             })
             .catch(err => res.send(err));
     })
@@ -256,7 +256,7 @@ server
         const { productId } = req.params
         OrderList.destroy({
             where: { orderId: orderId, productId: productId }
-        }).then(respon => res.status(200).json(respon))
+        }).then(respon =>  res.status(200).json(respon))
             .catch(err => res.send(err))
     })
 
