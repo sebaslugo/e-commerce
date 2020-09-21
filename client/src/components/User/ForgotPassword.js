@@ -90,6 +90,7 @@ export default function CreateUser() {
     }
 
     const enviarDatos = (event) => {
+        event.preventDefault()
         console.log(datos)
         if (datos.email) {
             dispatch(getEmail(datos))

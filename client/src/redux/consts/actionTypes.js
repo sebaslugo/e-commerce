@@ -49,11 +49,10 @@ export const LOGIN_USER = 'LOGIN_USER'
 /* ------------------------------------------------------------------------------- */
 /* SHOPPING CART */
 /* ------------------------------------------------------------------------------- */
-export const GET_CART = 'GET_CART'
-export const ADD_CART = 'ADD_CART'
-export const EMPTY_CART = 'EMPTY_CART'
-
-
+export const GET_CART = 'GET_CART';
+export const ADD_CART = 'ADD_CART';
+export const EMPTY_CART = 'EMPTY_CART';
+export const EDIT_ORDEN = 'EDIT_ORDEN';
 export const GET_ORDEN = 'GET_ORDEN';
 export const GET_ORDERS = 'GET_ORDERS';
 

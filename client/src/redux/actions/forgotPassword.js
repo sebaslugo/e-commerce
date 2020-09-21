@@ -4,6 +4,7 @@ import store from '../store/index'
 
 export function getEmail(loginData) {
     return function (dispatch) {
+        console.log(loginData)
         axios({
             method: 'POST',
             url: `http://localhost:3001/users/forgot`,
@@ -12,8 +13,7 @@ export function getEmail(loginData) {
             }
         })
             .then(res => {
-                const serializedState = JSON.stringify(res.data.token);
-                localStorage.setItem("tokenforgot", serializedState);
+                localStorage.setItem("tokenforgot", res.data.token);
                 return res;
             })
             // .then(res => localStorage.setItem('token', res.data.token))

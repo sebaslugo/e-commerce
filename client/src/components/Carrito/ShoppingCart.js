@@ -8,6 +8,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import { grey, yellow } from "@material-ui/core/colors/";
 import store from "../../redux/store/index";
+import agregarAlCarrito from '../../redux/actions/agregarAlCarrito';
 import {fetchProductsFromCart,EmptyCart,editCantidad,editOrden,deleteProduct} from "../../redux/actions/shoppingCart";
 import { useDispatch } from "react-redux";
 import "./ShoppingCart.css";
@@ -47,6 +48,10 @@ function getSum(total, num) {
   return total + num;
 }
 
+let id = localStorage.getItem("idUser");
+let carritoLocal = JSON.parse(localStorage.getItem("carrito"))
+
+
 
 const ShoppingCart = () => {
 
@@ -57,20 +62,26 @@ const ShoppingCart = () => {
   const [prices, setPrices] = useState();
   const [active, setActive] = useState(true);
   const [subtotal, setSubTotal] = useState(0);
-  const [id,setId] =useState()
+
+  
+
   useEffect(() => {
+
     let precios = {};
     let cantidades = {};
-    if(!id){
-      setId(localStorage.getItem('idUser'))
-    }
+   
+
+    // toma el id del storage
+    
     if (id && active) {
+      localStorage.removeItem('carrito')
       dispatch(fetchProductsFromCart(id));
-      store.subscribe(() => setCart(() => store.getState().shoppingCart.data));
+      store.subscribe(() => setCart(() => store.getState().shoppingCart.data));    
       setActive(false);
+      
     } else if (!id && active) {
       try {
-        const serializedState = JSON.parse(localStorage.getItem("carrito"));
+        let serializedState = JSON.parse(localStorage.getItem("carrito"));
         if (serializedState === null) return undefined;
         setCart(serializedState);
         setActive(false);
@@ -78,6 +89,8 @@ const ShoppingCart = () => {
         console.log(e);
       }
     }
+
+    // setea precios y cantidades
 
     if (!prices && !quantities && cart.orderList) {
       cart.orderList.map((order) => {
@@ -93,16 +106,20 @@ const ShoppingCart = () => {
       setQuantity(cantidades);
       setPrices(precios);
     }
+
+    // realiza el calculo del subtotal
+
     if (prices) {
       let precio = Object.values(prices);
       setSubTotal(precio.reduce(getSum, 0));
     }
+    
   });
 
 
 
   const onChange = (event, product) => {
-    event.preventDefault();
+    /* event.preventDefault(); */
     let quantity = event.target.value;
     let cant = quantities[product.id];
     if (quantity < 1) {
@@ -126,21 +143,40 @@ const ShoppingCart = () => {
         [product.id]: product.stock,
       });
     }
+    let data = {
+      productId: product.id,
+      price: prices[product.id],
+      quantity: parseInt(quantity),
+    };
     if (id) {
-      let data = {
-        productId: product.id,
-        price: prices[product.id],
-        quantity: parseInt(quantity),
-      };
       dispatch(editCantidad(id, data));
+    }
+    else{
+      let local = {
+        ...cart,
+        orderList:cart.orderList.filter((producto) => {
+          if(product.id == producto.productId && quantity <= product.stock){
+            return producto.quantity= data.quantity
+          }
+          else{return producto}
+        })
+      }
+      console.log(local)
+      const serializedState = JSON.stringify(local);
+      localStorage.setItem("carrito", serializedState);   
+
     }
   };
 
-  const emptyCarrito = () => {
+  ////// vacia el carrito
+
+  const emptyCarrito = (e) => {
     setPrices(null);
     setSubTotal(0);
     if(id){
       dispatch(EmptyCart(id));
+      setActive(true)
+      
     }
     else{      
       localStorage.removeItem('carrito');
@@ -148,6 +184,8 @@ const ShoppingCart = () => {
     }
     
   };
+
+  // realiza la compra
 
   const handleBuy= () => {
     if(id){
@@ -162,23 +200,27 @@ const ShoppingCart = () => {
     }
 
   }
+ 
+  // elimina un producto
 
-  const productDelete = (e,product) => {
-    
+  const productDelete = (e,product) => {    
     if(id){
       dispatch(deleteProduct(id,product.id,cart.ordenId))
-      setActive(true);
+      dispatch(fetchProductsFromCart(id));
     }
     else {
       delete quantities[product.id];
       delete prices[product.id];
       let local = {
         ['products']:cart.products.filter(producto => product.id !== producto.id),
-        ['orderList']:cart.orderList.filter(producto => product.id !== producto.id)
+        ['orderList']:cart.orderList.filter(producto => product.id !== producto.productId)
       }
       setCart(local)
       const serializedState = JSON.stringify(local);
       localStorage.setItem("carrito", serializedState);  
+    }
+    if(!cart){
+      dispatch(EmptyCart(id));
     }
     
   }

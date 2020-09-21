@@ -8,11 +8,11 @@ import { getCategories } from '../../redux/actions/category';
 import { getProducts, getProductCategory } from '../../redux/actions/productList';
 import { useDispatch, useSelector } from 'react-redux';
 import store from '../../redux/store/index';
-import { getUser } from '../../redux/actions/menuLogIn'
-import agregarAlCarrito from '../../redux/actions/agregarAlCarrito'
+import agregarAlCarrito from '../../redux/actions/agregarAlCarrito';
 
-let id = JSON.parse(localStorage.getItem("idUser"));
-let cart =  JSON.parse(localStorage.getItem("carrito"));
+let id = localStorage.getItem("idUser");
+let serializedState = JSON.parse(localStorage.getItem("carrito"));
+
 
 function Home() {
 
@@ -23,34 +23,48 @@ function Home() {
   const [validate,setValidate] = useState(true)
   const paginas = productos && Math.ceil(productos.length / 6)
   const categorias = useSelector(state => state.categorias.data)
+ 
 
   
 
 
   useEffect(() => {
     
+    
+      
+    if(serializedState && id){
+      let order = serializedState.orderList.shift()
+      console.log(order)
+      dispatch(agregarAlCarrito(order,id)) 
+      /* for (let index = 0; index < serializedState.orderList.length; index++) {
+        dispatch(agregarAlCarrito(serializedState.orderList[index],id)) 
+      } 
+    
+       localStorage.removeItem('carrito')    */        
+    }
+    if(!serializedState && id){
+      localStorage.removeItem('carrito') 
+    }
+    /* while(serializedState && serializedState.orderList){
+      
+ 
+      dispatch(agregarAlCarrito(serializedState.orderList.shift(),id)) 
+
+    
+       /* localStorage.removeItem('carrito')             
+    } */
+       
+
     if(!productos && validate) {
       dispatch(getCategories());
       dispatch(getProducts());
-      // dispatch(getUser())
-      console.log('hola')
       store.subscribe(() => {
         setProductos(() => store.getState().productList.data)
       })
       setValidate(false)
 
-    }
-        
-    if(id !== null && cart){
-      cart.orderList.map((order) => {
-        console.log(id) 
-        dispatch(agregarAlCarrito(order,id))
-      })
-      localStorage.removeItem('carrito');
-
-    }
-
-    
+    }       
+   
     
 
   })

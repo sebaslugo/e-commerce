@@ -65,13 +65,14 @@ function Reviews  ({productoId})  {
    /// sube el comentario y actualiza los reviews
 
   const handleSubmit = (e) => {
-    setCall(true);
+    
     let comentario = {
-       userId:1,
+       userId:id,
        description:description,
     }
     
     dispatch(postReview(productoId,comentario))
+    setCall(true); 
     
     
   }
@@ -81,7 +82,7 @@ function Reviews  ({productoId})  {
   const handleLike = () => {
     setCall(true);
     let comentario = {
-      userId:1,
+      userId:id,
       likes:1
     }
     setLikes(likes + 1)
@@ -93,7 +94,7 @@ function Reviews  ({productoId})  {
 
   const handleEdit = (reviewId) => {
     let comentario = {
-      userId:1,
+      userId:id,
       description:description,
     }
     dispatch(putReview(productoId,reviewId,comentario,id))

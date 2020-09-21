@@ -84,6 +84,7 @@ export default function ChangePassword() {
     }
 
     const enviarDatos = (event) => {
+        event.preventDefault()
         console.log(datos)
         if (datos.contraseña === datos.repetirContraseña) {
             dispatch(putPassword(token, datos.contraseña))

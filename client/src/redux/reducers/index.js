@@ -5,7 +5,6 @@ import productList from "./productList";
 import orden from './orden'
 import productos from "./producto"
 import shoppingCart from "./shoppingCart"
-import agregarAlCarrito from './agregarAlCarrito'
 import reviews from './reviews'
 import createUser from './createUser'
 import loginUser from './loginUser'
@@ -20,7 +19,6 @@ const rootReducer = combineReducers({
   orden,
   productos,
   shoppingCart,
-  agregarAlCarrito,
   reviews,
   createUser,
   loginUser,
