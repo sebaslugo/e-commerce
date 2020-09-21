@@ -1,6 +1,10 @@
 .home-Home{
     display:flex;
     flex-direction: column;
+    height: 100vh;
+    
+}
+.home_portada{
     
 }
 .ui.small.image, .ui.small.images .image, .ui.small.images img, .ui.small.images svg {

@@ -228,107 +228,110 @@ const ShoppingCart = () => {
   
 
   return (
-    <div className={classes.root}>
-      <div className="shopping_subtotal">
-        <div>
-          <p>
-            Subtotal<strong> ${subtotal} </strong>
-          </p>
+    <div className = 'shopping-content'>
+        <div className={classes.root}>
+        <div className="shopping_subtotal">
+          <div>
+            <p>
+              Subtotal<strong> ${subtotal} </strong>
+            </p>
+          </div>
+          <button onClick = {handleBuy}>COMPRAR</button>
         </div>
-        <button onClick = {handleBuy}>COMPRAR</button>
-      </div>
-      {cart && cart.products &&
-        cart.products.length > 0 &&
-        cart.products.map((product, index) => (
-          <Paper key={index} className={classes.paper}>
-            <Grid container spacing={3}>
-              <Grid item xs container direction="column" spacing={2}>
-                <ButtonBase className={classes.image}>
-                  <img
-                    className={classes.img}
-                    alt="complex"
-                    src={`http://localhost:3001/${product.imagenes[0]}`}
-                  />
-                </ButtonBase>
-              </Grid>
-              <Grid item xs={10} sm container>
+        {cart && cart.products &&
+          cart.products.length > 0 &&
+          cart.products.map((product, index) => (
+            <Paper key={index} className={classes.paper}>
+              <Grid container spacing={3}>
+                <Grid item xs container direction="column" spacing={2}>
+                  <ButtonBase className={classes.image}>
+                    <img
+                      className={classes.img}
+                      alt="complex"
+                      src={`http://localhost:3001/${product.imagenes[0]}`}
+                    />
+                  </ButtonBase>
+                </Grid>
+                <Grid item xs={10} sm container>
+                  <Grid item xs container direction="column" spacing={2}>
+                    <Grid item xs>
+                      <Typography gutterBottom variant="subtitle1">
+                        <h1>{product.name}</h1>
+                      </Typography>
+
+                      <Typography variant="body2" gutterBottom>
+                        <h6>{product.description}</h6>
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        <p style={{ fontWeight: "bold" }}>
+                          <strong>$</strong>
+                          {product.price}
+                        </p>
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
                 <Grid item xs container direction="column" spacing={2}>
                   <Grid item xs>
                     <Typography gutterBottom variant="subtitle1">
-                      <h1>{product.name}</h1>
-                    </Typography>
-
-                    <Typography variant="body2" gutterBottom>
-                      <h6>{product.description}</h6>
+                      <h3>Cantidad</h3>
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      <p style={{ fontWeight: "bold" }}>
+                      <input
+                        type="number"
+                        name={product.id}
+                        value={quantities && quantities[product.id]}
+                        onChange={(e) => onChange(e, product)}
+                      ></input>
+                    </Typography>
+
+                  </Grid>
+
+                  <Grid item>
+                    <ColorButton
+                      variant="contained"
+                      className={classes.button}
+                      startIcon={<DeleteIcon />}
+                      onClick={(e) => productDelete(e,product)}
+                    >
+                      BORRAR
+                    </ColorButton>
+                  </Grid>
+                </Grid>
+                <Grid item xs container direction="column" spacing={2}>
+                  <Grid item xs>
+                    <Typography gutterBottom variant="subtitle1">
+                      <h3>Price</h3>
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      <label>
                         <strong>$</strong>
-                        {product.price}
-                      </p>
+                        {prices && prices[product.id]}
+                      </label>
                     </Typography>
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs container direction="column" spacing={2}>
-                <Grid item xs>
-                  <Typography gutterBottom variant="subtitle1">
-                    <h3>Cantidad</h3>
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    <input
-                      type="number"
-                      name={product.id}
-                      value={quantities && quantities[product.id]}
-                      onChange={(e) => onChange(e, product)}
-                    ></input>
-                  </Typography>
+            </Paper>
+          ))}
 
-                </Grid>
+        <Grid item >
+          <div className = 'shopping_vaciar'>
+            {cart && cart.orderList && <ColorButton
+              variant="contained"
+              className={classes.button}
+              startIcon={<DeleteIcon />}
+              onClick={emptyCarrito}
+            >
+              VACIAR CARRITO
+            </ColorButton>}
 
-                <Grid item>
-                  <ColorButton
-                    variant="contained"
-                    className={classes.button}
-                    startIcon={<DeleteIcon />}
-                    onClick={(e) => productDelete(e,product)}
-                  >
-                    BORRAR
-                  </ColorButton>
-                </Grid>
-              </Grid>
-              <Grid item xs container direction="column" spacing={2}>
-                <Grid item xs>
-                  <Typography gutterBottom variant="subtitle1">
-                    <h3>Price</h3>
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    <label>
-                      <strong>$</strong>
-                      {prices && prices[product.id]}
-                    </label>
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Paper>
-        ))}
-
-      <Grid item >
-        <div className = 'shopping_vaciar'>
-          {cart && cart.orderList && <ColorButton
-            variant="contained"
-            className={classes.button}
-            startIcon={<DeleteIcon />}
-            onClick={emptyCarrito}
-          >
-            VACIAR CARRITO
-          </ColorButton>}
-
-        </div>
-        
-      </Grid>
+          </div>
+          
+        </Grid>
+      </div>
     </div>
+    
   );
 };
 

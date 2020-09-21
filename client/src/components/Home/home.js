@@ -9,7 +9,7 @@ import { getProducts, getProductCategory } from '../../redux/actions/productList
 import { useDispatch, useSelector } from 'react-redux';
 import store from '../../redux/store/index';
 import agregarAlCarrito from '../../redux/actions/agregarAlCarrito';
-
+import { animateScroll as scroll} from 'react-scroll';
 let id = localStorage.getItem("idUser");
 let serializedState = JSON.parse(localStorage.getItem("carrito"));
 
@@ -25,34 +25,20 @@ function Home() {
   const categorias = useSelector(state => state.categorias.data)
  
 
-  
 
-
-  useEffect(() => {
-    
-    
+  useEffect(() => {   
       
     if(serializedState && id){
+      
       let order = serializedState.orderList.shift()
       console.log(order)
       dispatch(agregarAlCarrito(order,id)) 
-      /* for (let index = 0; index < serializedState.orderList.length; index++) {
-        dispatch(agregarAlCarrito(serializedState.orderList[index],id)) 
-      } 
-    
-       localStorage.removeItem('carrito')    */        
+           
     }
     if(!serializedState && id){
       localStorage.removeItem('carrito') 
     }
-    /* while(serializedState && serializedState.orderList){
-      
- 
-      dispatch(agregarAlCarrito(serializedState.orderList.shift(),id)) 
-
     
-       /* localStorage.removeItem('carrito')             
-    } */
        
 
     if(!productos && validate) {
@@ -71,7 +57,7 @@ function Home() {
 
   const handleItemClick = (e, { name }) => {
 
-    
+    e.preventDefault()
     setActiveItem(name);
     if (name === 'Todos Los Productos') {
       dispatch(getProducts());
@@ -90,7 +76,10 @@ function Home() {
   };
   return (
     <div className="home-Home">
-      <Image src={portada} fluid />
+      <div className='home_portada'>
+        <Image src={portada} fluid />
+      </div>
+      
       <Grid>
         <Grid.Column width={4}>
           <Menu fluid vertical tabular>

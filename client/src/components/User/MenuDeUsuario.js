@@ -97,7 +97,7 @@ export default function MenuListComposition() {
                 >
                     <ComputerIcon />
 
-                    {/* &nbsp; */}
+                    &nbsp;
                     {localStorage.getItem("name")? name: "yo"}
                     <ExpandMoreIcon />
                 </Button>

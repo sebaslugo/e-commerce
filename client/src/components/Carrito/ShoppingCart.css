@@ -1,4 +1,6 @@
-
+.shopping-content{
+    height: 90vh;
+}
 .shopping_subtotal{
     display: flex;
     flex-direction: column;

@@ -73,10 +73,9 @@ function Reviews  ({productoId})  {
     }
     
     dispatch(postReview(productoId,comentario))
-    dispatch(getReviews(productoId))
-    
-
-    
+    alert('gracias por tu opinion')
+    window.location.reload()
+    setCall(true);  
     
     
   }
@@ -104,7 +103,7 @@ function Reviews  ({productoId})  {
       description:description,
     }
     dispatch(putReview(productoId,reviewId,comentario,id))
-    dispatch(getReviews(productoId))
+    setCall(true);
     setEditConf(0);
     
   }
@@ -113,8 +112,7 @@ function Reviews  ({productoId})  {
     dispatch(deleteReview(productoId,reviewId))
     setCall(true);
   }
-  console.log(id)
-  console.log(reviews)
+  
   return (
     <Feed>
       <div>
