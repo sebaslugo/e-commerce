@@ -21,6 +21,7 @@ import { getUser } from '../redux/actions/menuLogIn';
 import ForgotPassword from '../components/User/ForgotPassword';
 import ChangePassword from '../components/User/ChangePassword';
 import CheckLogin from '../components/User/Checklogin'
+import Inicio from '../components/Inicio'
 
 export const AppRouter = () => {
 
@@ -36,15 +37,16 @@ export const AppRouter = () => {
     return (
         <Router>
             <div>
-                <Header />
+                <Inicio/>  
+                <Header/>              
                 <Switch>
-                    <Route exact path="/" component={Home} />
-                    <Route exact path="/:category" component={Home} />
+                    <Route exact path="/:category" component={Home}/>                    
                     <Route exact path="/producto/:id" component={Producto} />
                     <Route exact path="/search/results" component={Results} />
                     <Route exact path={`/user/cart/${id}`} component={ShoppingCart} />
                     <Route exact path="/checkuser/auth/:id/:token" component={CheckUser} />
                     <Route exact path="/checkuser/auth/login" component={CheckLogin}/>
+                    
 
                     <PrivateRoute exact path="/admin/panel" component={Admin} isAuthenticated={statusToken} isAdmin={rol} />
                     <PrivateRoute exact path="/admin/products" component={ProducList} isAuthenticated={statusToken} isAdmin={rol} />

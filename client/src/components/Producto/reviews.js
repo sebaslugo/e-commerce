@@ -73,7 +73,10 @@ function Reviews  ({productoId})  {
     }
     
     dispatch(postReview(productoId,comentario))
+    alert('gracias por tu opinion')
+    window.location.reload()
     setCall(true);  
+    
     
   }
 
