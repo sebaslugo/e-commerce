@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import MaterialTable from 'material-table';
-import { Button, Grid, Header, Segment, Portal } from 'semantic-ui-react'
+import { Button, Grid, Header, Segment, Portal,Icon } from 'semantic-ui-react'
 import Form from './Form'
 import './ProductList.css'
-import axios from 'axios';
 import {getCategories} from '../../redux/actions/category';
 import {  getProducts, deleteProducts } from '../../redux/actions/productList'
 import store from '../../redux/store/index';
 import { useDispatch, useSelector } from 'react-redux'
+import { Container } from '@material-ui/core';
 
 export default function ProudctList() {
 
@@ -17,20 +17,20 @@ export default function ProudctList() {
   const categorias = useSelector(state => state.categorias.data) 
   const [table, setTable] = useState({
     columns: [
-      { title: 'Name', field: 'name' },
-      { title: 'Price', field: 'price', type: 'numeric' },
-      { title: 'Description', field: 'description' },
+      { title: 'Nombre del producto', field: 'name' },
+      { title: 'Precio', field: 'price', type: 'numeric' },
+      { title: 'Descripcion', field: 'description' },
     ],
     data: [],
   });
   const refreshPage = () => {
-    window.location.reload(false)
+    window.location.reload()
   }
   const [producto, setProducto] = useState({})
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
-    dispatch( getProducts());
+    refreshPage()
     setOpen(false)
     
   }
@@ -56,13 +56,13 @@ export default function ProudctList() {
     store.subscribe(() => setProductos(store.getState().productList.data))
     
     
-  })
+  },[])
 
   return (
     <div className='productlist-table'>
       
       <MaterialTable
-        title="Product List"
+        title="Lista de productos"
         columns={table.columns}
         data={productos}
         actions={[
@@ -91,7 +91,7 @@ export default function ProudctList() {
           <Button
             content='Agregar Producto'
             disabled={open}
-            positive
+            inverted color='yellow'
             onClick={handleOpen}
           />
 
@@ -100,20 +100,27 @@ export default function ProudctList() {
           >
             <Segment
               style={{
-                left: '40%',
+                left: '30%',
                 position: 'fixed',
-                top: '20%',
-                zIndex: 1000,
+                top: '5%',
+                zIndex: 100,                
+                backgroundColor:'#F0F1E6'
               }}
             >
-              <Form
+              
+              
+              <div className ='list-cerrar'>
+                <div id= 'list-buton' >
+                  
+                  <Icon link name='close' color='black' onClick = {handleClose}/> 
+                  
+                </div>
+                
+                <Form
                 producto={producto} categorias={categorias}
-              />
-              <Button
-                content='Close'
-                negative
-                onClick={handleClose}
-              />
+                />
+              </div>
+              
             </Segment>
           </Portal>
         </Grid.Column>

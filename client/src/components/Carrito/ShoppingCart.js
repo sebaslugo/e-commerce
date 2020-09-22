@@ -12,6 +12,7 @@ import agregarAlCarrito from '../../redux/actions/agregarAlCarrito';
 import {fetchProductsFromCart,EmptyCart,editCantidad,editOrden,deleteProduct} from "../../redux/actions/shoppingCart";
 import { useDispatch } from "react-redux";
 import "./ShoppingCart.css";
+import { animateScroll as scroll} from 'react-scroll';
 
 const ColorButton = withStyles((theme) => ({
   root: {
@@ -66,6 +67,8 @@ const ShoppingCart = () => {
   
 
   useEffect(() => {
+
+    scroll.scrollTo(200);
 
     let precios = {};
     let cantidades = {};
