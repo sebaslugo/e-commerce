@@ -27,7 +27,7 @@ function ProductHome ({active,activeItem,productos,validate}) {
         
           
     })
-
+    console.log(productPage)
     return (
         <div className="home-productos">
             
@@ -36,14 +36,7 @@ function ProductHome ({active,activeItem,productos,validate}) {
                 {productPage && productPage.length > 0 && productPage[active - 1].map((producto, index) => (         
                 <Card key = {index}>
                     <Card.Content>                    
-                    <Reveal animated='small fade'>
-                        <Reveal.Content visible>
-                        <Image src={`http:/localhost:3001/${producto.imagenes[0]}`} size='small' />
-                        </Reveal.Content>
-                        <Reveal.Content hidden>
-                        <Image src={`http:/localhost:3001/${producto.imagenes[1]}`} size='small' />
-                        </Reveal.Content>
-                    </Reveal>  
+                        <Image src={`http:/localhost:3001/${producto.imagenes[0]}`} size='small' />                         
                     <Card.Header className="home-header">
                         {producto.name}
                     </Card.Header>
@@ -60,7 +53,7 @@ function ProductHome ({active,activeItem,productos,validate}) {
                         </Button>
                         </Link>
 
-                        <AgregarAlCarrito producto={producto} precio={producto.price} cantidad={1} />
+                        <AgregarAlCarrito producto={producto} precio={producto.price} cantidad={1} active={false} />
 
                         <Card.Header className="home-priceCard">
                         {`$ ${producto.price}`}
