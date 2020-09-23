@@ -5,26 +5,17 @@ import { Carousel, CarouselItem } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Image } from 'semantic-ui-react'
 import { makeStyles } from '@material-ui/core/styles';
-import {Card,CardActionArea,CardActions,CardContent,CardMedia,Button,IconButton,AddShoppingCartIcon,Container,Typography } from '@material-ui/core/';
+import {Typography } from '@material-ui/core/';
 import store from '../../redux/store/index';
-import { getProducts } from '../../redux/actions/producto.js'
+import { getProduct } from '../../redux/actions/producto.js'
 import { useDispatch } from "react-redux";
 import AgregarAlCarrito from '../Carrito/AgregarAlCarrito'
 import { animateScroll as scroll} from 'react-scroll';
 import Recommend from './Recomend'
-
-
-
 import Reviews from './reviews'
+import { getProducts } from '../../redux/actions/productList';
 
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 140,
-  },
-});
+
 
 
 function Producto(props) {
@@ -35,33 +26,27 @@ function Producto(props) {
     imagenes: []
   })
   const [category,setCategory] = useState();
-  const classes = useStyles();
+  const [image,setImage] = useState ()
   const id = document.URL.split("/").pop()
 
 
-  const buyButton = () => {
-    if (producto.stock > 1) {
-      return <Button size="small" color="primary">
-        Comprar
-     </Button>
-    }
-    else {
-      return <> <p style={{ color: "red" }}>NO HAY STOCK!</p>
-      </>
-    }
-  }
-
   useEffect(() => {
-    scroll.scrollToTop();
-    dispatch(getProducts(id));
+    if(!producto.id){
+      scroll.scrollToTop();
+      dispatch(getProduct(id));     
+    
+  
+      store.subscribe(() => {
+        setProducto(() => store.getState().productos.data.producto)
+        setPrecio(() => store.getState().productos.data.producto.price )
+      })
+    }
+    
+    if(producto && !image){
+      handleImage()
+    }
 
-    store.subscribe(() => {
-      setProducto(() => store.getState().productos.data.producto)
-      setPrecio(() => store.getState().productos.data.producto.price )
-    })
-
-
-  }, []);
+  });
 
 
   const onChange = (event) => {
@@ -80,29 +65,39 @@ function Producto(props) {
     }
 
   };
+
+  const handleImage = (image) => {
+    if(!image){
+      setImage(producto.imagenes[0])
+    }
+    else{
+      setImage(image)
+    }
+    
+  }
   
   return (
-    <div>
+    <div className ='producto_todo'>
       <div className="producto_product">
       
       <div className='producto_imagenList'>
       {producto.imagenes.map((img, id) =>
-        <Image src={`http://localhost:3001/${img}`} size='tiny' rounded />
+        <Image src={`http://localhost:3001/${img}`} size='tiny' rounded onClick={() => handleImage(img)}/>
       )}
       </div>
       <div className='producto_imagen'>
         <Reveal effect="fadeInUp">
-          <Image src={`http://localhost:3001/${producto.imagenes[0]}`} size='huge' rounded />
+          {image && <Image src={`http://localhost:3001/${image}`} size='huge' rounded />}
         </Reveal>
       </div>
       <div className='producto_info'>
-        <Typography gutterBottom variant="h2" component="h2" className='producto_titulo'>
+        <Typography gutterBottom variant="h3" component="h2" className='producto_titulo'>
           {producto.name}
         </Typography>
-        <Typography variant="h5" color="textSecondary">
+        <Typography variant="h5" >
             $ {producto.price}   
-          </Typography>
-        <Typography variant="body1" color="textSecondary" component="p" className='producto_description'>
+        </Typography>
+        <Typography variant="body1"  component="p" className='producto_description'>
           {producto.description}
         </Typography>
         <div className='product_price'>
@@ -114,10 +109,10 @@ function Producto(props) {
               <input type="number" className='producto_input' value = {cantidad} onChange={(e) => onChange(e)} />}
           </div>  
           <div>
-            <Typography variant="h5" color="textSecondary" className='producto_price' >
+            <Typography variant="h5" className='producto_price' >
               Total:   
             </Typography>
-            <Typography variant="h5" color="textSecondary" className='producto_price' >
+            <Typography variant="h5"  className='producto_price' >
               $ {precio}  
             </Typography>
           </div>        
@@ -132,7 +127,8 @@ function Producto(props) {
     </div>
       
       <hr/>
-      <Recommend/>
+      <Recommend productoId = {producto.id}/>
+      <hr/>
       <Reviews productoId = {producto.id}/>
     </div>
 

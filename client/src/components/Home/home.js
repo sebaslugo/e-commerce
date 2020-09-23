@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./home.css";
-import { Link } from "react-router-dom";
 import { Grid, Menu, Segment, Image, Pagination, Button,Icon,Reveal } from "semantic-ui-react";
 import portada from "../../imagenes/portada.jpg";
 import ProductHome from './ProductHome';
