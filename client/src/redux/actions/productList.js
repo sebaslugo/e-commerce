@@ -13,14 +13,9 @@ export function getProducts(request) {
     return function(dispatch) {
         return axios.get("http://localhost:3001/products")
           .then(response =>{
-
             dispatch({ type: GET_PRODUCTS, payload: response.data });
-
           })
-          
     };
-
-   
 }
 
 
@@ -59,9 +54,7 @@ export function deleteProducts(oldData) {
                 })
             }
             );
-          
     };
-    
 }
 
 /*--------------------------------------------------------------------------------------- */

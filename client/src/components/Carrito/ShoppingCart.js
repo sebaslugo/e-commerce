@@ -121,7 +121,6 @@ function getSum(total, num) {
 }
 
 let id = localStorage.getItem("idUser");
-let carritoLocal = JSON.parse(localStorage.getItem("carrito"))
 
 
 
@@ -218,7 +217,7 @@ const ShoppingCart = () => {
     }
     let data = {
       productId: product.id,
-      price: prices[product.id],
+      price: product.price * quantity,
       quantity: parseInt(quantity),
     };
     if (id) {
@@ -260,6 +259,7 @@ const ShoppingCart = () => {
 
   // realiza la compra
 
+
   const handleBuy = () => {
     if (id) {
       let data = {
@@ -267,6 +267,7 @@ const ShoppingCart = () => {
       }
       /* dispatch(editOrden(cart.ordenId,data))
       setCart({}) */
+
     }
     else {
       window.location.assign("http://localhost:3000/login/createuser")

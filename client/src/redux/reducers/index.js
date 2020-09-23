@@ -11,6 +11,9 @@ import loginUser from './loginUser'
 import menuLogin from './menuLogin'
 import forgotPassword from './forgotPassword';
 import putPassword from './changePassword'
+import userPurchaseData from './userPurchaseData'
+import userPaymentData from './userPaymentData'
+import step from './checkoutStep'
 
 const rootReducer = combineReducers({
   categorias,
@@ -24,7 +27,10 @@ const rootReducer = combineReducers({
   loginUser,
   menuLogin,
   forgotPassword,
-  putPassword
+  putPassword,
+  userPurchaseData,
+  userPaymentData,
+  step
 });
 
 export default rootReducer;
