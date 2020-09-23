@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Link from '@material-ui/core/Link';
+import Container from '@material-ui/core/Container';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import CategoryIcon from '@material-ui/icons/Category';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
@@ -71,6 +72,7 @@ const data = [
 function Dashboard(props) {
     const classes = useStyles();
     return (
+        <Container maxWidth="xl">
         <div className={classes.root}>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
@@ -131,6 +133,7 @@ function Dashboard(props) {
                 </Grid>
             </Grid>           
         </div>
+        </Container>
     )
 }
 
