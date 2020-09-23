@@ -16,7 +16,11 @@ export function getUser() {
                 localStorage.setItem('lastName', res.data.user.lastName)
                 localStorage.setItem('fullName', res.data.user.fullName)
                 localStorage.setItem('rol', res.data.user.rol)
-                localStorage.setItem('statusToken', res.data.message)
+                if (res.data.message == 'Usted está autorizado correctamente!') {
+                    localStorage.setItem('statusToken', res.data.message)
+                } else {
+                    localStorage.setItem('statusToken', 'Token expirado.')
+                }                
             })
             .then((res) => {
                 dispatch({
@@ -25,8 +29,7 @@ export function getUser() {
                 })
                 return res;
             })
-            .catch(err => {
-                localStorage.setItem('statusToken', 'Token expirado.')
+            .catch(err => {                
                 console.error(err.message)
             })
 
