@@ -1,7 +1,5 @@
-
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -16,6 +14,9 @@ import { makeStyles, } from '@material-ui/core/styles';
 import { yellow, purple, grey } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core/styles';
 import { loginUser } from '../../redux/actions/loginUser.js'
+import { CgGoogle } from 'react-icons/cg';
+import { AiFillGithub } from 'react-icons/ai';
+import './LoginUser.css';
 
 
 const ColorButton = withStyles((theme) => ({
@@ -85,15 +86,15 @@ export default function UserLogin() {
         password: ""
     })
 
-    
-    
+
+
     const handleInputChange = (e) => {
         setState({
             ...state,
             [e.target.name]: e.target.value
         })
         console.log(state)
-        
+
     }
     const dataStore = useSelector(data => {
         data.loginUser = {
@@ -117,10 +118,11 @@ export default function UserLogin() {
                 <Grid item xs={false} sm={4} md={7} className={classes.image} />
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                     <div className={classes.paper}>
-                        <Avatar className={classes.avatar}>
-                        </Avatar>
+                        <div className={"circle"}>
+                            <img src="https://downloads.intercomcdn.com/i/o/223280/9d3a2ca7768cd9b5174f2bf0/e913a6773f7911dcc0e1a3e82d200231.png" alt="" style={{ maxHeight: 35, position: "relative", left: 10, top: 11 }}></img>
+                        </div>
                         <Typography component="h1" variant="h5">
-                            Sign in
+                            Accedé a tu cuenta
                         </Typography>
                         <form className={classes.form} noValidate>
                             <TextField
@@ -130,7 +132,7 @@ export default function UserLogin() {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email Address"
+                                label="Dirección de email"
                                 name="email"
                                 autoComplete="email"
                                 autoFocus
@@ -142,14 +144,14 @@ export default function UserLogin() {
                                 required
                                 fullWidth
                                 name="password"
-                                label="Password"
+                                label="Contraseña"
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
                             />
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
-                                label="Remember me"
+                                label="Recuérdame"
                             />
                             <ColorButton
                                 type="submit"
@@ -157,35 +159,40 @@ export default function UserLogin() {
                                 variant="contained"
                                 className={classes.submit}
                             >
-                                Sign In
+                                INGRESAR
                             </ColorButton>
-                            <Link href="http://localhost:3001/auth/google" style={{textDecoration: 'none'}}>
-                                <ColorButton                                
+
+                            <Link href="http://localhost:3001/auth/google" style={{ textDecoration: 'none' }}>
+                                <ColorButton
                                     fullWidth
                                     variant="contained"
                                     className={classes.submit}
                                 >
-                                    Registrarse con Google
+                                    <CgGoogle className="iconGoogle" />
+                                    Ingresar con Google
+
                                 </ColorButton>
+
                             </Link>
-                            <Link href="http://localhost:3001/auth/github" style={{textDecoration: 'none'}}>
-                                <ColorButton                                
+                            <Link href="http://localhost:3001/auth/github" style={{ textDecoration: 'none' }}>
+                                <ColorButton
                                     fullWidth
                                     variant="contained"
                                     className={classes.submit}
                                 >
-                                    Registrarse con GitHub
+                                    <AiFillGithub className="iconGithub" />
+                                    Ingresar con GitHub
                                 </ColorButton>
                             </Link>
                             <Grid container>
                                 <Grid item xs>
                                     <Link href="/login/forgot" variant="body2">
-                                        Olvidaste tu contraseña?
+                                        Olvidé mi contraseña
                                     </Link>
                                 </Grid>
                                 <Grid item>
                                     <Link href="/Login/createuser" variant="body2">
-                                        {"No tienes cuenta? registrate"}
+                                        {"¿No tienes cuenta? registrate"}
                                     </Link>
                                 </Grid>
                             </Grid>

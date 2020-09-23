@@ -23,6 +23,7 @@ import ChangePassword from '../components/User/ChangePassword';
 import CheckLogin from '../components/User/Checklogin'
 import Inicio from '../components/Inicio'
 import Checkout from '../components/Carrito/Checkout'
+import Dashboard from '../pages/Dashboard';
 
 export const AppRouter = () => {
 
@@ -37,9 +38,12 @@ export const AppRouter = () => {
 
     return (
         <Router>
-            <div>
-                <Inicio/>  
-                <Header/>              
+            <div> 
+                <Route   exact path = '/' component = {Inicio}/>
+                <Route   exact path = '/:Category' component = {Inicio}/>
+
+                <Route path ='/:category' component={Header}/> 
+                         
                 <Switch>
                     <Route exact path="/:category" component={Home}/>                    
                     <Route exact path="/producto/:id" component={Producto} />
@@ -49,7 +53,7 @@ export const AppRouter = () => {
                     <Route exact path="/checkuser/auth/login" component={CheckLogin}/>
                     <Route exact path={`/user/cart/${id}/checkout/`} component={Checkout} isAuthenticated={statusToken} />
 
-                    <PrivateRoute exact path="/admin/panel" component={Admin} isAuthenticated={statusToken} isAdmin={rol} />
+                    <PrivateRoute exact path="/admin/panel" component={Dashboard} isAuthenticated={statusToken} isAdmin={rol} />
                     <PrivateRoute exact path="/admin/products" component={ProducList} isAuthenticated={statusToken} isAdmin={rol} />
                     <PrivateRoute exact path="/admin/categories" component={FormCategories} isAuthenticated={statusToken} isAdmin={rol} />
                     <PrivateRoute exact path="/admin/order/:id" component={Orden} isAuthenticated={statusToken} isAdmin={rol} />

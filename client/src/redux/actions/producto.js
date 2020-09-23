@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { GET_PRODUCT,POST_PRODUCT } from '../consts/actionTypes'
+import { GET_PRODUCT} from '../consts/actionTypes'
 
-export function getProducts(id) {
+export function getProduct(id) {
     return function(dispatch) {
         return axios.get(`http://localhost:3001/products/${id}`)
         .then(res => {
@@ -29,7 +29,7 @@ export function postProduct(bodyFormData){
             })
             .then((res) => {
                 alert('se creo el producto '+ res.data.name)
-                getProducts(res.data.id)
+                getProduct(res.data.id)
                 
                             
             })
@@ -52,7 +52,7 @@ export function editProduct (bodyFormData,id) {
             })
             .then((res) => {
                 alert('se modifico el producto')
-                getProducts(res.data.id)
+                getProduct(res.data.id)
                                    
             })            
             .catch(function (response) {

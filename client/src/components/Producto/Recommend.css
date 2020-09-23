@@ -1,0 +1,11 @@
+.recommend_card{
+    border-style: double;
+    width: 300px;
+    padding: 16px;
+    margin: 48px;
+    border-radius: 26px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}

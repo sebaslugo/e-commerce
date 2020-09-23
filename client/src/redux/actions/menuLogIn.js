@@ -25,7 +25,10 @@ export function getUser() {
                 })
                 return res;
             })
-            .catch(err => console.error(err.message))
+            .catch(err => {
+                localStorage.setItem('statusToken', 'Token expirado.')
+                console.error(err.message)
+            })
 
     };
 

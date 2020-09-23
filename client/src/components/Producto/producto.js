@@ -1,26 +1,21 @@
 import React,{useState, useEffect } from "react";
 import "./producto.css";
+import Reveal from 'react-reveal/Fade';
 import { Carousel, CarouselItem } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Image } from 'semantic-ui-react'
 import { makeStyles } from '@material-ui/core/styles';
-import {Card,CardActionArea,CardActions,CardContent,CardMedia,Button,IconButton,AddShoppingCartIcon,Container,Typography } from '@material-ui/core/';
+import {Typography } from '@material-ui/core/';
 import store from '../../redux/store/index';
-import { getProducts } from '../../redux/actions/producto.js'
+import { getProduct } from '../../redux/actions/producto.js'
 import { useDispatch } from "react-redux";
 import AgregarAlCarrito from '../Carrito/AgregarAlCarrito'
-
-
-
+import { animateScroll as scroll} from 'react-scroll';
+import Recommend from './Recomend'
 import Reviews from './reviews'
+import { getProducts } from '../../redux/actions/productList';
 
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 140,
-  },
-});
+
 
 
 function Producto(props) {
@@ -30,32 +25,28 @@ function Producto(props) {
   const [producto, setProducto] = useState({
     imagenes: []
   })
-  const classes = useStyles();
+  const [category,setCategory] = useState();
+  const [image,setImage] = useState ()
   const id = document.URL.split("/").pop()
 
 
-  const buyButton = () => {
-    if (producto.stock > 1) {
-      return <Button size="small" color="primary">
-        Comprar
-     </Button>
-    }
-    else {
-      return <> <p style={{ color: "red" }}>NO HAY STOCK!</p>
-      </>
-    }
-  }
-
   useEffect(() => {
-    dispatch(getProducts(id));
+    if(!producto.id){
+      scroll.scrollToTop();
+      dispatch(getProduct(id));     
+    
+  
+      store.subscribe(() => {
+        setProducto(() => store.getState().productos.data.producto)
+        setPrecio(() => store.getState().productos.data.producto.price )
+      })
+    }
+    
+    if(producto && !image){
+      handleImage()
+    }
 
-    store.subscribe(() => {
-      setProducto(() => store.getState().productos.data.producto)
-      setPrecio(() => store.getState().productos.data.producto.price )
-    })
-
-
-  }, []);
+  });
 
 
   const onChange = (event) => {
@@ -74,54 +65,72 @@ function Producto(props) {
     }
 
   };
-  console.log(cantidad)
+
+  const handleImage = (image) => {
+    if(!image){
+      setImage(producto.imagenes[0])
+    }
+    else{
+      setImage(image)
+    }
+    
+  }
+  
   return (
-    <Container>
-      <h1 className = "producto_title">{producto.name}</h1>  
+    <div className ='producto_todo'>
+      <div className="producto_product">
+      
+      <div className='producto_imagenList'>
+      {producto.imagenes.map((img, id) =>
+        <Image src={`http://localhost:3001/${img}`} size='tiny' rounded onClick={() => handleImage(img)}/>
+      )}
+      </div>
+      <div className='producto_imagen'>
+        <Reveal effect="fadeInUp">
+          {image && <Image src={`http://localhost:3001/${image}`} size='huge' rounded />}
+        </Reveal>
+      </div>
+      <div className='producto_info'>
+        <Typography gutterBottom variant="h3" component="h2" className='producto_titulo'>
+          {producto.name}
+        </Typography>
+        <Typography variant="h5" >
+            $ {producto.price}   
+        </Typography>
+        <Typography variant="body1"  component="p" className='producto_description'>
+          {producto.description}
+        </Typography>
+        <div className='product_price'>
+          <div>
+            <Typography variant="subtitle1" gutterBottom className='producto_cantidad'>
+              Cantidad            
+            </Typography>
+            {producto.stock>1 && 
+              <input type="number" className='producto_input' value = {cantidad} onChange={(e) => onChange(e)} />}
+          </div>  
+          <div>
+            <Typography variant="h5" className='producto_price' >
+              Total:   
+            </Typography>
+            <Typography variant="h5"  className='producto_price' >
+              $ {precio}  
+            </Typography>
+          </div>        
+          
+             
+        </div>
+        <div className='product_carrito'>
+          {producto.stock> 1 ? <AgregarAlCarrito producto={producto} precio={precio} cantidad={cantidad} active={true}/> : <p style={{ color: "red" }}>NO HAY STOCK!</p> }
+        </div>
+        
+      </div>
+    </div>
+      
       <hr/>
-      < div className="producto_product" >
-        <div className = 'producto_card'>
-          <Card className={classes.root}>
-            <CardContent>
-              <Carousel>
-                {producto.imagenes.map((img, id) =>
-                  <Carousel.Item key={id}>
-                    <img key={id} src={`http://localhost:3001/${img}`} ></img>
-                  </Carousel.Item>
-                )}
-              </Carousel>
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {producto.name}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {producto.description}
-                </Typography>
-                <Typography gutterBottom variant="h6" component="h6">                  
-                  {'stock: ' + producto.stock}
-                </Typography>               
-              </CardContent>
-              <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  Cantidad
-                </Typography>
-                {producto.stock>1 && <input type="number"  value = {cantidad} onChange={(e) => onChange(e)} />}
-                <hr />
-                <Typography variant="body2" color="textSecondary" component="p">
-                  Precio = $
-              <span>{precio}</span>
-                </Typography>
-              </CardContent>
-            </CardContent>
-            <CardActions>
-              {producto.stock > 1 ? <Button size="small" color="primary">Comprar</Button> : <p style={{ color: "red" }}>NO HAY STOCK!</p>}
-              {producto.stock> 1 && <AgregarAlCarrito producto={producto} precio={precio} cantidad={cantidad} />}
-            </CardActions>
-          </Card>
-        </div>           
-        <Reviews productoId = {producto.id}/>
-      </div >
-    </Container>
+      <Recommend productoId = {producto.id}/>
+      <hr/>
+      <Reviews productoId = {producto.id}/>
+    </div>
 
   );
 }

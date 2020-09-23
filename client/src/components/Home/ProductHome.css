@@ -1,3 +1,11 @@
 .home-productos{    
     text-align: center;
 }
+
+.ui.cards>.card {
+    display: flex;
+    margin: .875em .5em;
+    float: none;
+    margin-right: 72px;
+    margin-top: 60px;
+}

@@ -2,11 +2,10 @@
     display:flex;
     flex-direction: column;
     height: 100vh;
+    background-color: black;
     
 }
-.home_portada{
-    
-}
+
 .ui.small.image, .ui.small.images .image, .ui.small.images img, .ui.small.images svg {
     width: 150px;
     height: 170px;
@@ -46,7 +45,7 @@
     display: flex;
     margin: -.875em -.5em;
     flex-wrap: wrap;
-    justify-content: center;
+    margin-left: 135px;
 }
 
 .home-content{

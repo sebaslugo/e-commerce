@@ -7,12 +7,15 @@ import {
   Input,
   Radio,
   TextArea,
+  Image,
+  List,Icon
 } from 'semantic-ui-react'
 import axios from 'axios';
-import { getProducts, postProduct,editProduct  } from '../../redux/actions/producto.js'
+import { getProduct, postProduct,editProduct  } from '../../redux/actions/producto.js'
 import {deleteProductCategory,addProductCategory} from '../../redux/actions/category'
 import store from '../../redux/store/index';
 import { useDispatch,useSelector } from 'react-redux';
+
 
 
 function Formulario ({producto,categorias}) {
@@ -24,7 +27,7 @@ function Formulario ({producto,categorias}) {
     useEffect(() => {
     
         if(producto.id){
-            dispatch(getProducts(producto.id));
+            dispatch(getProduct(producto.id));
             store.subscribe(() =>{
                 setState(() => store.getState().productos.data.producto)
                 setItemCategoria(() => store.getState().productos.data.categorias)
@@ -105,16 +108,17 @@ function Formulario ({producto,categorias}) {
           
     }
 
-    const handleDelete = (e) => {
+    const handleDelete = (image) => {
+        console.log(image)
         setState ({
             ...state,
-            imagenes:state.imagenes.filter(imag => imag !== e.target.value)           
+            imagenes:state.imagenes.filter(imag => imag !== image)           
         })
         
     }
     
     return (
-        <div>
+        <div className='form_formulario'>
             <Form>
             <Form.Group widths='equal'>
             <Form.Field
@@ -148,14 +152,17 @@ function Formulario ({producto,categorias}) {
             />
             </Form.Group>
             <Form.Field>
-                <ul >
-                    {producto.id && categorias.map((categoria,index) => 
-                        <li key = {index}>
-                            {categoria.name}
-                            <button  onClick = {() => handleCategory(categoria.id,handleCheck(categoria))}>{handleCheck(categoria)}</button>
-                        </li>                        
-                    )}
-                </ul>  
+            <label>Categorias</label>
+                <List divided horizontal size='small'>
+                {producto.id && categorias.map((categoria,index) =>
+                    <List.Item>
+                        <Icon link name={handleCheck(categoria)} color='black' onClick = {() => handleCategory(categoria.id,handleCheck(categoria))}/>                                               
+                    <List.Content>                        
+                        <List.Header>{categoria.name}</List.Header>                          
+                    </List.Content>
+                    </List.Item>
+                )}
+                </List> 
             </Form.Field>
             <Form.Field
             control={TextArea}
@@ -165,27 +172,31 @@ function Formulario ({producto,categorias}) {
             name = 'description'
             onChange={handleChange}
             />
-            {state.imagenes && <Form.Field>
+                {state.imagenes && <Form.Field>
                     <label>imagenes</label>
-                    <ul >
-                    {state.imagenes.map((image,index) => 
-                        <li key = {index}>
-                            {image}
-                            <button value = {image} onClick = {handleDelete}>x</button>
-                        </li>
+                    <Image.Group size='tiny'>
+                        {state.imagenes.map((image,index) => 
+                        <div className='form_contenedor'>
+                            <Image src={`http://localhost:3001/${image}`} />
+                            <div className='form_botonencima'><Button circular color='black' icon='delete' size='mini' onClick = {() => handleDelete(image)}/>  </div>    
+                        </div>
                         
-                    )}
-                    </ul>                    
-                
+                        )}                        
+                    </Image.Group>                    
                 </Form.Field>}           
             <Form.Field>
-                <label>Agregar imagenes</label>
-                <input  className = 'form-imagen' type='file' multiple={true} name='imagen'  accept="image/*" onChange = {handleFiles}></input>
+            <label>Agregar imagenes</label>
+                <div>
+                    <input  id='file' type='file' multiple={true} name='imagen'  accept="image/*" onChange = {handleFiles}></input>
+                    <label className='file_label' for= 'file'>
+                        <Icon link name="file image" color='black' size='large' /> 
+                        (5 max)
+                    </label>
+                </div>               
+                
             </Form.Field>
-            {!producto.id && <Form.Field control={Button} onClick = {handleSubmit}>{'AGREGAR'}</Form.Field>}
-            {producto.id && <Form.Field control={Button} onClick = {handleEdit}>{'EDITAR'}</Form.Field>}
-    
-            
+            {!producto.id && <Form.Field control={Button} inverted color='yellow' onClick = {handleSubmit}>{'AGREGAR'}</Form.Field>}
+            {producto.id && <Form.Field control={Button}  inverted color='yellow' onClick = {handleEdit}>{'EDITAR'}</Form.Field>}           
             </Form>
             
         </div>
