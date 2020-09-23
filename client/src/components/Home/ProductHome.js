@@ -35,8 +35,8 @@ function ProductHome ({active,activeItem,productos,validate}) {
                 
                 {productPage && productPage.length > 0 && productPage[active - 1].map((producto, index) => (         
                 <Card key = {index}>
-                    <Card.Content>                           
-                        <Image src= {`http://localhost:3001/${producto.imagenes[0]}`} size='small' />                                                         
+                    <Card.Content>                    
+                        <Image src={`http://localhost:3001/${producto.imagenes[0]}`} size='small' />  
                     <Card.Header className="home-header">
                         {producto.name}
                     </Card.Header>
