@@ -265,8 +265,8 @@ const ShoppingCart = () => {
       let data = {
         'status': 'creada'
       }
-      dispatch(editOrden(cart.ordenId, data))
-      setCart({})
+      /* dispatch(editOrden(cart.ordenId,data))
+      setCart({}) */
     }
     else {
       window.location.assign("http://localhost:3000/login/createuser")

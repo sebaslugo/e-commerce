@@ -27,7 +27,7 @@ function ProductHome ({active,activeItem,productos,validate}) {
         
           
     })
-
+    console.log(productPage)
     return (
         <div className="home-productos">
             
@@ -53,7 +53,7 @@ function ProductHome ({active,activeItem,productos,validate}) {
                         </Button>
                         </Link>
 
-                        <AgregarAlCarrito producto={producto} precio={producto.price} cantidad={1} />
+                        <AgregarAlCarrito producto={producto} precio={producto.price} cantidad={1} active={false} />
 
                         <Card.Header className="home-priceCard">
                         {`$ ${producto.price}`}

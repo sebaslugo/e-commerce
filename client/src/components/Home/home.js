@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./home.css";
-import { Link } from "react-router-dom";
 import { Grid, Menu, Segment, Image, Pagination, Button,Icon,Reveal } from "semantic-ui-react";
 import portada from "../../imagenes/portada.jpg";
 import ProductHome from './ProductHome';
@@ -9,7 +8,7 @@ import { getProducts, getProductCategory } from '../../redux/actions/productList
 import { useDispatch, useSelector } from 'react-redux';
 import store from '../../redux/store/index';
 import agregarAlCarrito from '../../redux/actions/agregarAlCarrito';
-import { animateScroll as scroll} from 'react-scroll';
+
 
 let id = localStorage.getItem("idUser");
 let serializedState = JSON.parse(localStorage.getItem("carrito"));
@@ -29,7 +28,7 @@ function Home() {
 
   useEffect(() => {   
       
-    if(serializedState && id){
+    /* if(serializedState && id){
       scroll.scrollToTop();
       let order = serializedState.orderList.shift()
       console.log(order)
@@ -38,7 +37,7 @@ function Home() {
     }
     if(!serializedState && id){
       localStorage.removeItem('carrito') 
-    }
+    } */
     
        
 

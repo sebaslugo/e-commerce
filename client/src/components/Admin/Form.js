@@ -11,7 +11,7 @@ import {
   List,Icon
 } from 'semantic-ui-react'
 import axios from 'axios';
-import { getProducts, postProduct,editProduct  } from '../../redux/actions/producto.js'
+import { getProduct, postProduct,editProduct  } from '../../redux/actions/producto.js'
 import {deleteProductCategory,addProductCategory} from '../../redux/actions/category'
 import store from '../../redux/store/index';
 import { useDispatch,useSelector } from 'react-redux';
@@ -27,7 +27,7 @@ function Formulario ({producto,categorias}) {
     useEffect(() => {
     
         if(producto.id){
-            dispatch(getProducts(producto.id));
+            dispatch(getProduct(producto.id));
             store.subscribe(() =>{
                 setState(() => store.getState().productos.data.producto)
                 setItemCategoria(() => store.getState().productos.data.categorias)

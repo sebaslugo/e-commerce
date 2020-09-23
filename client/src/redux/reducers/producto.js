@@ -1,7 +1,7 @@
 import { GET_PRODUCT } from '../consts/actionTypes.js'
 
 const initialState = {
-    producto: {}
+    
 }
 export default function productos(state = initialState, action) {
     switch (action.type) {
