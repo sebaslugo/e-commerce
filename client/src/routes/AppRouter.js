@@ -20,8 +20,9 @@ import CheckUser from '../components/User/CheckUser';
 import { getUser } from '../redux/actions/menuLogIn';
 import ForgotPassword from '../components/User/ForgotPassword';
 import ChangePassword from '../components/User/ChangePassword';
-import CheckLogin from '../components/User/Checklogin'
-import Inicio from '../components/Inicio'
+import CheckLogin from '../components/User/Checklogin';
+import Inicio from '../components/Inicio';
+import Dashboard from '../pages/Dashboard';
 
 export const AppRouter = () => {
 
@@ -51,7 +52,7 @@ export const AppRouter = () => {
                     <Route exact path="/checkuser/auth/login" component={CheckLogin}/>
                     
 
-                    <PrivateRoute exact path="/admin/panel" component={Admin} isAuthenticated={statusToken} isAdmin={rol} />
+                    <PrivateRoute exact path="/admin/panel" component={Dashboard} isAuthenticated={statusToken} isAdmin={rol} />
                     <PrivateRoute exact path="/admin/products" component={ProducList} isAuthenticated={statusToken} isAdmin={rol} />
                     <PrivateRoute exact path="/admin/categories" component={FormCategories} isAuthenticated={statusToken} isAdmin={rol} />
                     <PrivateRoute exact path="/admin/order/:id" component={Orden} isAuthenticated={statusToken} isAdmin={rol} />
