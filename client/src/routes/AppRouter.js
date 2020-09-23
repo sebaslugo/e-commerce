@@ -37,9 +37,12 @@ export const AppRouter = () => {
 
     return (
         <Router>
-            <div>
-                <Inicio/>  
-                <Header/>              
+            <div> 
+                <Route   exact path = '/' component = {Inicio}/>
+                <Route   exact path = '/:Category' component = {Inicio}/>
+
+                <Route path ='/:category' component={Header}/> 
+                         
                 <Switch>
                     <Route exact path="/:category" component={Home}/>                    
                     <Route exact path="/producto/:id" component={Producto} />
