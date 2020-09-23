@@ -72,5 +72,16 @@ export const LOGOUT = 'LOGOUT'
 RESET PASSWORD
 ------------------------------------------------------------------------------------- */
 export const GET_EMAIL = 'GET_EMAIL';
-export const PUT_PASSWORD = 'PUT_PASSWORD'
+export const PUT_PASSWORD = 'PUT_PASSWORD';
+
+
+/* ------------------------------------------------------------------------------------
+CHECKOUT
+------------------------------------------------------------------------------------- */
+export const SET_ADDRESS_FORM = 'SET_ADDRESS_FORM';
+export const SET_PAYMENT_FORM = 'SET_PAYMENT_FORM';
+export const CLEAR_STEP = 'CLEAR_STEP';
+export const BACK_STEP = 'BACK_STEP';
+export const NEXT_STEP = 'NEXT_STEP';
+export const CREATE_CHECKOUT = 'CREATE_CHECKOUT';
 
