@@ -27,38 +27,33 @@ function Inicio () {
                         alt="Henry Store">
                     </img>  
                 </div>}
-            </Spring>
-            <Spring
-                config={config.default}
-                from={{ opacity: 0 }}
-                to={{ opacity: 1}}>
-                {props => 
-                <div style={props}>
-                    <img
-                        className = 'inicio_logoStore'
-                        src={logoStore}
-                        alt="Henry Store">
-                    </img> 
-                </div>}
-            </Spring>
-            <Spring
+                </Spring>
+                <Spring
+                    config={config.default}
+                    from={{ opacity: 0 }}
+                    to={{ opacity: 1}}>
+                    {props => 
+                    <div style={props}>
+                        <img
+                            className = 'inicio_logoStore'
+                            src={logoStore}
+                            alt="Henry Store">
+                        </img> 
+                    </div>}
+                </Spring>
+                <Spring
                 config={config.default}
                 from={{ opacity: 0 }}
                 to={{ opacity: 1}}>
                 {props => 
                 <div  className = "inicio_boton" style={props}>   
-                    <Link to='/products'>
+                    <Link to = '/products'>
                         <Button onClick = {onClickDown} size = 'large' inverted color='yellow'>
                             Tienda 
-                        </Button>                         
-                    </Link>                 
-                                       
+                        </Button> 
+                    </Link>                       
                 </div>}
             </Spring>
-            
-
-            
-
         </div>
         
     ) 

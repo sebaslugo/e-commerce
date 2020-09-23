@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from "react";
-import {Card,Image,Button} from "semantic-ui-react";
+import {Card,Image,Button,Reveal} from "semantic-ui-react";
 import AgregarAlCarrito from '../Carrito/AgregarAlCarrito';
 import { Link } from "react-router-dom";
 import './ProductHome.css'
@@ -30,12 +30,20 @@ function ProductHome ({active,activeItem,productos,validate}) {
 
     return (
         <div className="home-productos">
+            
             <Card.Group>
                 
                 {productPage && productPage.length > 0 && productPage[active - 1].map((producto, index) => (         
                 <Card key = {index}>
-                    <Card.Content>
-                    {producto.imagenes && producto.imagenes.length > 0 && <Image size="small" src={`http://localhost:3001/${producto.imagenes[0]}`} />}
+                    <Card.Content>                    
+                    <Reveal animated='small fade'>
+                        <Reveal.Content visible>
+                        <Image src={`http:/localhost:3001/${producto.imagenes[0]}`} size='small' />
+                        </Reveal.Content>
+                        <Reveal.Content hidden>
+                        <Image src={`http:/localhost:3001/${producto.imagenes[1]}`} size='small' />
+                        </Reveal.Content>
+                    </Reveal>  
                     <Card.Header className="home-header">
                         {producto.name}
                     </Card.Header>

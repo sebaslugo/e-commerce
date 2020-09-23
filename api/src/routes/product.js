@@ -227,7 +227,7 @@ server.put('/:id', authentication.passport.authenticate('jwt',{session:false}), 
 	const { id } = req.params;
 
 	const { name, description, price, stock,imagenes } = req.body;
-	let images='';
+	let images;
 
 	if (req.files) {
 		if (req.files.length > 0) {
@@ -238,21 +238,32 @@ server.put('/:id', authentication.passport.authenticate('jwt',{session:false}), 
 
 	}
 	console.log(imagenes)
-	if(imagenes){
-		if(images){
-			images=images + ',' + imagenes
-		}
-		else{
-			images=imagenes
-		}
-		
+	
+	if(images && imagenes){
+		images=imagenes + ',' + images
 	}
-	Product.update(
-		{ name, description, price, stock, image },
+	else if(imagenes || images){
+		images=imagenes || images
+	}		
+	else{
+	images = 'sin_imagen.jpg'
+	}
+	Product.findOne({
+		where:{id:id}
+	}).then((product) => {
+		product.name=name
+		product.description=description;
+		product.price=price;
+		product.stock=stock;
+		product.image=images
+		return product.save()
+	})
+	/* /* Product.update(
+		{ name, description, price, stock, image:images },
 		{ returning: true, where: { id: id } }
-	)
+	) */
 		// .then(product => res.status(200).json(product))
-		.then(([rowsUpdated, [productUpdate]]) => res.status(201).json(productUpdate))
+		.then((product) => res.status(201).json(product))
 		.catch(err => res.status(400).json(err.message));
 });
 

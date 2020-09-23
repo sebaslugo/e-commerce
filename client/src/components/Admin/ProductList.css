@@ -8,3 +8,21 @@
     background-color: #fff;
     width: 100%;
 }
+
+.list-cerrar{
+    display: flex;
+    flex-direction: column;
+}
+
+#list-buton{
+    margin-left: auto;
+    margin-bottom: 30px;
+}
+
+.ui.button {
+    background: white;
+    color: yellow;
+    border-color: #E0FA02;
+    background-color: black;
+    border-style: solid;
+}
