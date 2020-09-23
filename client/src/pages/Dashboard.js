@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
+import { Link } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import CategoryIcon from '@material-ui/icons/Category';
@@ -79,28 +79,28 @@ function Dashboard(props) {
                     <Navbar />
                 </Grid>
                 <Grid item xs={12} sm={4} md={4} lg={4} xl={4} className="grow">
-                    <Link href="http://localhost:3000/admin/products" style={{ textDecoration: 'none' }}>                        
+                    <Link to="/admin/products" style={{ textDecoration: 'none' }}>                        
                         <CardsHeader icono={<AssignmentIcon className={classes.iconos} />} titulo="PRODUCTOS" texto="Administre todos sus productos (Alta, Baja y Modificación)" color="linear-gradient(315deg, #fbb034 0%, #ffdd00 74%)" font="black"/>                        
                     </Link>
                 </Grid>
                 <Grid item xs={12} sm={4} md={4} lg={4} xl={4} className="grow">
-                    <Link href="http://localhost:3000/admin/categories" style={{ textDecoration: 'none' }}>                        
+                    <Link to="/admin/categories" style={{ textDecoration: 'none' }}>                        
                         <CardsHeader icono={<CategoryIcon className={classes.iconos} />} titulo="CATEGORÍAS" texto="Administre todas sus categorías  (Alta, Baja y Modificación)" color="linear-gradient(315deg, #fbb034 0%, #ffdd00 74%)" font="black"/>                        
                     </Link>
                 </Grid>
                 <Grid item xs={12} sm={4} md={4} lg={4} xl={4} className="grow">
-                    <Link href="http://localhost:3000/admin/orderlist" style={{ textDecoration: 'none' }}>
+                    <Link to="/admin/orderlist" style={{ textDecoration: 'none' }}>
                         <CardsHeader icono={<AddShoppingCartIcon className={classes.iconos} />} titulo="ORDENES" texto="Administre todas sus ordenes  (Alta, Baja y Modificación)" color="linear-gradient(315deg, #fbb034 0%, #ffdd00 74%)" font="black"/>
                     </Link>
                 </Grid>            
                 <Grid item className={classes.containerCards} xs={12} sm={6} md={6} lg={6} xl={6}>
-                    <Link href="http://localhost:3000/admin/users" style={{ textDecoration: 'none' }} className="grow">
+                    <Link to="/admin/users" style={{ textDecoration: 'none' }} className="grow">
                         <Cards titulo="PROMOVER A ADMINISTRADOR" texto="Convertir un Usuario a Administrador" />
                     </Link>
-                    <Link href="http://localhost:3000/admin/users" style={{ textDecoration: 'none' }} className="grow">
+                    <Link to="/admin/users" style={{ textDecoration: 'none' }} className="grow">
                         <Cards titulo="CONSULTAR UN USUARIO" texto="Consulta la información de un Usuario" />
                     </Link>
-                    <Link href="http://localhost:3000/admin/users" style={{ textDecoration: 'none' }} className="grow">
+                    <Link to="/admin/users" style={{ textDecoration: 'none' }} className="grow">
                         <Cards titulo="ELIMINAR UN USUARIO" texto="Eliminar a un usuario de Henry Store" />
                     </Link>                    
                 </Grid>
