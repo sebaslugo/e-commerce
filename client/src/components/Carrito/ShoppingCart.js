@@ -17,6 +17,8 @@ import Divider from '@material-ui/core/Divider';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import RemoveShoppingCartIcon from '@material-ui/icons/RemoveShoppingCart';
+import { animateScroll as scroll} from 'react-scroll';
+
 
 
 
@@ -135,6 +137,8 @@ const ShoppingCart = () => {
 
 
   useEffect(() => {
+
+    scroll.scrollTo(200);
 
     let precios = {};
     let cantidades = {};
