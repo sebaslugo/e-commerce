@@ -16,8 +16,8 @@ export const CheckUser = () => {
         setId(localStorage.getItem('idUser') && localStorage.getItem('idUser') )        
         window.location.reload()                   
         if (id){  
-                       
-            window.location.assign("http://localhost:3000")
+            localStorage.setItem('statusToken', 'Usted está autorizado correctamente!');           
+            window.location.assign("http://localhost:3000/products")
         }
             
         
