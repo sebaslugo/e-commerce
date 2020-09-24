@@ -1,8 +1,9 @@
 import React,{useEffect,useState} from "react";
 import {Card,Image,Button,Reveal} from "semantic-ui-react";
+import { Grid } from '@material-ui/core';
 import AgregarAlCarrito from '../Carrito/AgregarAlCarrito';
 import { Link } from "react-router-dom";
-import './ProductHome.css'
+import './ProductHome.css';
 
 function ProductHome ({active,activeItem,productos,validate}) {
 
@@ -28,46 +29,28 @@ function ProductHome ({active,activeItem,productos,validate}) {
           
     })
     console.log(productPage)
-    return (
-        <div className="home-productos">
-            
-            <Card.Group>
-                
-                {productPage && productPage.length > 0 && productPage[active - 1].map((producto, index) => (         
-                <Card key = {index}>
-                    <Card.Content>                    
-                        <Image src={`http://localhost:3001/${producto.imagenes[0]}`} size='small' />  
-                    <Card.Header className="home-header">
-                        {producto.name}
-                    </Card.Header>
-                    <Card.Meta>{producto.category}</Card.Meta>
-                    <Card.Description>
-                        {producto.description}
-                    </Card.Description>
-                    </Card.Content>
-                    <Card.Content extra>
-                    <div className="home-price">
-                        <Link to={"/producto/" + producto.id}>
-                        <Button inverted color="yellow">
-                            Ver Producto
-                        </Button>
-                        </Link>
-
-                        <AgregarAlCarrito producto={producto} precio={producto.price} cantidad={1} active={false} />
-
-                        <Card.Header className="home-priceCard">
-                        {`$ ${producto.price}`}
-                        </Card.Header>
-                    </div>
-                    </Card.Content>
-                </Card>
-                ))}
-            </Card.Group>
-        </div>
-
+    return (                  
+        <div className="container">
+            <Grid container spacing={3}>
+                    {productPage && productPage.length > 0 && productPage[active - 1].map((producto, index) => (                     
+                    <Grid item xs={12} sm={4} md={4} lg={4} xl={4} className="card" key={index}>                          
+                            <img src={`http://localhost:3001/${producto.imagenes[0]}`} alt={producto.name} className="card__img" />
+                            <div className="card__data">
+                                <h1 className="card__title">{producto.name}</h1>
+                                <span className="card__preci"><span className="signoPeso">$</span>{producto.price}</span>
+                                <p className="card__description">
+                                    {producto.description}
+                                </p>
+                                <div className="contenedorBotones">
+                                    <a className="card__button"><AgregarAlCarrito producto={producto} precio={producto.price} cantidad={1} active={false} /></a>
+                                    <a href={"/producto/" + producto.id} className="card__button">Ver</a>
+                                </div>
+                            </div>                    
+                    </Grid>               
+                    ))}
+            </Grid>
+        </div>                    
     )
-    
-
 }
 
 export default ProductHome;

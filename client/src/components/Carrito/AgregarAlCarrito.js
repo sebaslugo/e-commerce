@@ -69,12 +69,12 @@ export default function AgregarAlCarrito({ producto, precio, cantidad,active }) 
         <div>
             {active ? <Button id = 'cart_Boton'  onClick={() => (enviarDatos())}>
                 <Icon name='add to cart'/>
-                Agregar al Carrito                
+                Al Carrito                
             </Button> :
-            <IconButton color="primary" aria-label="Añadir al carrito"
+            <a color="primary" aria-label="Añadir al carrito" className="addCarrito"
                 onClick={() => (enviarDatos())}
-            >    <AddShoppingCartIcon color='yellow' />
-            </IconButton>}
+            >    Al Carrito
+            </a>}
         </div>
     );
 }
