@@ -121,6 +121,7 @@ function getSum(total, num) {
 }
 
 let id = localStorage.getItem("idUser");
+let serializedState = JSON.parse(localStorage.getItem("carrito"));
 
 
 
@@ -135,24 +136,31 @@ const ShoppingCart = () => {
   const [subtotal, setSubTotal] = useState(1);
   const [call, setCall] = useState(false);
 
-
+  useEffect(()=>{
+    if(serializedState && id){                 
+        serializedState.orderList.map((order) => {
+          dispatch(agregarAlCarrito(order, id)) 
+        })        
+      localStorage.removeItem('carrito')  
+      window.location.reload()          
+    }
+  },[])
+  
   useEffect(() => {
 
     scroll.scrollTo(200);
     let precios = {};
     let cantidades = {};
     
-    // elimino el carrito de guest al logearse
 
-    if(id){
-      localStorage.removeItem('carrito') 
-    }
+
+    
 
     // toma el id del storage
 
     if (id && active) {
 
-      localStorage.removeItem('carrito')
+      /* localStorage.removeItem('carrito') */
       dispatch(fetchProductsFromCart(id));
       store.subscribe(() => {
         setCart(() => store.getState().shoppingCart.data)
@@ -256,7 +264,7 @@ const ShoppingCart = () => {
 
   const emptyCarrito = (e) => {
     setPrices(null);
-    setSubTotal(1);
+    setSubTotal(0);
     if (id) {
       dispatch(EmptyCart(id));
       setActive(true)
@@ -308,12 +316,7 @@ const ShoppingCart = () => {
     }
 
     let precio = subtotal - prices[product.id];
-    if(precio <= 1){
-      setSubTotal(1);
-    }else{
-      setSubTotal(precio);
-    }
-    
+    setSubTotal(precio);
     delete prices[product.id];
 
     if (!cart) {
@@ -397,7 +400,7 @@ const ShoppingCart = () => {
 
 
             ))}
-          {subtotal !== 1 && call ? <div className={classes.root2}>
+          {subtotal && call ? <div className={classes.root2}>
             <Paper className={classes.paper2}>
               <Grid boxShadow={10} container spacing={2}>
                 <Grid item>
