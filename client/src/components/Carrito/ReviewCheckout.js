@@ -27,9 +27,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     color: "yellow",
     backgroundColor: "black",
-    "&:hover, &:focus":{
-      backgroundColor:"yellow",
-      color:"black"
+    "&:hover, &:focus": {
+      backgroundColor: "yellow",
+      color: "black"
     }
   },
   buttons: {
@@ -48,11 +48,11 @@ export default function Review() {
   const [orderId, setOrderId] = useState()
   const classes = useStyles();
   const dispatch = useDispatch()
-  var total = 0 
-  
+  var total = 0
+
   useEffect(() => {
     var id = localStorage.getItem("idUser")
-    if(id){
+    if (id) {
       dispatch(fetchProductsFromCart(id))
     }
     store.subscribe(() => {
@@ -60,10 +60,10 @@ export default function Review() {
       setProducts(() => store.getState().shoppingCart.data.products)
       setAddresses(() => store.getState().userPurchaseData.data)
       setPayments(() => store.getState().userPaymentData.data)
-      store.getState().shoppingCart.data.orderList.map(producto => {return total+= producto.price})
+      store.getState().shoppingCart.data.orderList && store.getState().shoppingCart.data.orderList.map(producto => { return total += producto.price })
       actualizarPrecio()
     })
-    
+
   }, [])
 
   const handleSubmit = () => {
@@ -76,7 +76,7 @@ export default function Review() {
     let carrito = {
       "status": "creada"
     }
-    dispatch(editOrden(orderId,carrito))
+    dispatch(editOrden(orderId, carrito))
 
   }
 
@@ -84,7 +84,7 @@ export default function Review() {
     dispatch(backStep(store.getState().step.data - 1))
   };
 
-  
+
   const actualizarPrecio = () => {
     setSubtotal(total)
   }
@@ -97,7 +97,7 @@ export default function Review() {
         {products && products.map((product) => (
           <ListItem className={classes.listItem} key={product.name}>
             <ListItemText primary={product.name} secondary={product.desc} />
-            
+
             <Typography variant="body2">total: ${product.price * product.orderList.quantity}</Typography>
           </ListItem>
         ))}
@@ -127,23 +127,23 @@ export default function Review() {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-        <div className={classes.buttons}>
-        <Button 
-          onClick={handleBack} 
-          variant="contained"
-          color="primary"
-          className={classes.button}>
-          Atras
+          <div className={classes.buttons}>
+            <Button
+              onClick={handleBack}
+              variant="contained"
+              color="primary"
+              className={classes.button}>
+              Atras
         </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit}
-          className={classes.button}
-        >
-          Listo
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              className={classes.button}
+            >
+              Listo
         </Button>
-        </div>
+          </div>
         </Grid>
       </Grid>
     </React.Fragment>
