@@ -1,17 +1,20 @@
-.review-summary{
-    
+
+#review_form{
+    margin-top: 32px;
+}
+
+.review_todo{
+    width: 44%;
+    margin-left: 37px;
+    margin-top: 36px;
+    margin-right: 61px;
+}
+
+.review_ranking{
     display: flex;
-    justify-content: space-between;
-    padding-bottom: 10px;
-   
+    align-items: baseline;
+    justify-content: space-evenly;
+    color:#242710
 }
-
-
-.producto_title {
-    padding-top: 34px;
-    margin: auto;
-    width: 200px;
-}
-
 
 

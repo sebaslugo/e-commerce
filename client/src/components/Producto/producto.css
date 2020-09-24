@@ -1,5 +1,4 @@
 .producto_todo{
-  margin: 18px;
 }
 .producto_product {
   padding: 35px;
@@ -76,4 +75,11 @@
   line-height: 1.334;
   letter-spacing: 0em;
   color: whitesmoke;
+}
+
+
+
+.product_down {
+  display: flex;
+  justify-content: space-around;
 }

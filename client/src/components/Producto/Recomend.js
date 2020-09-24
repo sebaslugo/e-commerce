@@ -6,19 +6,18 @@ import { Link } from "react-router-dom";
 import './Recommend.css'
 import { getProducts } from '../../redux/actions/productList';
 
-
-function Recommend ({productoId}) {
+let local =  JSON.parse(localStorage.getItem("Recomendaciones"));  
+function Recommend (props) {
     const dispatch = useDispatch()
     const [productos,setProductos] = useState()
     let fullproduct = useSelector(state => state.productList.data)
  
     useEffect(()=>{
-        if(!fullproduct){
-            
-        }
-        if(productoId && !productos && fullproduct){            
-            let full = fullproduct.filter(product => product.id != productoId)
-            setProductos(full.slice(0,3))
+        if(!productos  && local && props.productoId){ 
+            console.log(local)
+            console.log(props)
+            let full = local.filter(product => product.id != props.productoId)            
+            setProductos(full.slice(0,3)) 
         }
         
     })
@@ -29,23 +28,25 @@ function Recommend ({productoId}) {
     }
     
     return(
-        <div>
-            {productos && <Typography gutterBottom variant="h4" component="h2">
-                        Productos que te pueden gustar
-            </Typography>}
-            {productos && productos.length > 0 && productos.map((producto) =>(                
-                <div className = 'recommend_card' onClick={() => handleClick(producto.id)}>                    
-                    <Image src={`http://localhost:3001/${producto.imagenes[0]}`} size='medium' />
-                    <Typography variant="h5" color="textSecondary">
-                        {producto.name}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary" >
-                        $ {producto.price}
-                    </Typography>
-                </div>
-                
-                                  
-            ))}
+        <div className = 'recomend_todo'>
+            <Typography gutterBottom variant="h4" component="h2">
+                Productos que te pueden gustar
+            </Typography>
+            <div className = 'recommend_cards'>
+                {productos && productos.length > 0 && productos.map((producto) =>(                
+                    <div className = 'recommend_card' onClick={() => handleClick(producto.id)}>                    
+                        <Image src={`http://localhost:3001/${producto.imagenes[0]}`} size='medium' />
+                        <Typography variant="h5" color="textSecondary">
+                            {producto.name}
+                        </Typography>
+                        <Typography variant="body1" color="textSecondary" >
+                            $ {producto.price}
+                        </Typography>
+                    </div>   
+                                    
+                ))}
+            </div>
+            
             
             
         </div>

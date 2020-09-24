@@ -67,6 +67,8 @@ REVIEWS
 export const GET_REVIEW = 'GET_REVIEW';
 export const GET_USER = 'GET_USER'
 export const LOGOUT = 'LOGOUT'
+export const EDIT_REVIEW = 'EDIT_REVIEW';
+export const DELETE_REVIEW = 'DELETE_REVIEW';
 
 /* ------------------------------------------------------------------------------------
 RESET PASSWORD
