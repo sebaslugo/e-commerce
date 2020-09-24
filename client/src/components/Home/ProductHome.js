@@ -30,7 +30,7 @@ function ProductHome ({active,activeItem,productos,validate}) {
         
           
     })
-    console.log(productPage)
+    
     return (                  
         <div className="container">
             <Grid container spacing={3}>

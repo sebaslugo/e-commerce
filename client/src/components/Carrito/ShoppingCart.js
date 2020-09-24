@@ -141,8 +141,12 @@ const ShoppingCart = () => {
     scroll.scrollTo(200);
     let precios = {};
     let cantidades = {};
+    
+    // elimino el carrito de guest al logearse
 
-
+    if(id){
+      localStorage.removeItem('carrito') 
+    }
 
     // toma el id del storage
 
@@ -194,12 +198,13 @@ const ShoppingCart = () => {
 
   });
 
-
+  // seteo precios y cantidad al modificarse
 
   const onChange = (event, product) => {
     /* event.preventDefault(); */
     let quantity = event.target.value;
     let cant = quantities[product.id];
+
     if (quantity < 1) {
       setQuantity({
         ...quantities,
@@ -232,9 +237,10 @@ const ShoppingCart = () => {
     else {
       let local = {
         ...cart,
-        orderList: cart.orderList.filter((producto) => {
+        orderList: cart.orderList.map((producto) => {
           if (product.id == producto.productId && quantity <= product.stock) {
-            return producto.quantity = data.quantity
+            return producto = data
+            
           }
           else { return producto }
         })
@@ -250,7 +256,7 @@ const ShoppingCart = () => {
 
   const emptyCarrito = (e) => {
     setPrices(null);
-    setSubTotal(0);
+    setSubTotal(1);
     if (id) {
       dispatch(EmptyCart(id));
       setActive(true)
@@ -302,7 +308,12 @@ const ShoppingCart = () => {
     }
 
     let precio = subtotal - prices[product.id];
-    setSubTotal(precio);
+    if(precio <= 1){
+      setSubTotal(1);
+    }else{
+      setSubTotal(precio);
+    }
+    
     delete prices[product.id];
 
     if (!cart) {
@@ -386,7 +397,7 @@ const ShoppingCart = () => {
 
 
             ))}
-          {subtotal && call ? <div className={classes.root2}>
+          {subtotal !== 1 && call ? <div className={classes.root2}>
             <Paper className={classes.paper2}>
               <Grid boxShadow={10} container spacing={2}>
                 <Grid item>

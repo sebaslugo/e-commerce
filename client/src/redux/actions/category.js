@@ -9,7 +9,6 @@ export function getCategories() {
     return function(dispatch) {
         return axios.get("http://localhost:3001/products/category")
           .then(response =>{
-            console.log(response);
             dispatch({ type: GET_CATEGORY, payload: response.data });
           })
           
@@ -21,7 +20,6 @@ export function deleteCategory(oldData) {
     return function(dispatch) {
         return axios.delete(`http://localhost:3001/products/category/${oldData.id}`)
           .then(response =>{
-            console.log(response);
             dispatch({ type: DELETE_CATEGORY, payload: response.data });
           })
           

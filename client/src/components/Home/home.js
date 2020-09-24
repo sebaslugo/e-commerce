@@ -17,6 +17,7 @@ let serializedState = JSON.parse(localStorage.getItem("carrito"));
 
 
 
+
 function Home() {
 
   const dispatch = useDispatch();
@@ -31,21 +32,13 @@ function Home() {
 
   useEffect(() => {   
       
-    /* if(serializedState && id){
+    if(serializedState && id){
       scroll.scrollToTop();
       let order = serializedState.orderList.shift()
       console.log(order)
       dispatch(agregarAlCarrito(order, id))
 
     }
-
-    if(!serializedState && id){
-      localStorage.removeItem('carrito') 
-    } */
-    
-
-
-
     if (!productos && validate) {
       dispatch(getCategories());
       dispatch(getProducts());
@@ -81,9 +74,9 @@ function Home() {
   };
   return (
     <div className="home-Home">
-      {/* <div className='home_portada'>
+      <div className='home_portada'>
         <Image src={portada} fluid />
-      </div> */}
+      </div>
       <Grid>
       {/*  <Grid.Column width={40}>
           <Menu fluid vertical tabular>
