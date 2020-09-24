@@ -115,7 +115,7 @@ export default function Footer() {
                         </Link>
                     </Typography>
                     <Typography variant="body2">
-                        <Link href="https://material-ui.com/es/components/links/" onClick={preventDefault} color="inherit">
+                        <Link href="https://www.linkedin.com/in/ariel-lizarraga-35871b1b0/" onClick={preventDefault} color="inherit">
                             Ariel Lizarraga
                         </Link>
                     </Typography>
