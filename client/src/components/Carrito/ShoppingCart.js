@@ -17,7 +17,7 @@ import Divider from '@material-ui/core/Divider';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import RemoveShoppingCartIcon from '@material-ui/icons/RemoveShoppingCart';
-import { animateScroll as scroll} from 'react-scroll';
+import { animateScroll as scroll } from 'react-scroll';
 
 
 
@@ -132,23 +132,27 @@ const ShoppingCart = () => {
   const [quantities, setQuantity] = useState();
   const [prices, setPrices] = useState();
   const [active, setActive] = useState(true);
-  const [subtotal, setSubTotal] = useState(0);
+  const [subtotal, setSubTotal] = useState(1);
+  const [call, setCall] = useState(false);
 
 
   useEffect(() => {
 
     scroll.scrollTo(200);
-
     let precios = {};
     let cantidades = {};
+
 
 
     // toma el id del storage
 
     if (id && active) {
+
       localStorage.removeItem('carrito')
       dispatch(fetchProductsFromCart(id));
-      store.subscribe(() => setCart(() => store.getState().shoppingCart.data));
+      store.subscribe(() => {
+        setCart(() => store.getState().shoppingCart.data)
+      });
       setActive(false);
 
     } else if (!id && active) {
@@ -184,6 +188,8 @@ const ShoppingCart = () => {
     if (prices) {
       let precio = Object.values(prices);
       setSubTotal(precio.reduce(getSum, 0));
+      setCall(true)
+
     }
 
   });
@@ -286,7 +292,6 @@ const ShoppingCart = () => {
     }
     else {
       delete quantities[product.id];
-      delete prices[product.id];
       let local = {
         ['products']: cart.products.filter(producto => product.id !== producto.id),
         ['orderList']: cart.orderList.filter(producto => product.id !== producto.productId)
@@ -295,6 +300,11 @@ const ShoppingCart = () => {
       const serializedState = JSON.stringify(local);
       localStorage.setItem("carrito", serializedState);
     }
+
+    let precio = subtotal - prices[product.id];
+    setSubTotal(precio);
+    delete prices[product.id];
+
     if (!cart) {
       dispatch(EmptyCart(id));
     }
@@ -306,14 +316,8 @@ const ShoppingCart = () => {
 
   return (
     <div >
-      {/* <h1 style={{ textAlign: "center", backgroundColor: grey[100] }}> Mi Carrito</h1> */}
-      {/* <Divider variant="middle" /> */}
       <div className='shopping-content'>
-
-
         <div className={classes.root}>
-
-
 
           {cart && cart.products &&
             cart.products.length > 0 &&
@@ -366,24 +370,12 @@ const ShoppingCart = () => {
                       </Typography>
                       <Grid >
                         <Typography style={{ position: "relative", left: 250, bottom: 85 }}>
-                          <Button style={{ backgroundColor: "transparent", outline: "none", border: "none" }}>
-                            <CloseIcon onClick={(e) => productDelete(e, product)} />
+                          <Button onClick={(e) => productDelete(e, product)} style={{ backgroundColor: "transparent", outline: "none", border: "none" }}>
+                            <CloseIcon />
                           </Button>
                         </Typography>
                       </Grid>
                     </Grid>
-
-
-                    {/* 
-                    <Grid item>
-                      <ColorButton
-                        // variant="contained"
-                        className={classes.rootButton}
-                        startIcon={<DeleteIcon />}
-                        onClick={(e) => productDelete(e, product)}
-                      >
-                      </ColorButton>
-                    </Grid> */}
                   </Grid>
                   <Grid item xs container direction="column" spacing={2}>
 
@@ -394,7 +386,7 @@ const ShoppingCart = () => {
 
 
             ))}
-          {quantities ? <div className={classes.root2}>
+          {subtotal && call ? <div className={classes.root2}>
             <Paper className={classes.paper2}>
               <Grid boxShadow={10} container spacing={2}>
                 <Grid item>
@@ -424,7 +416,7 @@ const ShoppingCart = () => {
                         Total de la compra:
                       </Typography>
                       <Typography style={{ textAlign: "center", top: 60 }} variant="h4">
-                        ${subtotal}
+                        ${subtotal === 1 ? 0 : subtotal}
                       </Typography>
                       &nbsp;
                       <Button onClick={handleBuy} className={classes.margin} size="medium">
@@ -441,41 +433,14 @@ const ShoppingCart = () => {
                 </Grid>
               </Grid>
             </Paper>
-          </div> : <div><h1 style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", width: "100%" }}>Tu carrito está vacío, ¡Agrega un producto!
+          </div> : <div><h1 style={{ textAlign: "center", marginTop: 160 }}>Tu carrito está vacío, ¡Agrega un producto!
           </h1>
-              <RemoveShoppingCartIcon style={{ fontSize: 200, marginLeft: 600 }} />
+              <RemoveShoppingCartIcon style={{ fontSize: 200, marginLeft: 600, marginTop: 20 }} />
             </div>
           }
 
-
-
-
-          {/* <Grid item >
-          <div className='shopping_vaciar'>
-            {cart && cart.orderList && <ColorButton
-              variant="contained"
-              className={classes.button}
-              startIcon={<DeleteIcon />}
-              onClick={emptyCarrito}
-            >
-              VACIAR CARRITO
-            </ColorButton>}
-
-          </div>
-
-
-        </Grid> */}
         </div>
-        {/* <footer className="footer">
-        <h4>TOTAL: ${subtotal}</h4>
-        <ColorButton
-          variant="contained"
-          className="buy_button"
-          onClick={handleBuy}
-        >
-          COMPRAR
-                    </ColorButton>
-      </footer> */}
+
 
 
       </div>
