@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Grid,Box,LockOutlinedIcon,Typography } from '@material-ui/core';
+import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link, Grid, Box, LockOutlinedIcon, Typography } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { yellow, purple, grey } from '@material-ui/core/colors';
 import { useDispatch, useSelector } from 'react-redux';
-import {postCreateUser} from '../../redux/actions/createUser.js'
+import { postCreateUser } from '../../redux/actions/createUser.js'
 import { Select } from 'semantic-ui-react'
 
 const rolOptions = [
@@ -71,36 +71,36 @@ export default function CreateUser() {
         password: ''
     })
 
-    const handleInputChange = (event,value) => {
+    const handleInputChange = (event, value) => {
         // console.log(event.target.name)
         // console.log(event.target.value)        
-        if(value){
+        if (value) {
             let rol = value.value;
             setDatos({
                 ...datos,
                 rol
             })
         }
-        if(event.target.name){
+        if (event.target.name) {
             setDatos({
                 ...datos,
                 [event.target.name]: event.target.value
             })
         }
-        
+
         // console.log(event)
     }
 
     const enviarDatos = (event) => {
         event.preventDefault()
         console.log(datos)
-        if(datos.firstName && datos.lastName && datos.email && datos.password){
+        if (datos.firstName && datos.lastName && datos.email && datos.password) {
             dispatch(postCreateUser(datos))
         }
-        else{
+        else {
             alert('completa todos los campos')
         }
-        
+
     }
 
     return (
@@ -111,7 +111,7 @@ export default function CreateUser() {
                     className={classes.avatar}  >
                     {/* <LockOutlinedIcon /> */}
                 </Avatar>
-                <Typography component="h1" variant="h5">
+                <Typography style={{ color: "black" }} component="h1" variant="h5">
                     Registrarse
         </Typography>
                 <form className={classes.form} onSubmit={enviarDatos} noValidate>
@@ -141,7 +141,7 @@ export default function CreateUser() {
                                 autoComplete="lname"
                             />
                         </Grid>
-                        
+
                         <Grid item xs={12}>
                             <TextField
                                 onChange={handleInputChange}
@@ -167,7 +167,7 @@ export default function CreateUser() {
                                 autoComplete="current-password"
                             />
                         </Grid>
-                        
+
                         {/* <Grid item xs={12}>
                             <FormControlLabel
                                 control={<Checkbox value="allowExtraEmails" color="primary" />}

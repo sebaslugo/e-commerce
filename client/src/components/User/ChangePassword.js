@@ -100,11 +100,11 @@ export default function ChangePassword() {
             <CssBaseline />
             <div className={classes.paper}>
                 <LockIcon style={{ fontSize: 40 }} />
-                <Typography component="h1" variant="h5">
+                <Typography style={{ color: "black" }} component="h1" variant="h5">
                     Cambia tu contraseña
                 </Typography>
                 &nbsp;
-                <Typography>
+                <Typography >
                     Ingresa tu correo electrónico con el que te diste de alta.
                     </Typography>
 
