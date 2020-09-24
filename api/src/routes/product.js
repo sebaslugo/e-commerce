@@ -118,7 +118,7 @@ server.put("/category/:id", authentication.passport.authenticate('jwt',{session:
 /* S21: Crear ruta que devuelva todos los productos */
 /* ------------------------------------------------------------------------------- */
 server.get('/', (req, res, next) => {
-	Product.findAll()
+	Product.findAll({order:[['id','DESC']]})
 		.then(products => {
 			res.send(products);
 		})
@@ -135,7 +135,8 @@ server.get('/category/:nameCat', async (req, res, next) => {
 			attributes: ['id'],
 			where: {
 				name: nameCat
-			}
+			},
+			order:[['id','DESC']]
 		});
 		const listaProductos = await prodcat.findAll({
 			where: {
@@ -258,11 +259,7 @@ server.put('/:id', authentication.passport.authenticate('jwt',{session:false}), 
 		product.image=images
 		return product.save()
 	})
-	/* /* Product.update(
-		{ name, description, price, stock, image:images },
-		{ returning: true, where: { id: id } }
-	) */
-		// .then(product => res.status(200).json(product))
+	
 		.then((product) => res.status(201).json(product))
 		.catch(err => res.status(400).json(err.message));
 });
@@ -294,14 +291,16 @@ server.post("/:id/review", authentication.passport.authenticate('jwt',{session:f
 	const { id } = req.params;
 	const { description, rating, likes,userId} = req.body;
 	console.log(req.body)
+	let message;
 	Review.create({
 			description: description,
 			rating: rating,
 			likes: likes,
 			productId: id,
 			userId:userId
-	})
-	.then(() => res.status(201).json({ message: 'el comentario ha sido enviado exitosamente.' }))
+	}).then((mensaje) => {
+		res.status(201).json({ message })
+	})	
 	.catch(() => res.status(400).send("el comentario no se pudo enviar...revisa bien tus datos!"))
 })
 

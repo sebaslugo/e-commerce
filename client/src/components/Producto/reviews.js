@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import user from '../../imagenes/user.jpg'
-import { Button, Icon, Label,Form, TextArea,Feed,Rating  } from 'semantic-ui-react'
+import { Button, Icon, Header, Label,Form, TextArea,Feed,Rating,Comment  } from 'semantic-ui-react'
 import './reviews.css'
+import {Typography } from '@material-ui/core/';
 import {getReviews,postReview,putReview,deleteReview} from '../../redux/actions/reviews';
 import { useDispatch,useSelector } from "react-redux";
 import store from '../../redux/store/index';
 
 let id = JSON.parse(localStorage.getItem("idUser"));  
+let fullName = localStorage.getItem("fullName");
 
 function Reviews  ({productoId})  {
   const dispatch = useDispatch();
@@ -50,133 +51,114 @@ function Reviews  ({productoId})  {
     if(!rating){
       setDescription(e.target.value)
     }
-    if(rating){ 
-      setCall(true);      
-      setRatings(rating)
-      let comentario={
-        userId:1,
-        rating:rating
-      }
-      dispatch(postReview(productoId,comentario,id))
-      
-           
+    if(rating){      
+      setRatings(rating)         
     }  
   }
 
    /// sube el comentario y actualiza los reviews
 
   const handleSubmit = (e) => {
-    
-    let comentario = {
-       userId:id,
-       description:description,
+
+    if(description && ratings){
+      let comentario = {
+        userId:id,
+        description:description,
+        rating:ratings
+     }
+     dispatch(postReview(productoId,comentario))
+     alert('gracias por tu opinion') 
+     window.location.reload()
+    }else if(!description){
+      alert('no olvides de escribir tu opinion')
+    }else if(!ratings){
+      alert('califica nuestro producto')
     }
-    
-    dispatch(postReview(productoId,comentario))
-    alert('gracias por tu opinion')
-    window.location.reload()
-    setCall(true);  
-    
-    
+        
+       
   }
 
-  //// sube y setea los likes
-
-  const handleLike = () => {
-    setCall(true);
-    let comentario = {
-      userId:id,
-      likes:1
-    }
-    setLikes(likes + 1)
-    dispatch(postReview(productoId,comentario,id))
-    
-
-    
-  }
 
   //// Edita la review
 
-  const handleEdit = (reviewId) => {
+  const handleEdit = (review) => {
     let comentario = {
       userId:id,
       description:description,
+      rating:ratings,
+      id:review.id,
+      user:{fullName:review.user.fullName}
+    }     
+    if(!description){
+      comentario.description=review.description
     }
-    dispatch(putReview(productoId,reviewId,comentario,id))
-    setCall(true);
+    else if(!ratings){
+      comentario.rating=review.rating
+    }
+      
+    dispatch(putReview(productoId,review.id,comentario))
     setEditConf(0);
-    
+    setDescription();
+    setRatings();
   }
 
   const handleDelete  = (reviewId) => {
     dispatch(deleteReview(productoId,reviewId))
-    setCall(true);
+    
+  }
+
+  const handleCancel = () => {
+    setEditConf(0);
+    setDescription();
   }
   
   return (
-    <Feed>
-      <div>
-      <Button as='div' labelPosition='right'>
-        <Button color='red' onClick={handleLike}>
-          <Icon name='heart' />
-          Like
-        </Button>
-        <Label as='a' basic color='red' pointing='left'>
-          {likes}
-        </Label>
-      </Button>
-      <Button as='div' labelPosition='right'>
-        <Button basic color='blue'>
-          <Icon name='fork' />
-          Share
-        </Button>
-      </Button>
-      </div>
-      <hr/>
-      <Rating maxRating={5} defaultRating={5} onRate={handleChange} icon='star' size='massive' /> 
-      <br/>      
-      {ratings ? 
-        <label>ranking: 
-          <Rating maxRating={5} defaultRating={ratings}  icon='star' size='mini' disabled={true}/> 
-        </label> : 
-        <h1></h1>}
-      <hr/>
-      {reviews.length>0 ? reviews.map((review,index) => (
-          review.description &&
-          <Feed.Event key = {index}>
-          <Feed.Label>
-            <Icon name='user'/>
-          </Feed.Label>
-          <Feed.Content>
-            <Feed.Summary className = 'review-summary'>
-              <a>{review.user.fullName}</a> 
-              <div className='review-button'>
-                {review.userId == id && <Button icon onClick={() => setEditConf(review.id)}>
-                  <Icon name='edit' size = 'small' />
-                </Button>}
-                {review.userId == id && <Button icon onClick = {() => handleDelete(review.id)}>
-                  <Icon name='delete' size = 'small'/>
-                </Button>}
-              </div>          
-            </Feed.Summary>
-            {editConf !== review.id ? 
-              <Feed.Extra text>
-                {review.description}
-              </Feed.Extra> : 
-              <Form onSubmit={() => handleEdit(review.id)}>
-                <TextArea rows={2} placeholder={review.description} onChange={handleChange}/>
-                <Button type='submit'>Editar</Button>
-              </Form> }        
-          </Feed.Content>
-          </Feed.Event>       
-        )): <label>Sin comentarios</label>}
+
+    <div className = 'review_todo'>
+        
+        <Comment.Group size = 'massive'>
+          <Header as='h3' dividing>
+            Opiniones
+          </Header>
+          {reviews.length>0 && reviews.map((review,index) => (
+            <Comment>
+              <Comment.Avatar as='a' src='https://react.semantic-ui.com/images/avatar/small/steve.jpg' />
+              <Comment.Content>
+                <Comment.Text>{review.user.fullName}</Comment.Text>
+                <Comment.Content>
+                  <Rating defaultRating={review.rating} maxRating={5} disabled ={editConf !== review.id  ? true : false} onRate={handleChange} />
+                </Comment.Content>                
+                {editConf !== review.id ? 
+                <Comment.Text>{review.description}</Comment.Text> :
+                <Form onSubmit={() => handleEdit(review)}>
+                  <TextArea rows={2} placeholder={review.description} onChange={handleChange}/>
+                  <Button type='submit'>Editar</Button>
+                  <Button onClick={handleCancel}>Cancel</Button>
+                </Form> }                
+                {editConf !== review.id && review.userId == id && <Comment.Actions>          
+                  <Comment.Action onClick={() => setEditConf(review.id)}>Edit</Comment.Action>         
+                  <Comment.Action onClick = {() => handleDelete(review.id)}>Delete</Comment.Action>
+                </Comment.Actions> }            
+              </Comment.Content>
+            </Comment>
+          ))}
+          {editConf === 0 && <Form onSubmit={handleSubmit} id = 'review_form'>
+            {description && 
+            <div className='review_ranking'>
+              <Typography variant="body1"   className='producto_cantidad'>
+              No te olvides de calificar el producto          
+              </Typography>
+              <Rating defaultRating={1} maxRating={5} size='large'onRate={handleChange}/>
+            </div>
+            
+            }
+            <TextArea rows={2} placeholder='Dejanos tu opinion acerca del producto'  onChange={handleChange}/>
+            <Button type='submit'>Publicar</Button>
+          </Form> }
+        </Comment.Group>
       
-      <hr/>
-       <Form onSubmit={handleSubmit}>
-          <TextArea rows={2} placeholder='Dejanos tu opinion acerca del producto'  onChange={handleChange}/>
-          <Button type='submit'>Publicar</Button>
-        </Form> 
-    </Feed>
+    </div>
+    
   ) 
 }
 

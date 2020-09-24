@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_REVIEW } from '../consts/actionTypes'
+import { GET_REVIEW,DELETE_REVIEW,EDIT_REVIEW} from '../consts/actionTypes'
 
 export function getReviews(productid) {
     return function(dispatch) {
@@ -16,7 +16,7 @@ export function getReviews(productid) {
     
 }
 
-export function postReview(productid,comentario,userId) {
+export function postReview(productid,comentario) {
     return function(dispatch) {    
         return axios({
             method: 'POST',
@@ -35,8 +35,13 @@ export function putReview(productid,reviewId,comentario) {
             method: 'PUT',
             url: `http://localhost:3001/products/${productid}/review/${reviewId}`,
             data: comentario
+        }).then(() => {
+            dispatch({
+                type: EDIT_REVIEW,
+                payload: comentario
+            })
         })
-        .catch(err => alert('ups,edita tu comentario'))
+        .catch(err => alert(err))
           
     };
     
@@ -47,6 +52,11 @@ export function deleteReview(productid,reviewId) {
         return axios({
             method: 'DELETE',
             url: `http://localhost:3001/products/${productid}/review/${reviewId}`
+        }).then(()=>{
+            dispatch({
+                type: DELETE_REVIEW,
+                payload: reviewId
+            })
         })
         .catch(err => alert('ups,ha ocurrido un error, recarga la pagina para poder eliminarlo'))          
     };

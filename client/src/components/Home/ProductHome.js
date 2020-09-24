@@ -16,6 +16,8 @@ function ProductHome ({active,activeItem,productos,validate}) {
         
         let page=[]
         if(productos !== product){
+            const serializedState = JSON.stringify(productos);
+            localStorage.setItem("Recomendaciones", serializedState); 
             for (let i = 0; i < productos.length; i += 6) {
                 let seccion = productos.slice(i, i + 6);
                 page.push(seccion)

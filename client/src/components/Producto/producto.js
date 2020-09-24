@@ -1,9 +1,8 @@
 import React,{useState, useEffect } from "react";
 import "./producto.css";
 import Reveal from 'react-reveal/Fade';
-import { Carousel, CarouselItem } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Image } from 'semantic-ui-react'
+import { Image, Grid} from 'semantic-ui-react'
 import { makeStyles } from '@material-ui/core/styles';
 import {Typography } from '@material-ui/core/';
 import store from '../../redux/store/index';
@@ -13,7 +12,7 @@ import AgregarAlCarrito from '../Carrito/AgregarAlCarrito'
 import { animateScroll as scroll} from 'react-scroll';
 import Recommend from './Recomend'
 import Reviews from './reviews'
-import { getProducts } from '../../redux/actions/productList';
+import publ1 from '../../imagenes/publicidad1.jpg'
 
 
 
@@ -126,10 +125,19 @@ function Producto(props) {
       </div>
     </div>
       
-      <hr/>
+    
+    <div className ='product_recommend'>
       <Recommend productoId = {producto.id}/>
-      <hr/>
-      <Reviews productoId = {producto.id}/>
+    </div>
+    
+    <div className='product_down'>
+      <Reviews productoId = {producto.id}/>        
+      <Image 
+        id='product_public'
+        src={publ1} 
+        size='large'
+        href='https://www.soyhenry.com/' />
+        </div>      
     </div>
 
   );
