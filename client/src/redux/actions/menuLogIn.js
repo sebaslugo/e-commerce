@@ -16,7 +16,8 @@ export function getUser() {
                 localStorage.setItem('lastName', res.data.user.lastName)
                 localStorage.setItem('fullName', res.data.user.fullName)
                 localStorage.setItem('rol', res.data.user.rol)                
-                localStorage.setItem('statusToken', res.data.message)                          
+                localStorage.setItem('statusToken', res.data.message)
+                localStorage.setItem('email',res.data.user.email)                          
             })
             .then((res) => {
                 dispatch({

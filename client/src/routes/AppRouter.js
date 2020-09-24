@@ -25,6 +25,7 @@ import Inicio from '../components/Inicio'
 import Checkout from '../components/Carrito/Checkout'
 import Dashboard from '../pages/Dashboard';
 import UsersList from '../components/Admin/UsersList';
+import PerfilUser from '../components/User/PerfilUser';
 
 export const AppRouter = () => {
 
@@ -53,6 +54,7 @@ export const AppRouter = () => {
                     <Route exact path="/checkuser/auth/:id/:token" component={CheckUser} />
                     <Route exact path="/checkuser/auth/login" component={CheckLogin}/>
                     <Route exact path={`/user/cart/${id}/checkout/`} component={Checkout} isAuthenticated={statusToken} />
+                    <Route exact path= "/user/perfil" component={PerfilUser}/>
 
                     <PrivateRoute exact path="/admin/panel" component={Dashboard} isAuthenticated={statusToken} isAdmin={rol} />
                     <PrivateRoute exact path="/admin/products" component={ProducList} isAuthenticated={statusToken} isAdmin={rol} />
