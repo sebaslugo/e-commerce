@@ -6,3 +6,8 @@
     font-size: 20px;
     border-style: none;
 }
+
+.addCarrito {
+    cursor: pointer;
+    color: black;
+}
