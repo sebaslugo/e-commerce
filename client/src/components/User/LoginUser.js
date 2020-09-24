@@ -83,9 +83,9 @@ export default function UserLogin() {
 
     const [state, setState] = useState({
         email: "",
-        password: ""
+        password: "",
     })
-
+    const [errors, setErrors] = useState({});
 
 
     const handleInputChange = (e) => {
@@ -93,6 +93,7 @@ export default function UserLogin() {
             ...state,
             [e.target.name]: e.target.value
         })
+
         console.log(state)
 
     }
@@ -101,14 +102,33 @@ export default function UserLogin() {
             token: state.password
         }
     })
+
+    const validate = (state) => {
+        let errors = {};
+        if (!state.email) {
+            errors.email = 'Por favor, introduzca un email';
+        } else if (!state.email.includes("@")) {
+            errors.email = 'Por favor, introduzca un formato de email valido';
+        }
+
+        if (!state.password) {
+            errors.password = 'Por favor, introduzca una contraseña';
+
+        }
+        return errors;
+
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        setErrors(validate({
+            ...state,
+            [e.target.name]: e.target.value
+        }));
         console.log(e)
         if (state.email && state.password) {
             console.log(state)
             dispatch(loginUser(state))
-        } else {
-            alert("Debes completar todos los campos")
         }
     }
     return (
@@ -119,9 +139,9 @@ export default function UserLogin() {
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                     <div className={classes.paper}>
                         <div className={"circle"}>
-                            <img src="https://downloads.intercomcdn.com/i/o/223280/9d3a2ca7768cd9b5174f2bf0/e913a6773f7911dcc0e1a3e82d200231.png" alt="" style={{ maxHeight: 35, position: "relative", left: 10, top: 11 }}></img>
+                            <img src="https://downloads.intercomcdn.com/i/o/223280/9d3a2ca7768cd9b5174f2bf0/e913a6773f7911dcc0e1a3e82d200231.png" alt="" style={{ maxHeight: 35, position: "relative", left: 11, top: 12 }}></img>
                         </div>
-                        <Typography component="h1" variant="h5">
+                        <Typography style={{ color: "black" }} component="h1" variant="h5">
                             Accedé a tu cuenta
                         </Typography>
                         <form className={classes.form} noValidate>
@@ -137,6 +157,9 @@ export default function UserLogin() {
                                 autoComplete="email"
                                 autoFocus
                             />
+                            {errors.email && (
+                                <p style={{ color: "red" }}>{errors.email}</p>
+                            )}
                             <TextField
                                 onChange={handleInputChange}
                                 variant="outlined"
@@ -149,10 +172,13 @@ export default function UserLogin() {
                                 id="password"
                                 autoComplete="current-password"
                             />
-                            <FormControlLabel
+                            {errors.password && (
+                                <p style={{ color: "red" }}>{errors.password}</p>
+                            )}
+                            {/* <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Recuérdame"
-                            />
+                            /> */}
                             <ColorButton
                                 type="submit"
                                 fullWidth
