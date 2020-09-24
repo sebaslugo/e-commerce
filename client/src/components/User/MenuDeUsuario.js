@@ -81,6 +81,10 @@ export default function MenuListComposition() {
         window.location.assign("http://localhost:3000/admin/panel")
     }
 
+    const handlePerfil = () => {
+        window.location.assign("http://localhost:3000/user/perfil")
+    }
+
     return (
         <div className={classes.root}>
 
@@ -112,6 +116,7 @@ export default function MenuListComposition() {
                                     <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                                         {localStorage.getItem('rol') == "admin"?<MenuItem onClick={handlePanel}>Panel</MenuItem>: null}                                     
                                         <MenuItem onClick={handleLogOut}>Logout</MenuItem>
+                                        <MenuItem onClick={handlePerfil}>Perfil</MenuItem>
                                     </MenuList>
                                 </ClickAwayListener>
                             </Paper>
