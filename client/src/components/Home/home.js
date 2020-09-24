@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./home.css";
 import { Link } from "react-router-dom";
-import { Grid, Menu, Segment, Image, Pagination, Button, Icon } from "semantic-ui-react";
+import { Grid, Menu, Segment, Image, Pagination, Button,Icon,Reveal } from "semantic-ui-react";
+
 import portada from "../../imagenes/portada.jpg";
 import ProductHome from './ProductHome';
 import { getCategories } from '../../redux/actions/category';
@@ -28,18 +29,20 @@ function Home() {
 
 
 
-  useEffect(() => {
-
-    if (serializedState && id) {
-
+  useEffect(() => {   
+      
+    /* if(serializedState && id){
+      scroll.scrollToTop();
       let order = serializedState.orderList.shift()
       console.log(order)
       dispatch(agregarAlCarrito(order, id))
 
     }
-    if (!serializedState && id) {
-      localStorage.removeItem('carrito')
-    }
+
+    if(!serializedState && id){
+      localStorage.removeItem('carrito') 
+    } */
+    
 
 
 
@@ -78,12 +81,11 @@ function Home() {
   };
   return (
     <div className="home-Home">
-      <div className='home_portada'>
+      {/* <div className='home_portada'>
         <Image src={portada} fluid />
-      </div>
-
+      </div> */}
       <Grid>
-        <Grid.Column width={4}>
+      {/*  <Grid.Column width={40}>
           <Menu fluid vertical tabular>
             <Link to="/products">
               <Menu.Item
@@ -102,8 +104,8 @@ function Home() {
               </Link>
             ))}
           </Menu>
-        </Grid.Column>
-        <Grid.Column stretched width={12}>
+        </Grid.Column> */}
+        <Grid.Column stretched width={30}>
           <Segment>
             <div className="home-content">
               <ProductHome productos={productos} active={active} validate={validate} />
@@ -122,9 +124,7 @@ function Home() {
           </Segment>
         </Grid.Column>
       </Grid>
-      {/* <div> */}
       <Footer />
-      {/* </div> */}
     </div>
   );
 }

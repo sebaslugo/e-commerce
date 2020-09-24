@@ -1,0 +1,27 @@
+.iconGoogle {
+position: relative;
+right: 152px;
+vertical-align: middle;
+font-size: x-large;
+
+}
+
+.iconGithub {
+    position: relative;
+    right: 155px;
+    vertical-align: middle;
+    font-size: x-large;
+    
+    }
+
+    .circle { 
+        width: 60px;
+        height: 60px;
+        background: black; 
+        -moz-border-radius: 70px; 
+        -webkit-border-radius: 70px; 
+        border-radius: 50%;
+     }
+
+     
+

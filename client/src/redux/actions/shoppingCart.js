@@ -10,8 +10,6 @@ export function fetchProductsFromCart(userId) {
                     payload: res.data
                 })
             })
-
-
     }
 
 }
@@ -56,9 +54,10 @@ export function editOrden (id,data) {
                 type: EDIT_ORDEN,
                 payload: res.data
             })
+            return res
         })
         .then(() => alert('se creo la compra'))
-        .catch(err => alert(err))
+        // .catch(err => alert("este error es el que salta"))
           
     };
     

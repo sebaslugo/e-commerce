@@ -12,6 +12,7 @@ import { animateScroll as scroll} from 'react-scroll';
 import "./Header.css";
 
 
+
 let id = localStorage.getItem('idUser')
 
 class Header extends Component {

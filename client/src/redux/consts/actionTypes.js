@@ -27,8 +27,8 @@ export const SEARCH_PRODUCT = 'SEARCH_PRODUCT';
 export const GET_PRODUCT = 'GET_PRODUCT'
 export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const EDIT_PRODUCT = 'EDIT_PRODUCT';
-export const GET_PRODUCTS = 'GET_PRODUCTS';
-export const POST_PRODUCT = 'POST_PRODUCT';
+export const GET_PRODUCTS = 'GET_PRODUCTS'
+
 
 /* ------------------------------------------------------------------------------- */
 /* REGISTER */
@@ -72,5 +72,16 @@ export const LOGOUT = 'LOGOUT'
 RESET PASSWORD
 ------------------------------------------------------------------------------------- */
 export const GET_EMAIL = 'GET_EMAIL';
-export const PUT_PASSWORD = 'PUT_PASSWORD'
+export const PUT_PASSWORD = 'PUT_PASSWORD';
+
+
+/* ------------------------------------------------------------------------------------
+CHECKOUT
+------------------------------------------------------------------------------------- */
+export const SET_ADDRESS_FORM = 'SET_ADDRESS_FORM';
+export const SET_PAYMENT_FORM = 'SET_PAYMENT_FORM';
+export const CLEAR_STEP = 'CLEAR_STEP';
+export const BACK_STEP = 'BACK_STEP';
+export const NEXT_STEP = 'NEXT_STEP';
+export const CREATE_CHECKOUT = 'CREATE_CHECKOUT';
 

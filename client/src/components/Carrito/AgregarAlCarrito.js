@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
+import { Button,Icon } from 'semantic-ui-react'
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useState } from 'react'
 import agregarAlCarrito from '../../redux/actions/agregarAlCarrito'
+import './AgregarCart.css'
 
 
 
-export default function AgregarAlCarrito({ producto, precio, cantidad }) {
+export default function AgregarAlCarrito({ producto, precio, cantidad,active }) {
     const dispatch = useDispatch();
     const [id,setId] = useState()
     // const content = useSelector(state => state)
@@ -65,12 +66,15 @@ export default function AgregarAlCarrito({ producto, precio, cantidad }) {
         }             
     }
     return (
-        <div >
+        <div>
+            {active ? <Button id = 'cart_Boton'  onClick={() => (enviarDatos())}>
+                <Icon name='add to cart'/>
+                Agregar al Carrito                
+            </Button> :
             <IconButton color="primary" aria-label="Añadir al carrito"
                 onClick={() => (enviarDatos())}
-            >
-                <AddShoppingCartIcon />
-            </IconButton>
+            >    <AddShoppingCartIcon color='yellow' />
+            </IconButton>}
         </div>
     );
 }

@@ -14,9 +14,10 @@ export const PrivateRoute = ({
     return (
         <Route {...rest}
             component={(props) => {
-                if (isAuthenticated == 'Usted está autorizado correctamente!' && isAdmin == 'admin') {
+                if (isAuthenticated == 'Usted está autorizado correctamente!' && isAdmin == 'admin') {                    
                     return (<Component {...props} />)
                 } else {
+                    localStorage.clear();
                     return (<Redirect to="/login/loginuser" />)
                 }
             }}
