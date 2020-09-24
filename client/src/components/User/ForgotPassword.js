@@ -106,7 +106,7 @@ export default function CreateUser() {
             <CssBaseline />
             <div className={classes.paper}>
                 <LockIcon style={{ fontSize: 40 }} />
-                <Typography component="h1" variant="h5">
+                <Typography style={{ color: "black" }} component="h1" variant="h5">
                     ¿Olvidaste tu contraseña?
                 </Typography>
                 &nbsp;

@@ -69,11 +69,11 @@ const useStyles = makeStyles((theme) => ({
     // justifyContent: "flex-start",
 
     padding: theme.spacing(3),
+    marginLeft: 25,
     margin: 15,
     maxWidth: 800,
-    height: 200,
-    backgroundColor: grey[100]
-
+    height: 180,
+    backgroundColor: grey[100],
   },
 
   root2: {
@@ -83,7 +83,8 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     bottom: 200,
     right: 50,
-    width: 400
+    width: 400,
+
 
 
   },
@@ -98,19 +99,22 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: grey[100]
 
   },
-  checkout: {
-    padding: theme.spacing(3),
-    margin: "auto",
-  },
+
   image: {
     width: 128,
     height: 170,
+
+
   },
   img: {
     margin: "auto",
     display: "block",
     maxWidth: "100%",
     maxHeight: "100%",
+    background: "linear-gradient(135deg, #C56CD6 0%,#3425AF 100%)",
+    borderRadius: "10px",
+
+
   },
 }));
 
@@ -336,24 +340,23 @@ const ShoppingCart = () => {
                   <Grid item xs={10} sm container>
                     <Grid item xs container direction="column" spacing={2}>
                       <Grid item xs style={{ position: "absolute", marginTop: 20 }}>
-                        <Typography gutterBottom variant="subtitle1">
+                        <Typography gutterBottom variant="h3">
                           <h4>{product.name}</h4>
                         </Typography>
 
-                        <Typography variant="body2" gutterBottom>
-                          <h6>{product.description}</h6>
+                        <Typography variant="h3" gutterBottom>
+                          <h6 style={{ fontSize: 18, marginTop: 20 }}>{product.description}</h6>
                         </Typography>
                       </Grid>
                     </Grid>
                   </Grid>
                   <Grid style={{ marginTop: 20 }} item xs>
                     <Typography gutterBottom variant="subtitle1">
-                      <h4>Precio</h4>
+                      <h4 style={{ marginLeft: 19 }}>Precio</h4>
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                       <label>
-                        <strong>$</strong>
-                        {prices && prices[product.id]}
+                        <div style={{ fontSize: 18, marginTop: 17, marginLeft: 20 }}> <strong>$</strong> {prices && prices[product.id]} </div>
                       </label>
                     </Typography>
                   </Grid>
@@ -361,7 +364,7 @@ const ShoppingCart = () => {
                     <Grid item xs>
                       <Typography style={{ marginTop: 25 }} variant="body2" color="textSecondary">
                         <input
-                          style={{ height: 40, width: 120 }}
+                          style={{ height: 50, width: 120 }}
                           type="number"
                           name={product.id}
                           value={quantities && quantities[product.id]}
