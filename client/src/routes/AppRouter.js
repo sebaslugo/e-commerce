@@ -24,6 +24,7 @@ import CheckLogin from '../components/User/Checklogin'
 import Inicio from '../components/Inicio'
 import Checkout from '../components/Carrito/Checkout'
 import Dashboard from '../pages/Dashboard';
+import UsersList from '../components/Admin/UsersList';
 
 export const AppRouter = () => {
 
@@ -58,6 +59,7 @@ export const AppRouter = () => {
                     <PrivateRoute exact path="/admin/categories" component={FormCategories} isAuthenticated={statusToken} isAdmin={rol} />
                     <PrivateRoute exact path="/admin/order/:id" component={Orden} isAuthenticated={statusToken} isAdmin={rol} />
                     <PrivateRoute exact path="/admin/orderlist" component={OrderList} isAuthenticated={statusToken} isAdmin={rol} />
+                    <PrivateRoute exact path="/admin/users" component={UsersList} isAuthenticated={statusToken} isAdmin={rol} />
 
                     <Route exact path={`/login/changepass/:passwordToken`} component={ChangePassword} isAuthenticated={statusToken} />
                     <PublicRoute exact path="/login/forgot" component={ForgotPassword} isAuthenticated={statusToken} />

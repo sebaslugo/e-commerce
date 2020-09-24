@@ -87,3 +87,9 @@ export const BACK_STEP = 'BACK_STEP';
 export const NEXT_STEP = 'NEXT_STEP';
 export const CREATE_CHECKOUT = 'CREATE_CHECKOUT';
 
+/* ------------------------------------------------------------------------------- */
+/* USERS */
+/* ------------------------------------------------------------------------------- */
+export const GET_USERS = 'GET_USERS';
+export const PROMOTE_USER = 'PROMOTE_USER';
+export const DELETE_USER = 'DELETE_USER';

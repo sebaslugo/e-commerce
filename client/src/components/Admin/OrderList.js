@@ -76,7 +76,7 @@ export default function OrderList() {
 
     return (
     <Container style={{marginTop: '1.5rem'}}>
-        <h2>Order List</h2>
+        <h2>Listado de Ordenes</h2>
         <div className = "orderList_filter">
             <Dropdown text='Filtrar por estados' multiple icon='filter'>
                 <Dropdown.Menu>
@@ -95,7 +95,7 @@ export default function OrderList() {
                 <Table.Row>
                     <Table.HeaderCell>Id de la orden</Table.HeaderCell>
                     <Table.HeaderCell>Estado</Table.HeaderCell>
-                    <Table.HeaderCell>Fecha de creaciòn</Table.HeaderCell>
+                    <Table.HeaderCell>Fecha de creación</Table.HeaderCell>
                     <Table.HeaderCell>Nombre del usuario</Table.HeaderCell>
                     <Table.HeaderCell>Email del usuario</Table.HeaderCell>
                     <Table.HeaderCell>Ver Orden</Table.HeaderCell>
