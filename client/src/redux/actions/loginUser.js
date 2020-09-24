@@ -22,6 +22,7 @@ export function loginUser(loginData) {
             })
             .then(res => {
                 localStorage.setItem('token', res.data.token)
+                localStorage.setItem('statusToken', 'Usted está autorizado correctamente!')
                 window.location.assign("http://localhost:3000/checkuser/auth/login")
             })
             .catch(() => alert("Los datos del Usuario no concuerdan con un usuario existente...vuelva a intentarlo"))
