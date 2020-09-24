@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./home.css";
 import { Link } from "react-router-dom";
-import { Grid, Menu, Segment, Image, Pagination, Button,Icon } from "semantic-ui-react";
+import { Grid, Menu, Segment, Image, Pagination, Button, Icon } from "semantic-ui-react";
 import portada from "../../imagenes/portada.jpg";
 import ProductHome from './ProductHome';
 import { getCategories } from '../../redux/actions/category';
@@ -9,9 +9,11 @@ import { getProducts, getProductCategory } from '../../redux/actions/productList
 import { useDispatch, useSelector } from 'react-redux';
 import store from '../../redux/store/index';
 import agregarAlCarrito from '../../redux/actions/agregarAlCarrito';
-import { animateScroll as scroll} from 'react-scroll';
+import { animateScroll as scroll } from 'react-scroll';
+import Footer from '../Footer'
 let id = localStorage.getItem("idUser");
 let serializedState = JSON.parse(localStorage.getItem("carrito"));
+
 
 
 function Home() {
@@ -20,28 +22,28 @@ function Home() {
   const [active, setActive] = useState(1);
   const [activeItem, setActiveItem] = useState("Todos Los Productos");
   const [productos, setProductos] = useState()
-  const [validate,setValidate] = useState(true)
+  const [validate, setValidate] = useState(true)
   const paginas = productos && Math.ceil(productos.length / 6)
   const categorias = useSelector(state => state.categorias.data)
- 
 
 
-  useEffect(() => {   
-      
-    if(serializedState && id){
-      
+
+  useEffect(() => {
+
+    if (serializedState && id) {
+
       let order = serializedState.orderList.shift()
       console.log(order)
-      dispatch(agregarAlCarrito(order,id)) 
-           
-    }
-    if(!serializedState && id){
-      localStorage.removeItem('carrito') 
-    }
-    
-       
+      dispatch(agregarAlCarrito(order, id))
 
-    if(!productos && validate) {
+    }
+    if (!serializedState && id) {
+      localStorage.removeItem('carrito')
+    }
+
+
+
+    if (!productos && validate) {
       dispatch(getCategories());
       dispatch(getProducts());
       store.subscribe(() => {
@@ -49,9 +51,9 @@ function Home() {
       })
       setValidate(false)
 
-    }       
-   
-    
+    }
+
+
 
   })
 
@@ -67,8 +69,8 @@ function Home() {
     }
     setValidate(true)
     setProductos([])
-    
-    
+
+
 
   };
   const handleClick = (e, { activePage }) => {
@@ -79,7 +81,7 @@ function Home() {
       <div className='home_portada'>
         <Image src={portada} fluid />
       </div>
-      
+
       <Grid>
         <Grid.Column width={4}>
           <Menu fluid vertical tabular>
@@ -120,6 +122,9 @@ function Home() {
           </Segment>
         </Grid.Column>
       </Grid>
+      {/* <div> */}
+      <Footer />
+      {/* </div> */}
     </div>
   );
 }
