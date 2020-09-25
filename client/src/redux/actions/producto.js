@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { GET_PRODUCT } from '../consts/actionTypes'
+import Swal from 'sweetalert2'
 
 export function getProduct(id) {
     return function (dispatch) {
