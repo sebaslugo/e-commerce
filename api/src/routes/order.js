@@ -5,8 +5,11 @@ const authentication = require('../jwt');
 const isAdmin = require('../middlewares/isAdmin');
 const nodemailer = require('nodemailer');
 const inlineCss = require('nodemailer-juice');
+const ejs = require("ejs");
+const { dirname } = require("path");
 // var transporter = nodemailer.createTransport();
 // transporter.use('compile', inLineCss());
+
 
 router
 
@@ -68,49 +71,63 @@ router
             })
     })
 
-router
-    .route('/checkout/')
-    .post((req, res, next) => {
-        // const { email, name, lastName, direccion, provincia, ciudad, codigoPostal, barrio, tipoDeTarjeta, fechaDeExpiracion, numeroDeTarjeta, cvv } = req.body
-        console.log(req.body)
-        res.send('recibido')
 
-        // User.findOne({
-        //     where: { email: email }
 
-        // })
-        //     .then((user) => {
+var transport = {
+    host: 'smtp.gmail.com',
+    auth: {
+        user: 'ecomerce0410@gmail.com',
+        pass: "henry1234."
+    }
+}
 
-        //         var smtpTransport = nodemailer.createTransport({
-        //             service: 'gmail',
-        //             auth: {
-        //                 user: 'ecomerce0410@gmail.com',
-        //                 pass: "henry1234."
-        //             }
-        //         })
-        //         // nodemailer.createTransport().use('compile', inLineCss());
-        //         var mailOptions = {
-        //             to: email,
-        //             from: 'ecomerce0410@gmail.com',
-        //             subject: `Hola ${name} ${lastName}, su compra fue realizada con Exito!`,
-        //             // text: 'Recibio este correo porque usted u otra persona ha solicitado el restablecimiento de contraseña de su cuenta, para restablecer, dirigase al siguiente link :\n\n' +
-        //             //     "http://localhost:3000/login/changepass/" +
-        //             //     'Si usted no solicito un cambio de contraseña, haga caso omiso a este mensaje.\n'
-        //             text: 'For clients with plaintext support only',
-        //             html: `<div>Hola ${name}, su compra fue realizada con exito!</div>` +
-        //                 `<div> Se depachara a la direccion ${direccion} proximamente.</div>` +
-        //                 `<div> Cualquier duda responda este mail!</div>`,
-        //         };
-        //         smtpTransport.sendMail(mailOptions, function (err) {
-        //             done(err, 'done');
-        //         });
-        //         return res.status(200).json({ "token": 'Hola, el mail se despacho' })
+var transporter = nodemailer.createTransport(transport)
 
-        //     },
-        //         function (err) {
-        //             if (err) return next(err);
-        //         });
-    })
+transporter.verify((error, success) => {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Server is ready to take messages');
+    }
+});
+
+
+router.post('/checkout', (req, res, next) => {
+    // const [datauser, products] = req.body
+
+    var name = req.body.dataUser.nombre
+    var email = req.body.dataUser.email
+    // var message = req.body.message
+
+    const ejs = require("ejs");
+
+    ejs.renderFile(__dirname + "/Checkout.ejs", { name: name }, function (err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            var mainOptions = {
+                from: '"YOUR_NAME" YOUR_EMAIL_ADDRESS',
+                to: email,
+                subject: `Hola ${name}! Su compra fue realizada con Exito!`,
+                html: data
+            };
+            console.log("html data ======================>", mainOptions.html);
+
+            transporter.sendMail(mainOptions, function (err, info) {
+                if (err) {
+                    res.json({
+                        msg: 'fail'
+                    })
+                } else {
+                    res.json({
+                        msg: 'success'
+                    })
+                }
+            });
+        }
+    });
+
+})
 
 
 

@@ -52,12 +52,13 @@ export function backStep(data) {
 }
 
 export function createCheckout(data) {
+    console.log(data)
     console.log('estoy antes del axios', data.products)
     console.log('estoy antes del axios', data.userData)
     return function (dispatch) {
         return axios({
             method: "POST",
-            url: `http://localhost:3001/order/checkout/`,
+            url: `http://localhost:3001/orders/checkout/`,
             data: {
                 products: data.products,
                 dataUser: data.userData
