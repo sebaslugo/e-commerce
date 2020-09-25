@@ -4,11 +4,11 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import  { paymentForm } from '../../redux/actions/checkout'
+import { paymentForm } from '../../redux/actions/checkout'
 import { useDispatch } from 'react-redux'
 import store from '../../redux/store/index'
 import { nextStep, backStep } from '../../redux/actions/checkout'
-
+import Swal from 'sweetalert2'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -17,9 +17,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     color: "yellow",
     backgroundColor: "black",
-    "&:hover, &:focus":{
-      backgroundColor:"yellow",
-      color:"black"
+    "&:hover, &:focus": {
+      backgroundColor: "yellow",
+      color: "black"
     }
   },
   buttons: {
@@ -36,7 +36,7 @@ export default function PaymentForm() {
     CVV: "",
     fExpiracion: "",
     tTarjeta: "",
-    
+
   })
 
   const handleInputChange = (e) => {
@@ -53,11 +53,15 @@ export default function PaymentForm() {
 
   const handleSubmit = e => {
     e.preventDefault()
-    if(state.nTarjeta && state.CVV && state.fExpiracion && state.tTarjeta){
+    if (state.nTarjeta && state.CVV && state.fExpiracion && state.tTarjeta) {
       dispatch(paymentForm(state));
       dispatch(nextStep(store.getState().step.data + 1))
-    }else{
-      alert("debes completar todos los campos")
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Debes completar todos los cambios',
+      })
     }
   }
   return (
@@ -96,23 +100,23 @@ export default function PaymentForm() {
           />
         </Grid>
         <Grid item xs={12}>
-        <div className={classes.buttons}>
-        <Button 
-          onClick={handleBack} 
-          variant="contained"
-          color="primary"
-          className={classes.button}>
-          Atras
+          <div className={classes.buttons}>
+            <Button
+              onClick={handleBack}
+              variant="contained"
+              color="primary"
+              className={classes.button}>
+              Atras
         </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit}
-          className={classes.button}
-        >
-          Siguiente
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              className={classes.button}
+            >
+              Siguiente
         </Button>
-        </div>
+          </div>
         </Grid>
       </Grid>
     </React.Fragment>
