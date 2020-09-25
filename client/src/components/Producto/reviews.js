@@ -142,7 +142,7 @@ function Reviews  ({productoId})  {
               </Comment.Content>
             </Comment>
           ))}
-          {editConf === 0 && <Form onSubmit={handleSubmit} id = 'review_form'>
+          {editConf === 0 && id && <Form onSubmit={handleSubmit} id = 'review_form'>
             {description && 
             <div className='review_ranking'>
               <Typography variant="body1"   className='producto_cantidad'>

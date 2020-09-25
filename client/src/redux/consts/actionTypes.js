@@ -59,7 +59,7 @@ export const GET_ORDERS = 'GET_ORDERS';
 /* ------------------------------------------------------------------------------- */
 /* AGREGAR_AL_CARRITO */
 /* ------------------------------------------------------------------------------- */
-export const AGREGAR_AL_CARRITO = 'AGREGAR_AL_CARRITO';
+export const GET_CARTG = 'GET_CARTG';
 
 /* ------------------------------------------------------------------------------------
 REVIEWS
@@ -87,3 +87,9 @@ export const BACK_STEP = 'BACK_STEP';
 export const NEXT_STEP = 'NEXT_STEP';
 export const CREATE_CHECKOUT = 'CREATE_CHECKOUT';
 
+/* ------------------------------------------------------------------------------- */
+/* USERS */
+/* ------------------------------------------------------------------------------- */
+export const GET_USERS = 'GET_USERS';
+export const PROMOTE_USER = 'PROMOTE_USER';
+export const DELETE_USER = 'DELETE_USER';

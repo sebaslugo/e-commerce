@@ -47,7 +47,7 @@ export function deleteProducts(oldData) {
     return function(dispatch) {
         axios.delete(`http://localhost:3001/products/${oldData.id}`)
             .then(res => {
-                console.log('ESTOY EN EL .THEN DELETE', res)
+                
                 dispatch({
                     type: DELETE_PRODUCT,
                     payload: res.data
@@ -76,7 +76,7 @@ export function editProducts(newData) {
 
         })
             .then(res => {
-                console.log('ESTOY EN EL .THEN edit', res)
+                
                 dispatch({
                     type: EDIT_PRODUCT,
                     payload: res.data

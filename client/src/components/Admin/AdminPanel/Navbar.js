@@ -115,12 +115,12 @@ const Navbar = (props) => {
           </List>
           <Divider />
           <List>
-            <Link to="https://api.whatsapp.com/send?phone=543884799096&text=Hola,%20quisiera%20solicitar%20soporte%20t%C3%A9cnico%20en%20Henry%20Store,%20muchas%20gracias!" style={{ textDecoration: 'none' }}>         
+            <a href="https://api.whatsapp.com/send?phone=543884799096&text=Hola,%20quisiera%20solicitar%20soporte%20t%C3%A9cnico%20en%20Henry%20Store,%20muchas%20gracias!" style={{ textDecoration: 'none' }}>         
                 <ListItem button>
                     <ListItemIcon><WhatsAppIcon /></ListItemIcon>
                     <ListItemText primary="Soporte Técnico" />
                 </ListItem>
-            </Link>
+            </a>
           </List>
         </div>
     );

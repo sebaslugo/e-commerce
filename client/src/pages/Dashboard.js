@@ -6,14 +6,16 @@ import Container from '@material-ui/core/Container';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import CategoryIcon from '@material-ui/icons/Category';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import Navbar from '../components/Admin/AdminPanel/Navbar';
 import CardsHeader from '../components/Admin/AdminPanel/CardsHeader';
-import Cards from '../components/Admin/AdminPanel/Cards';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import Graphics from '../components/Admin/AdminPanel/Graphics';
 import TableMaterial from '../components/Admin/AdminPanel/TableMaterial';
 import GraphicsDona from '../components/Admin/AdminPanel/GraphicsDona';
 import GraphicsDonaDyn from '../components/Admin/AdminPanel/GraphicsDonaDyn';
 import GraphicsPie from '../components/Admin/AdminPanel/GraphicsPie';
+import GraphicsRadar from '../components/Admin/AdminPanel/GraphicsRadar';
 import '../assets/css/Dashboard.css';
 
 const useStyles = makeStyles(() => ({
@@ -85,27 +87,32 @@ function Dashboard(props) {
                 </Grid>
                 <Grid item xs={12} sm={4} md={4} lg={4} xl={4} className="grow">
                     <Link to="/admin/categories" style={{ textDecoration: 'none' }}>                        
-                        <CardsHeader icono={<CategoryIcon className={classes.iconos} />} titulo="CATEGORÍAS" texto="Administre todas sus categorías  (Alta, Baja y Modificación)" color="linear-gradient(315deg, #fbb034 0%, #ffdd00 74%)" font="black"/>                        
+                        <CardsHeader icono={<CategoryIcon className={classes.iconos} />} titulo="CATEGORÍAS" texto="Administre todas sus categorías (Alta, Baja y Modificación)" color="linear-gradient(315deg, #fbb034 0%, #ffdd00 74%)" font="black"/>                        
                     </Link>
                 </Grid>
                 <Grid item xs={12} sm={4} md={4} lg={4} xl={4} className="grow">
                     <Link to="/admin/orderlist" style={{ textDecoration: 'none' }}>
-                        <CardsHeader icono={<AddShoppingCartIcon className={classes.iconos} />} titulo="ORDENES" texto="Administre todas sus ordenes  (Alta, Baja y Modificación)" color="linear-gradient(315deg, #fbb034 0%, #ffdd00 74%)" font="black"/>
+                        <CardsHeader icono={<AddShoppingCartIcon className={classes.iconos} />} titulo="ORDENES" texto="Administre todas sus ordenes (Alta, Baja y Modificación)" color="linear-gradient(315deg, #fbb034 0%, #ffdd00 74%)" font="black"/>
                     </Link>
-                </Grid>            
-                <Grid item className={classes.containerCards} xs={12} sm={6} md={6} lg={6} xl={6}>
-                    <Link to="/admin/users" style={{ textDecoration: 'none' }} className="grow">
-                        <Cards titulo="PROMOVER A ADMINISTRADOR" texto="Convertir un Usuario a Administrador" />
-                    </Link>
-                    <Link to="/admin/users" style={{ textDecoration: 'none' }} className="grow">
-                        <Cards titulo="CONSULTAR UN USUARIO" texto="Consulta la información de un Usuario" />
-                    </Link>
-                    <Link to="/admin/users" style={{ textDecoration: 'none' }} className="grow">
-                        <Cards titulo="ELIMINAR UN USUARIO" texto="Eliminar a un usuario de Henry Store" />
-                    </Link>                    
-                </Grid>
-                <Grid item xs={12} sm={6} md={6} lg={6} xl={6} className={classes.containerGrafica}>
+                </Grid>  
+                <Grid item xs={12} sm={4} md={4} lg={4} xl={4} >
+                    <Grid item className="grow">
+                        <Link to="/admin/users" style={{ textDecoration: 'none' }}>
+                            <CardsHeader icono={<PeopleAltIcon className={classes.iconos} />} titulo="USUARIOS" texto="Administre todos sus Usuarios (Baja y Promover a Administrador)" color="linear-gradient(315deg, #fbb034 0%, #ffdd00 74%)" font="black"/>
+                        </Link>
+                    </Grid>
+                    <br/>
+                    <Grid item className="grow">
+                        <a href="https://api.whatsapp.com/send?phone=543884799096&text=Hola,%20quisiera%20solicitar%20soporte%20t%C3%A9cnico%20en%20Henry%20Store,%20muchas%20gracias!" style={{ textDecoration: 'none' }}>
+                            <CardsHeader icono={<HelpOutlineIcon className={classes.iconos} />} titulo="SOPORTE TÉCNICO" texto="¿Dudas sobre el funcionamiento? Contáctenos y lo asesoraremos" color="linear-gradient(315deg, #fbb034 0%, #ffdd00 74%)" font="black"/>
+                        </a>
+                    </Grid>                   
+                </Grid>                    
+                <Grid item xs={12} sm={4} md={4} lg={4} xl={4} className={classes.containerGrafica}>
                     <Graphics />
+                </Grid>
+                <Grid item xs={12} sm={4} md={4} lg={4} xl={4} className={classes.containerGrafica}>
+                    <GraphicsRadar />
                 </Grid>
                 <Grid item xs={12} sm={4} md={4} lg={4} xl={4} className="grow">
                     <Typography className={classes.title}>

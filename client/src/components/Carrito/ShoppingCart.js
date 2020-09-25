@@ -69,11 +69,11 @@ const useStyles = makeStyles((theme) => ({
     // justifyContent: "flex-start",
 
     padding: theme.spacing(3),
+    marginLeft: 25,
     margin: 15,
     maxWidth: 800,
-    height: 200,
-    backgroundColor: grey[100]
-
+    height: 180,
+    backgroundColor: grey[100],
   },
 
   root2: {
@@ -83,7 +83,8 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     bottom: 200,
     right: 50,
-    width: 400
+    width: 400,
+
 
 
   },
@@ -98,19 +99,22 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: grey[100]
 
   },
-  checkout: {
-    padding: theme.spacing(3),
-    margin: "auto",
-  },
+
   image: {
     width: 128,
     height: 170,
+
+
   },
   img: {
     margin: "auto",
     display: "block",
     maxWidth: "100%",
     maxHeight: "100%",
+    background: "linear-gradient(135deg, #C56CD6 0%,#3425AF 100%)",
+    borderRadius: "10px",
+
+
   },
 }));
 
@@ -121,6 +125,7 @@ function getSum(total, num) {
 }
 
 let id = localStorage.getItem("idUser");
+let serializedState = JSON.parse(localStorage.getItem("carrito"));
 
 
 
@@ -135,20 +140,31 @@ const ShoppingCart = () => {
   const [subtotal, setSubTotal] = useState(1);
   const [call, setCall] = useState(false);
 
-
+  useEffect(()=>{
+    if(serializedState && id){                 
+        serializedState.orderList.map((order) => {
+          dispatch(agregarAlCarrito(order, id)) 
+        })        
+      localStorage.removeItem('carrito')  
+      window.location.reload()          
+    }
+  },[])
+  
   useEffect(() => {
 
     scroll.scrollTo(200);
     let precios = {};
     let cantidades = {};
+    
 
 
+    
 
     // toma el id del storage
 
     if (id && active) {
 
-      localStorage.removeItem('carrito')
+      /* localStorage.removeItem('carrito') */
       dispatch(fetchProductsFromCart(id));
       store.subscribe(() => {
         setCart(() => store.getState().shoppingCart.data)
@@ -194,12 +210,13 @@ const ShoppingCart = () => {
 
   });
 
-
+  // seteo precios y cantidad al modificarse
 
   const onChange = (event, product) => {
     /* event.preventDefault(); */
     let quantity = event.target.value;
     let cant = quantities[product.id];
+
     if (quantity < 1) {
       setQuantity({
         ...quantities,
@@ -232,9 +249,10 @@ const ShoppingCart = () => {
     else {
       let local = {
         ...cart,
-        orderList: cart.orderList.filter((producto) => {
+        orderList: cart.orderList.map((producto) => {
           if (product.id == producto.productId && quantity <= product.stock) {
-            return producto.quantity = data.quantity
+            return producto = data
+            
           }
           else { return producto }
         })
@@ -336,24 +354,23 @@ const ShoppingCart = () => {
                   <Grid item xs={10} sm container>
                     <Grid item xs container direction="column" spacing={2}>
                       <Grid item xs style={{ position: "absolute", marginTop: 20 }}>
-                        <Typography gutterBottom variant="subtitle1">
+                        <Typography gutterBottom variant="h3">
                           <h4>{product.name}</h4>
                         </Typography>
 
-                        <Typography variant="body2" gutterBottom>
-                          <h6>{product.description}</h6>
+                        <Typography variant="h3" gutterBottom>
+                          <h6 style={{ fontSize: 18, marginTop: 20 }}>{product.description}</h6>
                         </Typography>
                       </Grid>
                     </Grid>
                   </Grid>
                   <Grid style={{ marginTop: 20 }} item xs>
                     <Typography gutterBottom variant="subtitle1">
-                      <h4>Precio</h4>
+                      <h4 style={{ marginLeft: 19 }}>Precio</h4>
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                       <label>
-                        <strong>$</strong>
-                        {prices && prices[product.id]}
+                        <div style={{ fontSize: 18, marginTop: 17, marginLeft: 20 }}> <strong>$</strong> {prices && prices[product.id]} </div>
                       </label>
                     </Typography>
                   </Grid>
@@ -361,7 +378,7 @@ const ShoppingCart = () => {
                     <Grid item xs>
                       <Typography style={{ marginTop: 25 }} variant="body2" color="textSecondary">
                         <input
-                          style={{ height: 40, width: 120 }}
+                          style={{ height: 50, width: 120 }}
                           type="number"
                           name={product.id}
                           value={quantities && quantities[product.id]}

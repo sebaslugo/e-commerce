@@ -19,7 +19,7 @@ server.post('/', async (req, res) => {
     const { name, lastName, email, password, rol } = req.body;
     if (name && email && password && lastName) {
         let hashedPassword = await bcrypt.hash(password, 10);
-        console.log(hashedPassword);
+        
         User.create({
             name: name,
             lastName: lastName,
@@ -36,6 +36,7 @@ server.post('/', async (req, res) => {
                         pass: "henry1234."
                     }
                 });
+
 
                 smtpTransport.verify((error, success) => {
                     if (error) {
@@ -68,6 +69,7 @@ server.post('/', async (req, res) => {
                     }
                 })
             })
+            
     }
 });
 
@@ -96,7 +98,7 @@ server.put('/:id', authentication.passport.authenticate('jwt', { session: false 
 /* S36 : Crear Ruta para traer usuarios */
 /* ------------------------------------------------------------------------------- */
 server.get('/', authentication.passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
-    console.log(req.body)
+    
     User.findAll()
         .then(users => {
             res.status(200).json(users)
@@ -114,7 +116,7 @@ server.delete('/:id', authentication.passport.authenticate('jwt', { session: fal
         }
     })
         .then(usuario => {
-            console.log(usuario, "se borro")
+            
             if (usuario > 0) {
                 return res.status(200).json({ message: 'the ID user: ' + id + ', has been deleted.' });
             } else {
@@ -152,7 +154,8 @@ server
         const { productId, price, quantity } = req.body.product;
         const { userId } = req.params
         let id
-        Order.findOne({ where: { userId: userId, status: 'carrito' } })
+        if(userId){
+            Order.findOne({ where: { userId: userId, status: 'carrito' } })
             .then(order => {
                 if (!order) {
                     return Order.create({
@@ -166,13 +169,17 @@ server
             })
             .then((order) => {
 
-                return OrderList.create({
-                    price,
-                    quantity,
-                    orderId: order.id,
-                    productId: productId
-                })
 
+                if(productId){
+                    return OrderList.create({
+                        price,
+                        quantity,
+                        orderId: order.id,
+                        productId: productId
+                    }) 
+
+                } 
+                return order;          
 
             })
             .then((order) => {
@@ -181,6 +188,12 @@ server
             .catch((err) => {
                 return res.status(400).json(err)
             })
+
+        }
+        else{
+            return res.status(200).json('ingresa un usuario')
+        }
+        
     })
 
 
@@ -247,7 +260,6 @@ server
                 }
             })
             .then((orderList) => {
-                console.log(carrito)
                 let obj = {
                     ordenId: carrito.id,
                     products: carrito.products,

@@ -3,29 +3,29 @@ import { SET_ADDRESS_FORM, SET_PAYMENT_FORM, CLEAR_STEP, NEXT_STEP, BACK_STEP, C
 
 
 
-export function userPurchaseData(data){
-    return function(dispatch) {
+export function userPurchaseData(data) {
+    return function (dispatch) {
         console.log(data)
         return dispatch({
             type: SET_ADDRESS_FORM,
             payload: data
         })
-        
+
     }
 }
 
-export function paymentForm(data){
+export function paymentForm(data) {
     console.log(data)
-    return function(dispatch){
+    return function (dispatch) {
         return dispatch({
-            type:SET_PAYMENT_FORM,
+            type: SET_PAYMENT_FORM,
             payload: data
         })
     }
 }
 
-export function clearStep(){
-    return function(dispatch){
+export function clearStep() {
+    return function (dispatch) {
         return dispatch({
             type: CLEAR_STEP,
             payload: 0
@@ -33,8 +33,8 @@ export function clearStep(){
     }
 }
 
-export function nextStep(data){
-    return function(dispatch){
+export function nextStep(data) {
+    return function (dispatch) {
         return dispatch({
             type: NEXT_STEP,
             payload: data
@@ -42,8 +42,8 @@ export function nextStep(data){
     }
 }
 
-export function backStep(data){
-    return function(dispatch){
+export function backStep(data) {
+    return function (dispatch) {
         return dispatch({
             type: BACK_STEP,
             payload: data
@@ -51,19 +51,26 @@ export function backStep(data){
     }
 }
 
-export function createCheckout(data){
-    return function(dispatch){
+export function createCheckout(data) {
+    console.log(data)
+    console.log('estoy antes del axios', data.products)
+    console.log('estoy antes del axios', data.userData)
+    return function (dispatch) {
         return axios({
             method: "POST",
-            url: `http://localhost:3001/order/checkout/`,
-            data: data
+            url: `http://localhost:3001/orders/checkout/`,
+            data: {
+                products: data.products,
+                dataUser: data.userData
+            }
         })
-        .then(res =>{
-            dispatch({
-                type: CREATE_CHECKOUT,
-                payload: res.data
+            .then(res => {
+                console.log("estoy en el .then", data)
+                dispatch({
+                    type: CREATE_CHECKOUT,
+                    payload: res
+                })
+                return res
             })
-            return res
-        })
     }
 }
