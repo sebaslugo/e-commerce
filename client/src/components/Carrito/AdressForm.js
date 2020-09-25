@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 export default function AddressForm() {
   const classes = useStyles();
   const dispatch = useDispatch()
+  const [permiso, setPermiso] = useState(false)
   const [state, setState] = useState({
     nombre: "",
     apellido: "",
@@ -44,6 +45,19 @@ export default function AddressForm() {
     email: ""
   })
 
+
+  useEffect(() => {
+    store.subscribe(() => store.getState().shoppingCart.data? setPermiso(true)
+    : 
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Debes agregar productos si quieres entrar a la forma de pago',
+                }),
+    window.location.assign("http:localhost:3000/")
+    )
+  }, [])
+  
   const handleInputChange = (e) => {
     e.preventDefault();
     setState({

@@ -105,7 +105,7 @@ export default function Footer() {
                 <Container maxWidth="sm" className={classes.contenedor}>
                     <Typography variant="h5">Created By</Typography>
                     <Typography variant="body2" >
-                        <Link href="https://www.linkedin.com/in/david-alvarez-0179651b3/" onClick={preventDefault} color="inherit">
+                        <Link href="https://www.linkedin.com/in/david-alvarez-0179651b3/" color="inherit">
                             David Alvarez
                         </Link>
                     </Typography>
@@ -115,22 +115,22 @@ export default function Footer() {
                         </Link>
                     </Typography>
                     <Typography variant="body2">
-                        <Link href="https://www.linkedin.com/in/ariel-lizarraga-35871b1b0/" onClick={preventDefault} color="inherit">
+                        <Link href="https://www.linkedin.com/in/ariel-lizarraga-35871b1b0/" color="inherit">
                             Ariel Lizarraga
                         </Link>
                     </Typography>
                     <Typography variant="body2" >
-                        <Link href="https://www.linkedin.com/in/jhoan-sebastian-lugo-ruiz-8577b01b6/" onClick={preventDefault} color="inherit">
+                        <Link href="https://www.linkedin.com/in/jhoan-sebastian-lugo-ruiz-8577b01b6/" color="inherit">
                             Jhoan Sebastian Lugo
                         </Link>
                     </Typography>
                     <Typography variant="body2" >
-                        <Link href="https://www.linkedin.com/in/tomas-maldonado-668b251b1/" onClick={preventDefault} color="inherit">
+                        <Link href="https://www.linkedin.com/in/tomas-maldonado-668b251b1/" color="inherit">
                             Tomas Maldonado
                         </Link>
                     </Typography>
                     <Typography variant="body2" >
-                        <Link href="https://www.linkedin.com/in/pablo-misael-peloc-b37884133/" onClick={preventDefault} color="inherit">
+                        <Link href="https://www.linkedin.com/in/pablo-misael-peloc-b37884133/" color="inherit">
                             Pablo Misael Peloc
                         </Link>
                     </Typography>

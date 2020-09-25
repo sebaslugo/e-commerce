@@ -138,7 +138,7 @@ const ShoppingCart = () => {
   const [quantities, setQuantity] = useState();
   const [prices, setPrices] = useState();
   const [active, setActive] = useState(true);
-  const [subtotal, setSubTotal] = useState(1);
+  const [subtotal, setSubTotal] = useState(0);
   const [call, setCall] = useState(false);
 
   useEffect(() => {
@@ -294,8 +294,7 @@ const ShoppingCart = () => {
       let data = {
         'status': 'creada'
       }
-      /* dispatch(editOrden(cart.ordenId,data))
-      setCart({}) */
+      window.location.assign(`http://localhost:3000/user/cart/${id}/checkout`)
 
     }
     else {
@@ -408,7 +407,7 @@ const ShoppingCart = () => {
 
 
             ))}
-          {subtotal && call ? <div className={classes.root2}>
+          <div className={classes.root2}>
             <Paper className={classes.paper2}>
               <Grid boxShadow={10} container spacing={2}>
                 <Grid item>
@@ -438,7 +437,7 @@ const ShoppingCart = () => {
                         Total de la compra:
                       </Typography>
                       <Typography style={{ textAlign: "center", top: 60 }} variant="h4">
-                        ${subtotal === 1 ? 0 : subtotal}
+                        ${subtotal}
                       </Typography>
                       &nbsp;
                       <Button onClick={handleBuy} className={classes.margin} size="medium">
@@ -455,12 +454,7 @@ const ShoppingCart = () => {
                 </Grid>
               </Grid>
             </Paper>
-          </div> : <div><h1 style={{ textAlign: "center", marginTop: 160 }}>Tu carrito está vacío, ¡Agrega un producto!
-          </h1>
-              <RemoveShoppingCartIcon style={{ fontSize: 200, marginLeft: 600, marginTop: 20 }} />
-            </div>
-          }
-
+          </div>
         </div>
 
 
