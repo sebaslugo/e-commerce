@@ -1,6 +1,7 @@
 import { GET_EMAIL } from '../consts/actionTypes';
 import axios from 'axios'
 import store from '../store/index'
+import Swal from 'sweetalert2'
 
 export function getEmail(loginData) {
     return function (dispatch) {
