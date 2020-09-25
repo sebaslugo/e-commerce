@@ -289,8 +289,7 @@ const ShoppingCart = () => {
       let data = {
         'status': 'creada'
       }
-      /* dispatch(editOrden(cart.ordenId,data))
-      setCart({}) */
+      window.location.assign(`http://localhost:3000/user/cart/${id}/checkout`)
 
     }
     else {
