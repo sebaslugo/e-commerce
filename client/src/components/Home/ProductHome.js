@@ -1,12 +1,15 @@
 import React,{useEffect,useState} from "react";
-import {Card,Image,Button,Reveal} from "semantic-ui-react";
+/* import {Card,Image,Button,Reveal} from "semantic-ui-react"; */
 import { Grid } from '@material-ui/core';
 import AgregarAlCarrito from '../Carrito/AgregarAlCarrito';
-import { Link } from "react-router-dom";
 import './ProductHome.css';
+import { useDispatch} from 'react-redux';
+import agregarAlCarrito from '../../redux/actions/agregarAlCarrito';
+let id = localStorage.getItem("idUser");
+let serializedState = JSON.parse(localStorage.getItem("carrito"));
 
 function ProductHome ({active,activeItem,productos,validate}) {
-
+    const dispatch = useDispatch()
     const [productPage, setProductPage] = useState();
     const [product,setProduct] = useState();
     
@@ -25,12 +28,13 @@ function ProductHome ({active,activeItem,productos,validate}) {
             }
             setProductPage(page)
             setProduct(productos)
+            
         }
-        
+           
         
           
     })
-    console.log(productPage)
+    
     return (                  
         <div className="container">
             <Grid container spacing={3}>

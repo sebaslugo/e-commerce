@@ -18,8 +18,8 @@ export function fetchProductsFromCart(userId) {
 export function EmptyCart(userId) {
     return dispatch => {
         axios.delete(`http://localhost:3001/users/${userId}/cart`)
-            .then(res =>
-                alert("Se vacio el carrito")
+            .catch(err =>
+                console.log(err)
             );
     }
 }

@@ -125,6 +125,7 @@ function getSum(total, num) {
 }
 
 let id = localStorage.getItem("idUser");
+let serializedState = JSON.parse(localStorage.getItem("carrito"));
 
 
 
@@ -139,20 +140,31 @@ const ShoppingCart = () => {
   const [subtotal, setSubTotal] = useState(1);
   const [call, setCall] = useState(false);
 
-
+  useEffect(()=>{
+    if(serializedState && id){                 
+        serializedState.orderList.map((order) => {
+          dispatch(agregarAlCarrito(order, id)) 
+        })        
+      localStorage.removeItem('carrito')  
+      window.location.reload()          
+    }
+  },[])
+  
   useEffect(() => {
 
     scroll.scrollTo(200);
     let precios = {};
     let cantidades = {};
+    
 
 
+    
 
     // toma el id del storage
 
     if (id && active) {
 
-      localStorage.removeItem('carrito')
+      /* localStorage.removeItem('carrito') */
       dispatch(fetchProductsFromCart(id));
       store.subscribe(() => {
         setCart(() => store.getState().shoppingCart.data)
@@ -198,12 +210,13 @@ const ShoppingCart = () => {
 
   });
 
-
+  // seteo precios y cantidad al modificarse
 
   const onChange = (event, product) => {
     /* event.preventDefault(); */
     let quantity = event.target.value;
     let cant = quantities[product.id];
+
     if (quantity < 1) {
       setQuantity({
         ...quantities,
@@ -236,9 +249,10 @@ const ShoppingCart = () => {
     else {
       let local = {
         ...cart,
-        orderList: cart.orderList.filter((producto) => {
+        orderList: cart.orderList.map((producto) => {
           if (product.id == producto.productId && quantity <= product.stock) {
-            return producto.quantity = data.quantity
+            return producto = data
+            
           }
           else { return producto }
         })
