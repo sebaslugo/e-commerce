@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getEmail } from '../../redux/actions/forgotPassword';
 import { Select } from 'semantic-ui-react'
 import LockIcon from '@material-ui/icons/Lock';
+import Swal from 'sweetalert2'
 
 const rolOptions = [
     { key: 'user', value: 'user', text: 'Usuario' },
@@ -96,7 +97,11 @@ export default function CreateUser() {
             dispatch(getEmail(datos))
         }
         else {
-            alert('Por favor, indique un email valido')
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Por favor, indique un mail válido',
+            })
         }
 
     }

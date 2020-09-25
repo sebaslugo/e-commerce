@@ -18,6 +18,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import RemoveShoppingCartIcon from '@material-ui/icons/RemoveShoppingCart';
 import { animateScroll as scroll } from 'react-scroll';
+import Swal from 'sweetalert2'
 
 
 
@@ -232,7 +233,11 @@ const ShoppingCart = () => {
         [product.id]: quantity < cant ? cant - 1 : cant + 1,
       });
     } else {
-      alert("No hay suficientes unidades del producto");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'No hay suficientes unidades del producto',
+      })
       setQuantity({
         ...quantities,
         [product.id]: product.stock,

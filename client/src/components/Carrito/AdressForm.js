@@ -6,9 +6,9 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux'
 import store from '../../redux/store/index'
-import  { userPurchaseData } from '../../redux/actions/checkout'
+import { userPurchaseData } from '../../redux/actions/checkout'
 import { nextStep } from '../../redux/actions/checkout'
-
+import Swal from 'sweetalert2'
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -16,9 +16,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     color: "yellow",
     backgroundColor: "black",
-    "&:hover, &:focus":{
-      backgroundColor:"yellow",
-      color:"black"
+    "&:hover, &:focus": {
+      backgroundColor: "yellow",
+      color: "black"
     }
   },
   contenedor: {
@@ -45,10 +45,15 @@ export default function AddressForm() {
     email: ""
   })
 
+
   useEffect(() => {
     store.subscribe(() => store.getState().shoppingCart.data? setPermiso(true)
     : 
-    alert("Debes agregar al carrito productos si quieres entrar a la forma de pago"),
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Debes agregar productos si quieres entrar a la forma de pago',
+                }),
     window.location.assign("http:localhost:3000/")
     )
   }, [])
@@ -62,11 +67,15 @@ export default function AddressForm() {
   }
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (state.nombre && state.apellido && state.direccion && state.ciudad && state.provincia && state.cPostal && state.barrio && state.email){
+    if (state.nombre && state.apellido && state.direccion && state.ciudad && state.provincia && state.cPostal && state.barrio && state.email) {
       dispatch(userPurchaseData(state));
       dispatch(nextStep(store.getState().step.data + 1))
-    }else{
-      alert("Debes completar todos los campos")
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Campos incompletos',
+        text: 'Debes completar todos los campos',
+      })
     }
   }
   return (
@@ -101,16 +110,16 @@ export default function AddressForm() {
             />
           </Grid>
           <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="cvv"
-            name="email"
-            label="email"
-            fullWidth
-            autoComplete="cc-email"
-            onChange={handleInputChange}
-          />
-        </Grid>
+            <TextField
+              required
+              id="cvv"
+              name="email"
+              label="email"
+              fullWidth
+              autoComplete="cc-email"
+              onChange={handleInputChange}
+            />
+          </Grid>
           <Grid item xs={12} md={6}>
             <TextField
               required
@@ -134,7 +143,7 @@ export default function AddressForm() {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField id="state" name="provincia" label="Estado/Provincia/Region" fullWidth onChange={handleInputChange}/>
+            <TextField id="state" name="provincia" label="Estado/Provincia/Region" fullWidth onChange={handleInputChange} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -159,16 +168,16 @@ export default function AddressForm() {
             />
           </Grid>
           <Grid item xs={12}>
-          <div className={classes.buttons}>
-            <Button
-              variant="contained"
-              // color="yellow"
-              onClick={handleSubmit}
-              className={classes.button}
-            >
-              Siguiente
+            <div className={classes.buttons}>
+              <Button
+                variant="contained"
+                // color="yellow"
+                onClick={handleSubmit}
+                className={classes.button}
+              >
+                Siguiente
             </Button>
-          </div>
+            </div>
           </Grid>
         </Grid>
       </React.Fragment>
