@@ -111,7 +111,7 @@ export default function Footer() {
                     </Typography>
                     <Typography variant="body2" >
                         <Link href="https://www.linkedin.com/in/manuel-de-la-torre-928b45152/" onClick={preventDefault} color="inherit">
-                            Manuel De La Torre
+                            Manuel de la Torre
                         </Link>
                     </Typography>
                     <Typography variant="body2">
