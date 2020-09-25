@@ -137,28 +137,28 @@ const ShoppingCart = () => {
   const [quantities, setQuantity] = useState();
   const [prices, setPrices] = useState();
   const [active, setActive] = useState(true);
-  const [subtotal, setSubTotal] = useState(1);
+  const [subtotal, setSubTotal] = useState(0);
   const [call, setCall] = useState(false);
 
-  useEffect(()=>{
-    if(serializedState && id){                 
-        serializedState.orderList.map((order) => {
-          dispatch(agregarAlCarrito(order, id)) 
-        })        
-      localStorage.removeItem('carrito')  
-      window.location.reload()          
+  useEffect(() => {
+    if (serializedState && id) {
+      serializedState.orderList.map((order) => {
+        dispatch(agregarAlCarrito(order, id))
+      })
+      localStorage.removeItem('carrito')
+      window.location.reload()
     }
-  },[])
-  
+  }, [])
+
   useEffect(() => {
 
     scroll.scrollTo(200);
     let precios = {};
     let cantidades = {};
-    
 
 
-    
+
+
 
     // toma el id del storage
 
@@ -252,7 +252,7 @@ const ShoppingCart = () => {
         orderList: cart.orderList.map((producto) => {
           if (product.id == producto.productId && quantity <= product.stock) {
             return producto = data
-            
+
           }
           else { return producto }
         })
@@ -402,7 +402,7 @@ const ShoppingCart = () => {
 
 
             ))}
-          {subtotal && call ? <div className={classes.root2}>
+          <div className={classes.root2}>
             <Paper className={classes.paper2}>
               <Grid boxShadow={10} container spacing={2}>
                 <Grid item>
@@ -432,7 +432,7 @@ const ShoppingCart = () => {
                         Total de la compra:
                       </Typography>
                       <Typography style={{ textAlign: "center", top: 60 }} variant="h4">
-                        ${subtotal === 1 ? 0 : subtotal}
+                        ${subtotal}
                       </Typography>
                       &nbsp;
                       <Button onClick={handleBuy} className={classes.margin} size="medium">
@@ -449,12 +449,7 @@ const ShoppingCart = () => {
                 </Grid>
               </Grid>
             </Paper>
-          </div> : <div><h1 style={{ textAlign: "center", marginTop: 160 }}>Tu carrito está vacío, ¡Agrega un producto!
-          </h1>
-              <RemoveShoppingCartIcon style={{ fontSize: 200, marginLeft: 600, marginTop: 20 }} />
-            </div>
-          }
-
+          </div>
         </div>
 
 
