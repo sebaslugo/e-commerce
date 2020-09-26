@@ -26,6 +26,7 @@ import Checkout from '../components/Carrito/Checkout'
 import Dashboard from '../pages/Dashboard';
 import UsersList from '../components/Admin/UsersList';
 import PerfilUser from '../components/User/PerfilUser';
+import store from '../redux/store/index'
 
 export const AppRouter = () => {
 
@@ -33,9 +34,12 @@ export const AppRouter = () => {
     const rol = localStorage.getItem('rol');
     const statusToken = localStorage.getItem('statusToken');
     const id = localStorage.getItem('idUser')
+    const [carrito, setCarrito] = useState(false)
+
 
     useEffect(() => {
         dispatch(getUser());
+        store.subscribe(() => setCarrito(store.getState().shoppingCart.data ? true: false))
     });
 
     return (
@@ -45,7 +49,7 @@ export const AppRouter = () => {
                 <Route   exact path = '/:Category' component = {Inicio}/>
 
                 <Route path ='/:category' component={Header}/> 
-                         
+
                 <Switch>
                     <Route exact path="/:category" component={Home}/>                    
                     <Route exact path="/producto/:id" component={Producto} />
@@ -53,8 +57,10 @@ export const AppRouter = () => {
                     <Route exact path={`/user/cart/${id}`} component={ShoppingCart} />
                     <Route exact path="/checkuser/auth/:id/:token" component={CheckUser} />
                     <Route exact path="/checkuser/auth/login" component={CheckLogin}/>
-                    <Route exact path={`/user/cart/${id}/checkout/`} component={Checkout} isAuthenticated={statusToken} />
+                
                     <Route exact path= {`/user/perfil/${id}`} component={PerfilUser}/>
+                    <Route exact path={`/user/cart/${id}/checkout/`} component={() => Checkout(carrito)} isAuthenticated={statusToken} />
+               
 
                     <PrivateRoute exact path="/admin/panel" component={Dashboard} isAuthenticated={statusToken} isAdmin={rol} />
                     <PrivateRoute exact path="/admin/products" component={ProducList} isAuthenticated={statusToken} isAdmin={rol} />

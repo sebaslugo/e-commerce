@@ -6,6 +6,8 @@ const bcrypt = require('bcrypt');
 const authentication = require('../jwt');
 const nodemailer = require('nodemailer');
 const isAdmin = require('../middlewares/isAdmin');
+const ejs = require("ejs");
+
 
 
 /* ------------------------------------------------------------------------------- */
@@ -15,7 +17,7 @@ server.post('/', async (req, res) => {
     const { name, lastName, email, password, rol } = req.body;
     if (name && email && password && lastName) {
         let hashedPassword = await bcrypt.hash(password, 10);
-        
+
         User.create({
             name: name,
             lastName: lastName,
@@ -26,38 +28,49 @@ server.post('/', async (req, res) => {
             .then((user) => {
 
                 var smtpTransport = nodemailer.createTransport({
-                    service: 'gmail',
+                    host: 'smtp.gmail.com',
                     auth: {
                         user: 'ecomerce0410@gmail.com',
                         pass: "henry1234."
                     }
                 });
-                var mailOptions = {
-                    to: email,
-                    from: 'ecomerce0410@gmail.com',
-                    subject: `Hola ${user.name}`,
-                    text: 'Usted se ha registrado correctamente en Henry Store!\n\n' +
-                        'http://' + "localhost:3000" + '\n\n'
-                };
-                smtpTransport.sendMail(mailOptions, function (err, done) {
-                    /* req.flash('success', 'An e-mail has been sent to ' + email + ' with further instructions.'); */
-                    done(err, 'done');
+
+
+                smtpTransport.verify((error, success) => {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Server is ready to take messages');
+                    }
                 });
-                return (user)
+                ejs.renderFile(__dirname + "/NewUser.ejs", { name: name }, function (err, data) {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        var mainOptions = {
+                            to: email,
+                            from: 'ecomerce0410@gmail.com',
+                            subject: `Hola ${user.name}`,
+                            html: data,
+                        };
+                        smtpTransport.sendMail(mainOptions, function (err, info) {
+                            if (err) {
+                                res.json({
+                                    msg: 'fail'
+                                })
+                            } else {
+                                res.json({
+                                    msg: 'success'
+                                })
+                            }
+                        });
+                    }
+                })
+            })
 
-            })
-            .then(user => {
-               
-                return res.status(201).json(user)
-            })
-            .catch(error => {
-              
-                return res.status(400).send(error)
-            })
     }
+});
 
-
-})
 /* ------------------------------------------------------------------------------- */
 /* S35 : Crear Ruta para modificar Usuario */
 /* ------------------------------------------------------------------------------- */
@@ -83,7 +96,7 @@ server.put('/:id', authentication.passport.authenticate('jwt', { session: false 
 /* S36 : Crear Ruta para traer usuarios */
 /* ------------------------------------------------------------------------------- */
 server.get('/', authentication.passport.authenticate('jwt', { session: false }), isAdmin, (req, res) => {
-    
+
     User.findAll()
         .then(users => {
             res.status(200).json(users)
@@ -101,7 +114,7 @@ server.delete('/:id', authentication.passport.authenticate('jwt', { session: fal
         }
     })
         .then(usuario => {
-            
+
             if (usuario > 0) {
                 return res.status(200).json({ message: 'the ID user: ' + id + ', has been deleted.' });
             } else {
@@ -139,43 +152,46 @@ server
         const { productId, price, quantity } = req.body.product;
         const { userId } = req.params
         let id
-        if(userId){
+        if (userId) {
             Order.findOne({ where: { userId: userId, status: 'carrito' } })
-            .then(order => {
-                if (!order) {
-                    return Order.create({
-                        status: 'carrito'
-                    })
-                }
-                return order
-            })
-            .then(order => {
-                return order.setUser(userId)
-            })
-            .then((order) => {
-                if(productId){
-                    return OrderList.create({
-                        price,
-                        quantity,
-                        orderId: order.id,
-                        productId: productId
-                    }) 
+                .then(order => {
+                    if (!order) {
+                        return Order.create({
+                            status: 'carrito'
+                        })
+                    }
+                    return order
+                })
+                .then(order => {
+                    return order.setUser(userId)
+                })
+                .then((order) => {
 
-                } 
-                return order;          
-            })
-            .then((order) => {
-                return res.status(200).json(order)
-            })
-            .catch((err) => {
-                return res.status(400).json(err)
-            })
+
+                    if (productId) {
+                        return OrderList.create({
+                            price,
+                            quantity,
+                            orderId: order.id,
+                            productId: productId
+                        })
+
+                    }
+                    return order;
+
+                })
+                .then((order) => {
+                    return res.status(200).json(order)
+                })
+                .catch((err) => {
+                    return res.status(400).json(err)
+                })
 
         }
-        else{
+        else {
             return res.status(200).json('ingresa un usuario')
         }
-        
+
     })
 
 
@@ -263,19 +279,22 @@ server
         const { productId } = req.params
         OrderList.destroy({
             where: { orderId: orderId, productId: productId }
-        }).then(respon =>  res.status(200).json(respon))
+        }).then(respon => res.status(200).json(respon))
             .catch(err => res.send(err))
     })
+
+
 
 server
     .route("/forgot")
     .post((req, res, next) => {
+        let name;
         const { email } = req.body
         User.findOne({
             where: { email: email }
 
         }).then((user) => {
-
+            name = user.name;
             let payload = { id: user.id }
             let token = authentication.jwt.sign(payload, authentication.jwtOptions.secretOrKey)
             user.passwordToken = token;
@@ -285,32 +304,51 @@ server
 
         })
             .then((token) => {
-
                 var smtpTransport = nodemailer.createTransport({
-                    service: 'gmail',
+                    host: "smtp.gmail.com",
                     auth: {
                         user: 'ecomerce0410@gmail.com',
                         pass: "henry1234."
                     }
                 });
-                var mailOptions = {
-                    to: email,
-                    from: 'ecomerce0410@gmail.com',
-                    subject: 'Solicitud de cambio de contraseña',
-                    text: 'Recibio este correo porque usted u otra persona ha solicitado el restablecimiento de contraseña de su cuenta, para restablecer, dirigase al siguiente link :\n\n' +
-                        "http://localhost:3000/login/changepass/" + token + '\n\n' +
-                        'Si usted no solicito un cambio de contraseña, haga caso omiso a este mensaje.\n'
-                };
-                smtpTransport.sendMail(mailOptions, function (err) {
-                    done(err, 'done');
-                });
-                return res.status(200).json({ "token": token })
 
-            },
-                function (err) {
-                    if (err) return next(err);
+                smtpTransport.verify((error, success) => {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Server is ready to take messages');
+                    }
                 });
-    })
+
+                ejs.renderFile(__dirname + "/ChangePassword.ejs", { name: name, token: token }, function (err, data) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        var mainOptions = {
+                            from: 'ecomerce0410@gmail.com',
+                            to: email,
+                            subject: 'Solicitud de cambio de contraseña',
+                            html: data
+                        };
+                        //console.log("html data ======================>", mainOptions.html);
+
+                        smtpTransport.sendMail(mainOptions, function (err, info) {
+                            if (err) {
+                                res.json({
+                                    msg: 'fail'
+                                })
+                            } else {
+                                res.json({
+                                    msg: 'success'
+                                })
+                            }
+                        });
+                    }
+                })
+
+
+            })
+    });
 /* ------------------------------------------------------------------------------- */
 //  Ruta para cmabiar contraseña
 /* ------------------------------------------------------------------------------- */

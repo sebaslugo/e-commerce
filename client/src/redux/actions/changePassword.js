@@ -1,5 +1,6 @@
 import { PUT_PASSWORD } from '../consts/actionTypes';
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 export function putPassword(token, password) {
     return function (dispatch) {
@@ -19,9 +20,19 @@ export function putPassword(token, password) {
                 return res;
             })
             .then(res => {
-                alert("Se ha cambiado la contraseña");
+                Swal.fire(
+                    'Aviso',
+                    'Se ha cambiado la contraseña correctamente',
+                    'success'
+                )
                 window.location.assign("http://localhost:3000/")
             })
-            .catch(() => alert("Los datos del Usuario no concuerdan con un usuario existente...vuelva a intentarlo"))
+            .catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: "Los datos del Usuario no concuerdan con un usuario existente...vuelva a intentarlo",
+                })
+            })
     }
 }

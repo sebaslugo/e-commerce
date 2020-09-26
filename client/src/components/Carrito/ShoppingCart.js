@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
-import DeleteIcon from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import { grey, yellow } from "@material-ui/core/colors/";
 import store from "../../redux/store/index";
@@ -18,6 +16,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import RemoveShoppingCartIcon from '@material-ui/icons/RemoveShoppingCart';
 import { animateScroll as scroll } from 'react-scroll';
+import Swal from 'sweetalert2'
 
 
 
@@ -137,28 +136,29 @@ const ShoppingCart = () => {
   const [quantities, setQuantity] = useState();
   const [prices, setPrices] = useState();
   const [active, setActive] = useState(true);
-  const [subtotal, setSubTotal] = useState(1);
+  const [subtotal, setSubTotal] = useState(0);
   const [call, setCall] = useState(false);
+  const [permiso, setPermiso] = useState(false)
 
-  useEffect(()=>{
-    if(serializedState && id){                 
-        serializedState.orderList.map((order) => {
-          dispatch(agregarAlCarrito(order, id)) 
-        })        
-      localStorage.removeItem('carrito')  
-      window.location.reload()          
+  useEffect(() => {
+    if (serializedState && id) {
+      serializedState.orderList.map((order) => {
+        dispatch(agregarAlCarrito(order, id))
+      })
+      localStorage.removeItem('carrito')
+      window.location.reload()
     }
-  },[])
-  
+  }, [])
+
   useEffect(() => {
 
     scroll.scrollTo(200);
     let precios = {};
     let cantidades = {};
-    
 
 
-    
+
+
 
     // toma el id del storage
 
@@ -168,6 +168,9 @@ const ShoppingCart = () => {
       dispatch(fetchProductsFromCart(id));
       store.subscribe(() => {
         setCart(() => store.getState().shoppingCart.data)
+        store.getState().shoppingCart.data ? setPermiso(true):
+        setPermiso(false)
+
       });
       setActive(false);
 
@@ -232,7 +235,11 @@ const ShoppingCart = () => {
         [product.id]: quantity < cant ? cant - 1 : cant + 1,
       });
     } else {
-      alert("No hay suficientes unidades del producto");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'No hay suficientes unidades del producto',
+      })
       setQuantity({
         ...quantities,
         [product.id]: product.stock,
@@ -252,7 +259,7 @@ const ShoppingCart = () => {
         orderList: cart.orderList.map((producto) => {
           if (product.id == producto.productId && quantity <= product.stock) {
             return producto = data
-            
+
           }
           else { return producto }
         })
@@ -286,12 +293,7 @@ const ShoppingCart = () => {
 
   const handleBuy = () => {
     if (id) {
-      let data = {
-        'status': 'creada'
-      }
-      /* dispatch(editOrden(cart.ordenId,data))
-      setCart({}) */
-
+      window.location.assign(`http://localhost:3000/user/cart/${id}/checkout/`)
     }
     else {
       window.location.assign("http://localhost:3000/login/createuser")
@@ -403,7 +405,7 @@ const ShoppingCart = () => {
 
 
             ))}
-          {subtotal && call ? <div className={classes.root2}>
+          <div className={classes.root2}>
             <Paper className={classes.paper2}>
               <Grid boxShadow={10} container spacing={2}>
                 <Grid item>
@@ -433,7 +435,7 @@ const ShoppingCart = () => {
                         Total de la compra:
                       </Typography>
                       <Typography style={{ textAlign: "center", top: 60 }} variant="h4">
-                        ${subtotal === 1 ? 0 : subtotal}
+                        ${subtotal}
                       </Typography>
                       &nbsp;
                       <Button onClick={handleBuy} className={classes.margin} size="medium">
@@ -450,12 +452,7 @@ const ShoppingCart = () => {
                 </Grid>
               </Grid>
             </Paper>
-          </div> : <div><h1 style={{ textAlign: "center", marginTop: 160 }}>Tu carrito está vacío, ¡Agrega un producto!
-          </h1>
-              <RemoveShoppingCartIcon style={{ fontSize: 200, marginLeft: 600, marginTop: 20 }} />
-            </div>
-          }
-
+          </div>
         </div>
 
 
