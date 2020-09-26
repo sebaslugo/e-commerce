@@ -57,8 +57,10 @@ export const AppRouter = () => {
                     <Route exact path={`/user/cart/${id}`} component={ShoppingCart} />
                     <Route exact path="/checkuser/auth/:id/:token" component={CheckUser} />
                     <Route exact path="/checkuser/auth/login" component={CheckLogin}/>
+                
+                    <Route exact path= {`/user/perfil/${id}`} component={PerfilUser}/>
                     <Route exact path={`/user/cart/${id}/checkout/`} component={() => Checkout(carrito)} isAuthenticated={statusToken} />
-                    <Route exact path= "/user/perfil" component={PerfilUser}/>
+               
 
                     <PrivateRoute exact path="/admin/panel" component={Dashboard} isAuthenticated={statusToken} isAdmin={rol} />
                     <PrivateRoute exact path="/admin/products" component={ProducList} isAuthenticated={statusToken} isAdmin={rol} />
