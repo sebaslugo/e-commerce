@@ -46,11 +46,7 @@ export default function AddressForm() {
   })
 
   useEffect(() => {
-    store.subscribe(() => store.getState().shoppingCart.data? setPermiso(true)
-    : 
-    alert("Debes agregar al carrito productos si quieres entrar a la forma de pago"),
-    window.location.assign("http:localhost:3000/")
-    )
+    store.subscribe(() => store.getState().shoppingCart.data)
   }, [])
   
   const handleInputChange = (e) => {

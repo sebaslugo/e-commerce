@@ -6,7 +6,6 @@ import Paper from '@material-ui/core/Paper';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddressForm from './AdressForm';
 import PaymentForm from './PaymentForm';
@@ -70,7 +69,11 @@ function getStepContent(step) {
     }
 }
 
-export default function Checkout() {
+export default function Checkout(carrito) {
+    if(!carrito){
+        alert("Para acceder al modo de compra debes elegir un producto primero")
+        window.location.assign("http://localhost:3000/")
+    }
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const dispatch = useDispatch()
@@ -79,9 +82,6 @@ export default function Checkout() {
     }, [])
 
     store.subscribe(() => setActiveStep(() => store.getState().step.data))
-    const handleBack = () => {
-        setActiveStep(activeStep - 1);
-    };
 
     return (
         <React.Fragment>
