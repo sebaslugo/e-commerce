@@ -1,58 +1,79 @@
-.perfil{
-  background-color: white;
-  height: 100vh;
+.perfil__parent {
+  background-color: #252E3B;
+  height: 400px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
 }
-.perfil__container {
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  border:1px solid rgb(0, 0, 0) ;
+h1 {
+  margin: 0px;
+  font-family: monospace;
 }
-
-.perfil__logo{
-  margin-top: 20px;
-  margin-bottom: 20px;
-  width:100px;
-  object-fit: contain;
-  background-color: black;
+.perfil__box-one {
+  width: 35%;
+  color: white;
+  background-color: #252E3B;
+  padding: 50px;
 }
-.perfil__container > h1{
-  font-weight: 500;
-  margin-bottom: 40px;
-  background-color: black;
+.perfil__box-one >h1 {
+  height: 100px;
+  width: 350px;
+}
+.perfil__box-two {
+  width: 80%;
+  background: linear-gradient(-57deg, #F0DA50 63%, #252E3B 42%);
   color: white;
 }
-.perfil__container>form>h5{
-  margin-bottom: 5px;
+.perfil__logo {
+  max-width: 100%;
+  height: auto;
+  border-radius: 50%;
+  border: 3px solid #F0DA50;
 }
-.perfil__container > form > h3 {
-  height: 30px;
-  margin-bottom: 40px;
-  background-color: white;
-  width: 98%;
-  font-size: 2.75rem;
-  font: -webkit-control;
+.perfil__image {
+    height: 250px;
+    width: 250px;
+    border-radius: 50%;
+    margin-top: 8%;
+    margin-left: 27%;
 }
-
-.perfil__backtohome{
-  background: black;
-  border: 1px solid;
-  border-radius: 2px;
-  width: 100%;
-  height: 30px;
-  margin-top: 10px;
-  border-color: yellow;
-}
-
-.perfil__backtohome > h5{
-  color: yellow;
+.color-secondary, a {
+  color: #F0DA50;
   text-decoration: none;
-  text-align: center;
-  font-size: 150%;
 }
+
+
+
+
+.perfil__container {
+	position: relative;
+	top: 23px;
+	left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+	background: linear-gradient(45deg, #49a09d, #5f2c82);
+	font-family: sans-serif;
+	font-weight: 100;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	overflow: hidden;
+	box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+th, td {
+	padding: 15px;
+	background-color: rgba(255,255,255,0.2);
+	color: black;
+}
+
+th {
+	text-align: left;
+}
+
+thead th{
+	 
+		background-color: #55608f;
+	}
 
 

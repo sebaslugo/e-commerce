@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux';
 import { logOut } from '../../redux/actions/menuLogIn';
 
 
-
+let id = localStorage.getItem('idUser')
 const greyHenry = grey[900]
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -82,7 +82,7 @@ export default function MenuListComposition() {
     }
 
     const handlePerfil = () => {
-        window.location.assign("http://localhost:3000/user/perfil")
+        window.location.assign(`http://localhost:3000/user/perfil/${id}`)
     }
 
     return (
@@ -115,9 +115,9 @@ export default function MenuListComposition() {
                                 <ClickAwayListener onClickAway={handleClose}>
                                     <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                                         {localStorage.getItem('rol') == "admin"?<MenuItem onClick={handlePanel}>Panel</MenuItem>: null}                                     
-                                        <MenuItem onClick={handleLogOut}>Logout</MenuItem>
                                         <MenuItem onClick={handlePerfil}>Perfil</MenuItem>
-                                    </MenuList>
+                                        <MenuItem onClick={handleLogOut}>Logout</MenuItem>
+                                        </MenuList>
                                 </ClickAwayListener>
                             </Paper>
                         </Grow>
