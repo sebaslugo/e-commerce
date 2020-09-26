@@ -1,6 +1,7 @@
 import { LOGIN_USER } from '../consts/actionTypes.js';
 import axios from 'axios'
 import store from '../store/index'
+import Swal from 'sweetalert2'
 
 export function loginUser(loginData) {
     // console.log("esta es la data que llega al actions", loginData)
@@ -25,6 +26,12 @@ export function loginUser(loginData) {
                 localStorage.setItem('statusToken', 'Usted está autorizado correctamente!')
                 window.location.assign("http://localhost:3000/checkuser/auth/login")
             })
-            .catch(() => alert("Los datos del Usuario no concuerdan con un usuario existente...vuelva a intentarlo"))
+            .catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Los datos ingresados son erroneos',
+                })
+            })
     }
 }

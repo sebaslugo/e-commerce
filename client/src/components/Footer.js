@@ -110,8 +110,8 @@ export default function Footer() {
                         </Link>
                     </Typography>
                     <Typography variant="body2" >
-                        <Link href="https://www.linkedin.com/in/manuel-de-la-torre-928b45152/" color="inherit">
-                            Manuel De La Torre
+                        <Link href="https://www.linkedin.com/in/manuel-de-la-torre-928b45152/" onClick={preventDefault} color="inherit">
+                            Manuel de la Torre
                         </Link>
                     </Typography>
                     <Typography variant="body2">

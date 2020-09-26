@@ -1,6 +1,7 @@
 import { GET_EMAIL } from '../consts/actionTypes';
 import axios from 'axios'
 import store from '../store/index'
+import Swal from 'sweetalert2'
 
 export function getEmail(loginData) {
     return function (dispatch) {
@@ -18,13 +19,23 @@ export function getEmail(loginData) {
             })
             // .then(res => localStorage.setItem('token', res.data.token))
             .then(res => {
-                
+
                 dispatch({
                     type: GET_EMAIL,
                     payload: res.data
                 })
-                alert("Se ha enviado un email con instrucciones");
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Info Importante',
+                    text: "Se ha enviado un email con instrucciones",
+                })
             })
-            .catch(() => alert("Los datos del Usuario no concuerdan con un usuario existente...vuelva a intentarlo"))
+            .catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: "Los datos del Usuario no concuerdan con un usuario existente...vuelva a intentarlo",
+                })
+            })
     }
 }

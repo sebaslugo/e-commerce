@@ -6,6 +6,7 @@ import { yellow, purple, grey } from '@material-ui/core/colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { postCreateUser } from '../../redux/actions/createUser.js'
 import { Select } from 'semantic-ui-react'
+import Swal from 'sweetalert2'
 
 const rolOptions = [
     { key: 'user', value: 'user', text: 'Usuario' },
@@ -98,7 +99,11 @@ export default function CreateUser() {
             dispatch(postCreateUser(datos))
         }
         else {
-            alert('completa todos los campos')
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'Completa todos los campos',
+            })
         }
 
     }

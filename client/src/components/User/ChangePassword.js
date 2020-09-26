@@ -8,6 +8,7 @@ import { postCreateUser } from '../../redux/actions/createUser.js'
 import { Select } from 'semantic-ui-react'
 import LockIcon from '@material-ui/icons/Lock';
 import { putPassword } from '../../redux/actions/changePassword.js'
+import Swal from 'sweetalert2'
 
 const token = document.URL.split("/").pop()
 const ColorButton = withStyles((theme) => ({
@@ -90,7 +91,11 @@ export default function ChangePassword() {
             dispatch(putPassword(token, datos.contraseña))
         }
         else {
-            alert('Las contraseñas nos son iguales')
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Las contraseñas no son iguales!',
+            })
         }
 
     }
