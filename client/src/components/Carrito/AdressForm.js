@@ -47,15 +47,17 @@ export default function AddressForm() {
 
 
   useEffect(() => {
-    store.subscribe(() => store.getState().shoppingCart.data? setPermiso(true)
-    : 
-                    Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Debes agregar productos si quieres entrar a la forma de pago',
-                }),
-    window.location.assign("http:localhost:3000/")
-    )
+    store.subscribe(() => store.getState().shoppingCart.data)
+    //store.subscribe(() => store.getState().shoppingCart.data? setPermiso(true)
+    //: 
+    //                Swal.fire({
+    //                icon: 'error',
+    //                title: 'Oops...',
+    //                text: 'Debes agregar productos si quieres entrar a la forma de pago',
+    //            }),
+    //window.location.assign("http:localhost:3000/")
+    //)
+
   }, [])
   
   const handleInputChange = (e) => {

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
-import DeleteIcon from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import { grey, yellow } from "@material-ui/core/colors/";
 import store from "../../redux/store/index";
@@ -140,6 +138,7 @@ const ShoppingCart = () => {
   const [active, setActive] = useState(true);
   const [subtotal, setSubTotal] = useState(0);
   const [call, setCall] = useState(false);
+  const [permiso, setPermiso] = useState(false)
 
   useEffect(() => {
     if (serializedState && id) {
@@ -169,6 +168,9 @@ const ShoppingCart = () => {
       dispatch(fetchProductsFromCart(id));
       store.subscribe(() => {
         setCart(() => store.getState().shoppingCart.data)
+        store.getState().shoppingCart.data ? setPermiso(true):
+        setPermiso(false)
+
       });
       setActive(false);
 
@@ -291,11 +293,7 @@ const ShoppingCart = () => {
 
   const handleBuy = () => {
     if (id) {
-      let data = {
-        'status': 'creada'
-      }
-      window.location.assign(`http://localhost:3000/user/cart/${id}/checkout`)
-
+      window.location.assign(`http://localhost:3000/user/cart/${id}/checkout/`)
     }
     else {
       window.location.assign("http://localhost:3000/login/createuser")
