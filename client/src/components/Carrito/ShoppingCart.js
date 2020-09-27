@@ -360,9 +360,9 @@ const ShoppingCart = () => {
                           <h4>{product.name}</h4>
                         </Typography>
 
-                        <Typography variant="h3" gutterBottom>
+                        {/* <Typography variant="h3" gutterBottom>
                           <h6 style={{ fontSize: 18, marginTop: 20 }}>{product.description}</h6>
-                        </Typography>
+                        </Typography> */}
                       </Grid>
                     </Grid>
                   </Grid>

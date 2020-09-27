@@ -34,13 +34,13 @@ export const AppRouter = () => {
     const rol = localStorage.getItem('rol');
     const statusToken = localStorage.getItem('statusToken');
     const id = localStorage.getItem('idUser')
-    const [carrito, setCarrito] = useState(false)
+    // const [carrito, setCarrito] = useState(false)
 
 
-    useEffect(() => {
-        dispatch(getUser());
-        store.subscribe(() => setCarrito(store.getState().shoppingCart.data ? true: false))
-    });
+    // useEffect(() => {
+    //     dispatch(getUser());
+    //     store.subscribe(() => setCarrito(store.getState().shoppingCart.data ? true: false))
+    // });
 
     return (
         <Router>
@@ -59,7 +59,7 @@ export const AppRouter = () => {
                     <Route exact path="/checkuser/auth/login" component={CheckLogin}/>
                 
                     <Route exact path= {`/user/perfil/${id}`} component={PerfilUser}/>
-                    <Route exact path={`/user/cart/${id}/checkout/`} component={() => Checkout(carrito)} isAuthenticated={statusToken} />
+                    <Route exact path={`/user/cart/${id}/checkout/`} component={Checkout} isAuthenticated={statusToken} />
                
 
                     <PrivateRoute exact path="/admin/panel" component={Dashboard} isAuthenticated={statusToken} isAdmin={rol} />

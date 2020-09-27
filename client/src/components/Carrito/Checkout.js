@@ -69,11 +69,11 @@ function getStepContent(step) {
     }
 }
 
-export default function Checkout(carrito) {
-    if(!carrito){
-        alert("Para acceder al modo de compra debes elegir un producto primero")
-        window.location.assign("http://localhost:3000/")
-    }
+export default function Checkout() {
+    // if(!carrito){
+    //     alert("Para acceder al modo de compra debes elegir un producto primero")
+    //     window.location.assign("http://localhost:3000/")
+    // }
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const dispatch = useDispatch()
