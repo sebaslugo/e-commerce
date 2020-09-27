@@ -41,22 +41,22 @@ const useStyles = makeStyles((theme) => ({
 
 const StyledMenu = withStyles({
   paper: {
-      border: '1px solid black',
-      width: "250px",
-      backgroundColor: "red",
-      justifyContent: "space-between"
+    border: '1px solid black',
+    width: "250px",
+    backgroundColor: "red",
+    justifyContent: "space-between"
   },
 })
 const StyledMenuItem = withStyles((theme) => ({
   root: {
-      display: "flex",
-      justifyContent: "center",
-      '&:focus': {
+    display: "flex",
+    justifyContent: "center",
+    '&:focus': {
       backgroundColor: theme.palette.primary.main,
       '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-          color: theme.palette.common.white,
+        color: theme.palette.common.white,
       },
-      },
+    },
   },
 }))(MenuItem);
 
@@ -73,11 +73,11 @@ function Home() {
 
 
 
-  useEffect(() => {   
-    
-    if(serializedState && id){
+  useEffect(() => {
+
+    if (serializedState && id) {
       let data = {}
-      dispatch(agregarAlCarrito(data,id)); 
+      dispatch(agregarAlCarrito(data, id));
     }
     if (!productos && validate) {
       dispatch(getCategories());
@@ -87,22 +87,24 @@ function Home() {
       })
       setValidate(false)
     }
-  },[])
+  }, [])
   const handleItemClick = (e) => {
-    if(typeof e === "string"){
+
+    if (e === "todos los productos") {
       setActiveItem(e);
       dispatch(getProducts());
       setValidate(true)
       setProductos([])
-    }else{
-      e.preventDefault()
-    setActiveItem(e.target.name);
-    dispatch(getProductCategory(e.target.name));
-    setActive(1)
-    setValidate(true)
-    setProductos([])
+    } else {
+
+
+      setActiveItem(e);
+      dispatch(getProductCategory(e));
+      setActive(1)
+      setValidate(true)
+      setProductos([])
     }
-    
+
 
   };
   const handleClick = (e, { activePage }) => {
@@ -114,35 +116,39 @@ function Home() {
         <Image src={portada} fluid />
       </div>
       <div className="contenedor">
-      <div className={classes.paper}>
-        <div className="categTitle">
-          Categorias
+        <div className={classes.paper}>
+          <div className="categTitle">
+            Categorias
         </div>
-      {/* <StyledMenuItem className={classes.items}> */}
-          <Button href="/products" onClick={() => handleItemClick("todos los productos")} name="todos los productos" key="-1" color="primary" className={classes.botonCat}>
-                Todos los productos
+          {/* <StyledMenuItem className={classes.items}> */}
+          <Link className={classes.botonCat} to={`/products`}>
+            <Button onClick={() => handleItemClick("todos los productos")} name="todos los productos" key="-1" color="primary" >
+              Todos los productos
           </Button>
-        {/* </StyledMenuItem> */}
-      {categorias && categorias.map((categoria, index) => (
-            <Button className={classes.botonCat} href={`/${categoria.name}`} onClick={handleItemClick} name={categoria.name} key={index}>
+          </Link>
+          {/* </StyledMenuItem> */}
+          {categorias && categorias.map((categoria, index) => (
+            <Link className={classes.botonCat} to={`/${categoria.name}`}>
+              <Button className={classes.botonCat} onClick={() => handleItemClick(categoria.name)} name={categoria.name} key={index}>
                 {categoria.name}
-            </Button>
-        ))}
-      </div>
-            <div className="home-content">
-              <ProductHome productos={productos} active={active} validate={validate} />
-              <div className="home-paginacion">
-                {paginas && <Pagination
-                  defaultActivePage={active}
-                  onPageChange={handleClick}
-                  firstItem={null}
-                  lastItem={null}
-                  pointing
-                  secondary
-                  totalPages={paginas}
-                />}
-              </div>
-            </div>
+              </Button>
+            </Link>
+          ))}
+        </div>
+        <div className="home-content">
+          <ProductHome productos={productos} active={active} validate={validate} />
+          <div className="home-paginacion">
+            {paginas && <Pagination
+              defaultActivePage={active}
+              onPageChange={handleClick}
+              firstItem={null}
+              lastItem={null}
+              pointing
+              secondary
+              totalPages={paginas}
+            />}
+          </div>
+        </div>
       </div>
       <div className="foot">
         <Footer />

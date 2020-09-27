@@ -168,8 +168,8 @@ const ShoppingCart = () => {
       dispatch(fetchProductsFromCart(id));
       store.subscribe(() => {
         setCart(() => store.getState().shoppingCart.data)
-        store.getState().shoppingCart.data ? setPermiso(true):
-        setPermiso(false)
+        store.getState().shoppingCart.data ? setPermiso(true) :
+          setPermiso(false)
 
       });
       setActive(false);
@@ -357,12 +357,16 @@ const ShoppingCart = () => {
                     <Grid item xs container direction="column" spacing={2}>
                       <Grid item xs style={{ position: "absolute", marginTop: 20 }}>
                         <Typography gutterBottom variant="h3">
-                          <h4>{product.name}</h4>
+                          <h4>{product.name.length > 15 ? product.name.substring(0, 15) + "..." : product.name}</h4>
                         </Typography>
 
-                        {/* <Typography variant="h3" gutterBottom>
-                          <h6 style={{ fontSize: 18, marginTop: 20 }}>{product.description}</h6>
-                        </Typography> */}
+
+                        <Typography variant="h3" gutterBottom>
+                          <h6 style={{ fontSize: 18, marginTop: 20 }}>{product.description.length > 13 ? product.description.substring(0, 13) + "..." : product.description}</h6>
+                        </Typography>
+
+             
+
                       </Grid>
                     </Grid>
                   </Grid>
