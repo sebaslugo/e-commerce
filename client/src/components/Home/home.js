@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./home.css";
 import { Link } from "react-router-dom";
-import { Grid, Menu, Segment, Image, Pagination, Button,Icon,Reveal } from "semantic-ui-react";
-
+import { Image, Pagination } from "semantic-ui-react";
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import portada from "../../imagenes/portada.jpg";
 import ProductHome from './ProductHome';
 import { getCategories } from '../../redux/actions/category';
@@ -10,13 +10,55 @@ import { getProducts, getProductCategory } from '../../redux/actions/productList
 import { useDispatch, useSelector } from 'react-redux';
 import store from '../../redux/store/index';
 import agregarAlCarrito from '../../redux/actions/agregarAlCarrito';
+import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
+
 import { animateScroll as scroll } from 'react-scroll';
 import Footer from '../Footer'
+import Paper from '@material-ui/core/Paper';
+
 let id = localStorage.getItem("idUser");
 let serializedState = JSON.parse(localStorage.getItem("carrito"));
 
 
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    display: "flex",
+    flexDirection: "column",
+    marginLeft: "1px solid black"
+  },
+  botonCat: {
+    backgroundColor: "black",
+    color: "whitesmoke",
+    fontSize: ".9em",
+    borderColor: "red",
+    marginBottom: ".5rem",
 
+  }
+}));
+
+const StyledMenu = withStyles({
+  paper: {
+      border: '1px solid black',
+      width: "250px",
+      backgroundColor: "red",
+      justifyContent: "space-between"
+  },
+})
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+      display: "flex",
+      justifyContent: "center",
+      '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+          color: theme.palette.common.white,
+      },
+      },
+  },
+}))(MenuItem);
 
 function Home() {
 
@@ -27,6 +69,7 @@ function Home() {
   const [validate, setValidate] = useState(true)
   const paginas = productos && Math.ceil(productos.length / 6)
   const categorias = useSelector(state => state.categorias.data)
+  const classes = useStyles()
 
 
 
@@ -35,13 +78,6 @@ function Home() {
     if(serializedState && id){
       let data = {}
       dispatch(agregarAlCarrito(data,id)); 
-     /*  serializedState.orderList.map((order) => {
-        dispatch(agregarAlCarrito(order, id)) 
-      })
-      localStorage.removeItem('carrito') 
-       */
-      
-      
     }
     if (!productos && validate) {
       dispatch(getCategories());
@@ -50,27 +86,23 @@ function Home() {
         setProductos(() => store.getState().productList.data)
       })
       setValidate(false)
-
     }
-
-
-
   },[])
-
-  const handleItemClick = (e, { name }) => {
-
-    e.preventDefault()
-    setActiveItem(name);
-    if (name === 'Todos Los Productos') {
+  const handleItemClick = (e) => {
+    if(typeof e === "string"){
+      setActiveItem(e);
       dispatch(getProducts());
-    } else {
-      dispatch(getProductCategory(name));
-      setActive(1)
-    }
+      setValidate(true)
+      setProductos([])
+    }else{
+      e.preventDefault()
+    setActiveItem(e.target.name);
+    dispatch(getProductCategory(e.target.name));
+    setActive(1)
     setValidate(true)
     setProductos([])
-
-
+    }
+    
 
   };
   const handleClick = (e, { activePage }) => {
@@ -81,29 +113,22 @@ function Home() {
       <div className='home_portada'>
         <Image src={portada} fluid />
       </div>
-      <Grid>
-       {/* <Grid.Column width={2}>
-          <Menu fluid vertical tabular>
-            <Link to="/products">
-              <Menu.Item
-                name="Todos Los Productos"
-                active={activeItem === "Todos Los Productos"}
-                onClick={handleItemClick}
-              />
-            </Link>
-            {categorias && categorias.length > 0 && categorias.map((categoria, index) => (
-              <Link to={`/${categoria.name}`}>
-                <Menu.Item key={index}
-                  name={categoria.name}
-                  active={activeItem === categoria.name}
-                  onClick={handleItemClick}
-                />
-              </Link>
-            ))}
-          </Menu>
-        </Grid.Column> */}
-        <Grid.Column stretched width={30}>
-          <Segment>
+      <div className="contenedor">
+      <div className={classes.paper}>
+        <div className="categTitle">
+          Categorias
+        </div>
+      {/* <StyledMenuItem className={classes.items}> */}
+          <Button href="/products" onClick={() => handleItemClick("todos los productos")} name="todos los productos" key="-1" color="primary" className={classes.botonCat}>
+                Todos los productos
+          </Button>
+        {/* </StyledMenuItem> */}
+      {categorias && categorias.map((categoria, index) => (
+            <Button className={classes.botonCat} href={`/${categoria.name}`} onClick={handleItemClick} name={categoria.name} key={index}>
+                {categoria.name}
+            </Button>
+        ))}
+      </div>
             <div className="home-content">
               <ProductHome productos={productos} active={active} validate={validate} />
               <div className="home-paginacion">
@@ -118,10 +143,10 @@ function Home() {
                 />}
               </div>
             </div>
-          </Segment>
-        </Grid.Column>
-      </Grid>
-      <Footer />
+      </div>
+      <div className="foot">
+        <Footer />
+      </div>
     </div>
   );
 }
