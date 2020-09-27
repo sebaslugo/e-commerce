@@ -53,6 +53,7 @@ img {
 .card {
   height: 360px !important;
   max-width: 320px !important;
+  min-width: 320px !important;
   background: linear-gradient(135deg, #C56CD6 0%,#3425AF 100%) !important;
   border-radius: 1rem;
   padding: 4rem 2rem 0;
