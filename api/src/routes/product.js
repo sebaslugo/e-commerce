@@ -197,7 +197,7 @@ server.post('/', authentication.passport.authenticate('jwt',{session:false}), is
 	console.log(req.body);
 	if (name && description && price && stock) {
 
-		let images = 'sin_imagen.jpg';
+		let images = 'sin_imagen.png';
 		// dentro del req.file esta la propiedad que nos llega desde el front por lo tanto accedo ahi para consultar el length de "file" que es donde vienen las imagenes
 		if (req.files.length > 0) {
 			images = req.files.map(image => {
@@ -247,7 +247,7 @@ server.put('/:id', authentication.passport.authenticate('jwt',{session:false}), 
 		images=imagenes || images
 	}		
 	else{
-	images = 'sin_imagen.jpg'
+	images = 'sin_imagen.png'
 	}
 	Product.findOne({
 		where:{id:id}
