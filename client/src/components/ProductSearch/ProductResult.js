@@ -26,7 +26,7 @@ const ProductResult = ({
     if (imagenes[0].includes(".png") || imagenes[0].includes(".jpg")) {
       return imagenes[0];
     } else {
-      return "sin_imagen.jpg";
+      return "sin_imagen.png";
     }
   };
 

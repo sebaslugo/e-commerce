@@ -118,7 +118,7 @@ function Home() {
       <div className="contenedor">
         <div className={classes.paper}>
           <div className="categTitle">
-            Categorias
+            CATEGORIAS
         </div>
           {/* <StyledMenuItem className={classes.items}> */}
           <Link className={classes.botonCat} to={`/products`}>

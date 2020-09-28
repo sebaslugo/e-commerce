@@ -114,7 +114,8 @@
     margin-top: 1.8rem;
     margin-bottom: .5rem;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    background: radial-gradient(circle, rgba(73,72,28,1) 0%, rgba(255,233,0,1) 0%, rgba(255,233,0,1) 0%, rgba(65,65,29,1) 100%);
-    border-color: yellow;
+    background-color: black;   
+    color: yellow;
+    font-weight: bold;
     font-size: 1.3em;
 }

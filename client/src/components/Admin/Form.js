@@ -190,7 +190,7 @@ function Formulario ({producto,categorias}) {
                     <input  id='file' type='file' multiple={true} name='imagen'  accept="image/*" onChange = {handleFiles}></input>
                     <label className='file_label' for= 'file'>
                         <Icon link name="file image" color='black' size='large' /> 
-                        (5 max)
+                        (3 max)
                     </label>
                 </div>               
                 
