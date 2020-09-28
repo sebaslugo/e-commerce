@@ -75,7 +75,6 @@ export function deleteProductCategory(productId, categoryId) {
             .then(function (response) {
                 //handle success
                 Swal.fire({
-                    position: 'top-end',
                     icon: 'success',
                     title: 'Se elimino el producto de la categoria',
                     showConfirmButton: false,
@@ -101,7 +100,6 @@ export function addProductCategory(productId, categoryId) {
             .then(function (response) {
                 //handle success
                 Swal.fire({
-                    position: 'top-end',
                     icon: 'success',
                     title: 'Se agrego el producto a la categoria',
                     showConfirmButton: false,
