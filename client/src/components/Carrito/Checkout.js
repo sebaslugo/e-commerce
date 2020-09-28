@@ -52,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(3),
         marginLeft: theme.spacing(1),
     },
+    saludo: {
+        color: "black",
+    }
 }));
 
 const steps = ['Direccion de envio', 'Detalles de pago', 'Resumen de pago'];
@@ -103,10 +106,10 @@ export default function Checkout() {
             <React.Fragment>
                 {activeStep === steps.length ? (
                 <React.Fragment>
-                    <Typography variant="h5" gutterBottom>
+                    <Typography variant="h5" gutterBottom className={classes.saludo}>
                     Los datos de la compra han sido enviados a su cuenta
                     </Typography>
-                    <Typography variant="h5" gutterBottom>
+                    <Typography variant="h5" gutterBottom className={classes.saludo}>
                     Gracias por su compra!.
                     </Typography>
                 </React.Fragment>
