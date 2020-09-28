@@ -51,17 +51,17 @@ function PerfilUser() {
               <th>Numero de Orden</th>
               <th>Estado</th>
               <th>Producto</th>
-              <th>Catidad</th>
+              <th>Cantidad</th>
               <th>Precio</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td> {ordenes.orden.id && ordenes.orden.user.id}</td>
-              <td>{ordenes.orden.status && ordenes.orden.status}</td>
+              {ordenes.orden && <td> {ordenes.orden.id && ordenes.orden.user.id}</td>}
+              {ordenes.orden && <td>{ordenes.orden.status && ordenes.orden.status}</td>}
               <td>
                 <ul>
-                  {ordenes.orden.products &&
+                  {ordenes.orden && ordenes.orden.products &&
                     ordenes.orden.products.map((producto, index) => (
                       <li key={index}>{producto.name}</li>
                     ))}
@@ -70,7 +70,7 @@ function PerfilUser() {
               <td>
                 {" "}
                 <ul>
-                  {ordenes.items &&
+                  {ordenes.orden && ordenes.items &&
                     ordenes.items.map((producto, index) => (
                       <li key={index}>{producto.quantity}</li>
                     ))}
@@ -79,7 +79,7 @@ function PerfilUser() {
               <td>
                 {" "}
                 <ul>
-                  {ordenes.items &&
+                  {ordenes.orden && ordenes.items &&
                     ordenes.items.map((producto, index) => (
                       <li key={index}>$ {producto.price}</li>
                     ))}
