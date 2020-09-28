@@ -122,7 +122,7 @@ function Home() {
         </div>
           {/* <StyledMenuItem className={classes.items}> */}
           <Link className={classes.botonCat} to={`/products`}>
-            <Button onClick={() => handleItemClick("todos los productos")} name="todos los productos" key="-1" color="primary" >
+            <Button className={classes.botonCat} onClick={() => handleItemClick("todos los productos")} name="todos los productos" key="-1" color="primary" >
               Todos los productos
           </Button>
           </Link>
