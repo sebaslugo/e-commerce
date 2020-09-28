@@ -25,7 +25,7 @@ export default function ResultSearch({ location }) {
         <Segment>
           <div className="home-content">
             <div className="home-productos">
-                <h2>Resultados de la búsqueda</h2>
+                {(content) ? <h2>Resultados de la búsqueda</h2> : <h2 style={{marginBottom: '3rem'}}>No se encontraron resultados.</h2>}
               <Card.Group>{renderProducts()}</Card.Group>
             </div>
           </div>
